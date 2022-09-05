@@ -1,0 +1,58 @@
+@use "../../variables" as v;
+.userForm {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.541);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  form {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 20px 30px;
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 50%;
+    position: relative;
+
+    .closeUserForm {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .row {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px;
+      label {
+        color: #777;
+      }
+      input {
+        padding: 5px 20px 5px 5px;
+        outline: none;
+        margin-left: 10px;
+        border: none;
+        border-bottom: 1px solid #444;
+      }
+    }
+    button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: v.$primary-color;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 7px 50px;
+      cursor: pointer;
+    }
+  }
+}
