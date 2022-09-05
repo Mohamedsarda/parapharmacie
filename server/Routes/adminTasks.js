@@ -7,11 +7,13 @@ const {
   getCategories,
   addCategorie,
   deleteCategorie,
+  editCategorie,
 } = require("../Controllers/adminTasks.js");
-const AdminRoute = express.Router();
+const AdminTasksRoute = express.Router();
 
-AdminRoute.post("/getCategories", getCategories);
-AdminRoute.post("/addCategorie", addCategorie);
-AdminRoute.post("/deleteCategorie", deleteCategorie);
+AdminTasksRoute.post("/getCategories", getCategories);
+AdminTasksRoute.post("/addCategorie", addCategorie);
+AdminTasksRoute.post("/deleteCategorie", deleteCategorie);
+AdminTasksRoute.post("/editCategorie", editCategorie);
 
-module.exports = AdminRoute;
+module.exports = AdminTasksRoute;
