@@ -18,7 +18,7 @@ const getCategories = (req, res) => {
           result.length > 0
             ? `Categories fetched successfully`
             : `There is no categories in the database`,
-        categories: result.length > 0 ? result : [],
+        categories: result,
       });
     }
   );
@@ -37,6 +37,7 @@ const addCategorie = (req, res) => {
         result[0][0].Response === 0
           ? "Categorie has not been added. it's already exists"
           : "Categories has been added successfully",
+      insertedId: result[0][0].insertedId,
     });
   });
 };
@@ -64,4 +65,31 @@ const deleteCategorie = (req, res) => {
   );
 };
 
-module.exports = { getCategories, addCategorie, deleteCategorie };
+const editCategorie = (req, res) => {
+  const { newCateName, currentCateName } = req.body;
+  db.query(
+    "UPDATE products_categories SET categorieName = ? WHERE categorieName = ?",
+    [newCateName, currentCateName],
+    (err, result) => {
+      if (err)
+        return res.status(500).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      return res.status(200).send({
+        actionState: result.affectedRows > 0 ? true : false,
+        desc:
+          result.affectedRows > 0
+            ? `Categorie has been updated successfully`
+            : `Something went wrong. Categorie didn't update`,
+      });
+    }
+  );
+};
+
+module.exports = {
+  getCategories,
+  addCategorie,
+  deleteCategorie,
+  editCategorie,
+};
