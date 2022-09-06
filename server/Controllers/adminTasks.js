@@ -87,9 +87,30 @@ const editCategorie = (req, res) => {
   );
 };
 
+const addMark = (req, res) => {
+  const { markName } = req.body;
+  db.query("CALL addMark(?)", [markName], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: "Something went wrong. Database error",
+      });
+    if (result[0][0].Response === 0)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Mark wasn't added. Something went wrong`,
+      });
+    else if (result[0][0].Response === 1)
+      return res
+        .status(200)
+        .send({ actionState: true, desc: `Mark has been added.` });
+  });
+};
+
 module.exports = {
   getCategories,
   addCategorie,
   deleteCategorie,
   editCategorie,
+  addMark,
 };
