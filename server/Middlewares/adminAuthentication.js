@@ -8,7 +8,7 @@ const isAdminAuthenticated = (req, res, next) => {
 const isAdminNotAuthenticated = (req, res, next) => {
   if (req.session.admin)
     return res
-      .status(401)
+      .status(200)
       .send({ isAuthenticated: true, desc: `Admin is authenticated` });
   next();
 };

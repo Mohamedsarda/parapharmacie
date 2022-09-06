@@ -61,4 +61,20 @@ const checkEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
-module.exports = { clientSignUp };
+const selectCities = (req, res) => {
+  db.query("SELECT * FROM cities", (err, result) => {
+    if (err)
+      return res.status(500).send({
+        actionState: false,
+        desc: "Cities didn't fetched. Database error",
+        cities: [],
+      });
+    return res.status(200).send({
+      actionState: true,
+      desc: "Cities list fetched successfully",
+      cities: result,
+    });
+  });
+};
+
+module.exports = { clientSignUp, selectCities };

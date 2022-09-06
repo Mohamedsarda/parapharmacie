@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const db = require("./database/db.js");
+const db = require("./Database/db.js");
 const sessions = require("express-session");
 const MySQLStore = require("express-mysql-session")(sessions);
 const cors = require("cors");
