@@ -3,8 +3,8 @@ const getCategories = (req, res) => {
   const { from, to } = req.body;
 
   db.query(
-    "SELECT * FROM products_categories LIMIT ?, ?",
-    [from, to],
+    "SELECT * FROM products_categories ",
+
     (err, result) => {
       if (err)
         return res.status(200).send({
@@ -133,6 +133,30 @@ const deleteMark = (req, res) => {
   );
 };
 
+const editMark = (req, res) => {
+  const { markCurrentName, markNewName } = req.body;
+
+  db.query(
+    "UPDATE SET markName = ? WHERE markName = ?",
+    [markNewName, markCurrentName],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      console.log(result.affectedRows);
+      return res.status(200).send({
+        actionState: result.affectedRows === 0 ? false : true,
+        desc:
+          result.affectedRows === 0
+            ? "Something went wrong. No row affected"
+            : `Mark updated successfully`,
+      });
+    }
+  );
+};
+
 module.exports = {
   getCategories,
   addCategorie,
@@ -140,4 +164,5 @@ module.exports = {
   editCategorie,
   addMark,
   deleteMark,
+  editMark,
 };
