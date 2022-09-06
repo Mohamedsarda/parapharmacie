@@ -10,7 +10,15 @@ const clientSignUp = async (req, res) => {
     clientAdress,
     clientPassword,
   } = req.body;
-  console.log(checkEmail(clientEmail));
+  console.log(
+    clientName,
+    clientLastName,
+    clientEmail,
+    clientPhone,
+    clientCity,
+    clientAdress,
+    clientPassword
+  );
   if (!checkEmail(clientEmail))
     return res
       .status(200)
@@ -29,12 +37,12 @@ const clientSignUp = async (req, res) => {
       clientCity,
     ],
     (err, result) => {
+      console.log(err);
       if (err)
         return res.status(500).send({
           actionState: false,
           desc: `Client wasn't added. Database error`,
         });
-      console.log(err);
       if (result[0][0].Result === "Email exists")
         return res.status(200).send({
           actionState: false,
