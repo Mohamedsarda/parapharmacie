@@ -41,4 +41,15 @@ const adminSignOut = (req, res) => {
     .send({ actionState: true, desc: "Admin signed out successfully" });
 };
 
-module.exports = { adminSignIn, adminSignOut };
+const isAdminAuth = (req, res) => {
+  if (req.session.admin)
+    return res
+      .status(200)
+      .send({ actionState: true, desc: `Admin is authenticated` });
+  else
+    return res
+      .status(200)
+      .send({ actionState: false, desc: `Admin in not authenticated` });
+};
+
+module.exports = { adminSignIn, adminSignOut, isAdminAuth };
