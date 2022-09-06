@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./scss/userform.scss";
 import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UserForm = ({ closeUserForm }) => {
+  const [cities, setCities] = useState([]);
   const [client, setClient] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    age: "",
-    city: "",
+    clientName: "",
+    clientLastName: "",
+    clientEmail: "",
+    clientPassword: "",
+    clientCity: "",
+    clientAdress: "",
+    clientPhone: "",
   });
 
   const handleChange = (event) => {
@@ -23,69 +21,76 @@ const UserForm = ({ closeUserForm }) => {
   };
   const clientSignIn = (e) => {
     e.preventDefault();
-    // axios.post("http://localhost:8080/Middlewares/clientAuthentication.js", {});
-    console.log(client);
+    if (client) {
+      axios
+        .post("http://localhost:8080/clientActions/v1/clientSignUp", client)
+        .then((res) => {
+          if (res.data.actionState === true) {
+            closeUserForm();
+            toast.success(res.data.desc);
+          } else {
+            toast.error(res.data.desc);
+          }
+        });
+    } else {
+      toast.error("Please Enter All The Indormations");
+    }
+    // console.log(client);
   };
+  useEffect(() => {
+    const getCities = async () => {
+      await axios
+        .get("http://localhost:8080/clientActions/v1/getCities")
+        .then((resp) => {
+          setCities(resp.data.cities);
+        });
+    };
+    getCities();
+  }, []);
   return (
     <div className="userForm">
       <form onSubmit={clientSignIn}>
         <CloseIcon onClick={() => closeUserForm()} className="closeUserForm" />
         <div className="row">
           <label>First Name</label>
-          <input type="text" name="first_name" onChange={handleChange} />
+          <input type="text" name="clientName" onChange={handleChange} />
         </div>
         <div className="row">
           <label>Last Name</label>
-          <input type="text" name="last_name" onChange={handleChange} />
+          <input type="text" name="clientLastName" onChange={handleChange} />
         </div>
         <div className="row">
           <label>Email</label>
-          <input type="email" name="email" onChange={handleChange} />
+          <input type="email" name="clientEmail" onChange={handleChange} />
+        </div>
+        <div className="row">
+          <label>Phone Number</label>
+          <input type="text" name="clientPhone" onChange={handleChange} />
         </div>
         <div className="row">
           <label>Password</label>
-          <input type="password" name="password" onChange={handleChange} />
+          <input
+            type="password"
+            name="clientPassword"
+            onChange={handleChange}
+          />
         </div>
         <div className="row">
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={client.age}
-                name="age"
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-        <div className="row">
-          <Box sx={{ minWidth: 210 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">City</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={client.city}
-                name="city"
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>bm</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+          <label htmlFor="">City</label>
+          <select name="clientCity" onChange={handleChange}>
+            <option value="none">Select A City</option>
+            {cities.map((city) => {
+              return (
+                <option key={city.cityId} value={city.cityName}>
+                  {city.cityName}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="row">
           <label>Adress</label>
-          <input type="text" name="adress" />
+          <input type="text" name="clientAdress" />
         </div>
         <button>Create</button>
       </form>
