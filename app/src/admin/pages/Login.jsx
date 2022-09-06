@@ -19,13 +19,13 @@ const Login = ({ signIn }) => {
         console.log(response);
         if (response.data.actionState === false)
           toast.error(response.data.desc);
-        if (response.data.actionState === true)
+        if (response.data.actionState === true) {
           toast.success(response.data.desc);
-        signIn();
-        naviagte("/");
+          signIn();
+          naviagte("/");
+        }
       })
       .catch((error) => {
-        console.log(error);
         toast.error(error.data.desc);
       });
   };

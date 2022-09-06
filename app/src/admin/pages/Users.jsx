@@ -6,7 +6,7 @@ import UserForm from "../components/UserForm";
 import UpdateUserForm from "../components/UpdateUserForm";
 import UsersDataGrid from "../components/UsersDataGrid";
 
-const Users = () => {
+const Users = ({ signOut }) => {
   const [userForm, setUserForm] = useState(false);
   const [updateUserForm, setUpdateUserForm] = useState(false);
   const closeUserForm = () => {
@@ -14,14 +14,13 @@ const Users = () => {
   };
   const openUpdateUserForm = (id) => {
     setUpdateUserForm(true);
-    console.log(id);
   };
   const closeUpdateUserForm = () => {
     setUpdateUserForm(false);
   };
   return (
     <div className="users">
-      <SideBar />
+      <SideBar signOut={signOut} />
       <div className="usersContainer">
         <NavBar />
         <UsersDataGrid openUpdateUserForm={openUpdateUserForm} />

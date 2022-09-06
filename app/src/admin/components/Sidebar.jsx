@@ -14,7 +14,7 @@ import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ signOut }) => {
   const [currentNav, setCurrentNav] = useState(
     window.location.href.split("/")[3]
   );
@@ -197,7 +197,7 @@ const Sidebar = () => {
               <span>Profile</span>
             </li>
           </Link>
-          <Link to="/Logout" style={{ textDecoration: "none" }}>
+          <Link to="/Login" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
                 setCurrentNav(window.location.href.split("/")[3]);
@@ -208,7 +208,7 @@ const Sidebar = () => {
               }}
             >
               <LogoutOutlinedIcon className="icon" />
-              <span>Logout</span>
+              <span onClick={() => signOut()}>Logout</span>
             </li>
           </Link>
         </ul>

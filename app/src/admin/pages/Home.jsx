@@ -5,10 +5,10 @@ import Navbar from "../components/Navbar";
 import Widget from "../components/Widget";
 import List from "../components/Table";
 
-const Home = () => {
+const Home = ({ signOut }) => {
   return (
     <div className="home">
-      <Sidebar />
+      <Sidebar signOut={signOut} />
       <div className="homeContainer">
         <Navbar />
         <div className="widgets">
