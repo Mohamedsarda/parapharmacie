@@ -103,7 +103,7 @@ const addMark = (req, res) => {
     else if (result[0][0].Response === 1)
       return res
         .status(200)
-        .send({ actionState: true, desc: `Mark has been added.` });
+        .send({ actionState: true, desc: `Mark has been added..` });
   });
 };
 
