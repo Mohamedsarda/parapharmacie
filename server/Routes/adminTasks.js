@@ -10,6 +10,7 @@ const {
   editCategorie,
   addMark,
   deleteMark,
+  editMark,
 } = require("../Controllers/adminTasks.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
@@ -29,5 +30,7 @@ AdminTasksRoute.post("/clientSignUp", isAdminAuthenticated, clientSignUp);
 AdminTasksRoute.post("/addMark", addMark);
 // Removing a mark from database
 AdminTasksRoute.post("/deleteMark", deleteMark);
+// Editing a mark in the database
+AdminTasksRoute.post("/editMark", editMark);
 
 module.exports = AdminTasksRoute;
