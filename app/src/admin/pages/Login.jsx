@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./scss/login.scss";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ signIn }) => {
+  const naviagte = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
@@ -19,6 +21,8 @@ const Login = () => {
           toast.error(response.data.desc);
         if (response.data.actionState === true)
           toast.success(response.data.desc);
+        signIn();
+        naviagte("/");
       })
       .catch((error) => {
         console.log(error);
