@@ -17,6 +17,6 @@ AdminTasksRoute.post("/getCategories", getCategories);
 AdminTasksRoute.post("/addCategorie", addCategorie);
 AdminTasksRoute.post("/deleteCategorie", deleteCategorie);
 AdminTasksRoute.post("/editCategorie", editCategorie);
-AdminTasksRoute.post("/clientSignUp", isAdminAuthenticated, clientSignUp);
+AdminTasksRoute.post("/clientSignUp", isAdminNotAuthenticated, clientSignUp);
 
 module.exports = AdminTasksRoute;
