@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "axios";
 
-const UserForm = ({ closeUserForm }) => {
+const UpdateUserForm = ({ closeUpdateUserForm }) => {
   const [client, setClient] = useState({
     first_name: "",
     last_name: "",
@@ -29,7 +29,10 @@ const UserForm = ({ closeUserForm }) => {
   return (
     <div className="userForm">
       <form onSubmit={clientSignIn}>
-        <CloseIcon onClick={() => closeUserForm()} className="closeUserForm" />
+        <CloseIcon
+          onClick={() => closeUpdateUserForm()}
+          className="closeUserForm"
+        />
         <div className="row">
           <label>First Name</label>
           <input type="text" name="first_name" onChange={handleChange} />
@@ -93,4 +96,4 @@ const UserForm = ({ closeUserForm }) => {
   );
 };
 
-export default UserForm;
+export default UpdateUserForm;

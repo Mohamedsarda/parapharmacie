@@ -1,9 +1,9 @@
 @use "../../variables" as v;
 .userForm {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.541);
   backdrop-filter: blur(5px);
