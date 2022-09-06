@@ -8,7 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
     e.preventDefault();
-    axios.defaults.withcredentials = true;
     axios
       .post("http://localhost:8080/adminAuthentication/v1/signIn", {
         adminEmail: email,
@@ -18,7 +17,10 @@ const Login = () => {
         console.log(response);
         if (response.data.actionState === false)
           toast.error(response.data.desc);
-        if (response.data.actionState === true)
+        if (
+          response.data.actionState === true ||
+          response.data.isAuthenticated === true
+        )
           toast.success(response.data.desc);
       })
       .catch((error) => {
