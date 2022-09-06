@@ -1,7 +1,5 @@
 const db = require("../Database/db.js");
 const getCategories = (req, res) => {
-  const { from, to } = req.body;
-
   db.query(
     "SELECT * FROM products_categories ",
 
@@ -137,7 +135,7 @@ const editMark = (req, res) => {
   const { markCurrentName, markNewName } = req.body;
 
   db.query(
-    "UPDATE SET markName = ? WHERE markName = ?",
+    "UPDATE marks SET markName = ? WHERE markName = ?",
     [markNewName, markCurrentName],
     (err, result) => {
       if (err)
@@ -145,7 +143,7 @@ const editMark = (req, res) => {
           actionState: false,
           desc: `Something went wrong. Database error`,
         });
-      console.log(result.affectedRows);
+
       return res.status(200).send({
         actionState: result.affectedRows === 0 ? false : true,
         desc:
