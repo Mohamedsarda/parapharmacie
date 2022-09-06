@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./scss/login.scss";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
     e.preventDefault();
+    axios.defaults.withcredentials = true;
     axios
       .post("http://localhost:8080/adminAuthentication/v1/signIn", {
         adminEmail: email,
         adminPassword: password,
       })
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
+        if (response.data.actionState === false)
+          toast.error(response.data.desc);
+        if (response.data.actionState === true)
+          toast.success(response.data.desc);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
+        toast.error(error.data.desc);
       });
   };
   return (
