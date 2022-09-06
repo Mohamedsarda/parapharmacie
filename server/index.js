@@ -42,6 +42,9 @@ app.use("/adminTask/v1/", require("./Routes/adminTasks.js"));
 // admin authentication router
 app.use("/adminAuthentication/v1/", require("./Routes/adminAuthentication.js"));
 
+// client actions router
+app.use("/clientActions/v1/", require("./Routes/clientActions.js"));
+
 app.listen(process.env.PORT, () => {
   console.log(`Listening to the port ${process.env.PORT}`);
 });
