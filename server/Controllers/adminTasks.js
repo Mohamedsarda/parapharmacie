@@ -107,10 +107,37 @@ const addMark = (req, res) => {
   });
 };
 
+const deleteMark = (req, res) => {
+  const { markName } = req.body;
+
+  db.query(
+    "DELETE FROM marks WHERE markName = ?",
+    [markName],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: "Something went wrong. Database error",
+        });
+
+      if (result.affectedRows === 0)
+        return res.status(200).send({
+          actionState: false,
+          desc: "Something went wrong. No row affected",
+        });
+      else if (result.affectedRows > 0)
+        return res
+          .status(200)
+          .send({ actionState: true, desc: `Mark deleted successfully.` });
+    }
+  );
+};
+
 module.exports = {
   getCategories,
   addCategorie,
   deleteCategorie,
   editCategorie,
   addMark,
+  deleteMark,
 };
