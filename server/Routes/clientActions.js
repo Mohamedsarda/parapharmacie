@@ -1,6 +1,9 @@
 const express = require("express");
 const ClientActionsRoute = express.Router();
-const { clientSignUp } = require("../Controllers/clientActions.js");
+const {
+  clientSignUp,
+  selectCities,
+} = require("../Controllers/clientActions.js");
 const {
   isClientNotAuthenticated,
   isClientAuthenticated,
@@ -11,5 +14,7 @@ ClientActionsRoute.post(
   isClientNotAuthenticated,
   clientSignUp
 );
+
+ClientActionsRoute.get("/getCities", selectCities);
 
 module.exports = ClientActionsRoute;

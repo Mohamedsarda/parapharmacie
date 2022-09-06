@@ -25,7 +25,7 @@ const adminSignIn = async (req, res) => {
           .send({ actionState: false, desc: "Le mot de passe est incorrect" });
       } else {
         req.session.admin = result[0].adminId;
-        console.log(`Here i am`);
+
         return res
           .status(200)
           .send({ actionState: true, desc: "Connexion réussie" });
