@@ -1,0 +1,26 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  .gridContainer {
+    height: 100vh;
+    // position: relative;
+    overflow-y: scroll;
+
+    .datatableTitle {
+      font-size: 24px;
+      color: gray;
+      margin-bottom: 0px;
+      padding: 20px 20px 0px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gridContent {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 20px;
+    }
+  }
+}

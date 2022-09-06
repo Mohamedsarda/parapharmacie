@@ -16,16 +16,16 @@ import { Link } from "react-router-dom";
 
 const Sidebar = ({ signOut }) => {
   const [currentNav, setCurrentNav] = useState(
-    window.location.href.split("/")[3]
+    window.location.href.split("/")[4]
   );
   useEffect(() => {
-    setCurrentNav(window.location.href.split("/")[3]);
-  }, [window.location.href.split("/")[3]]);
+    setCurrentNav(window.location.href.split("/")[4]);
+  }, [window.location.href.split("/")[4]]);
 
   return (
     <div className="sideBar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/admin" style={{ textDecoration: "none" }}>
           <span className="logo">MED SARDA</span>
         </Link>
         <span className="logo-1">M</span>
@@ -33,10 +33,10 @@ const Sidebar = ({ signOut }) => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/admin" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -48,10 +48,10 @@ const Sidebar = ({ signOut }) => {
             </li>
           </Link>
           <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link to="/admin/users" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -62,10 +62,10 @@ const Sidebar = ({ signOut }) => {
               <span>Users</span>
             </li>
           </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
+          <Link to="/admin/products" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -76,10 +76,10 @@ const Sidebar = ({ signOut }) => {
               <span>Products</span>
             </li>
           </Link>
-          <Link to="/orders" style={{ textDecoration: "none" }}>
+          <Link to="/admin/orders" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -90,10 +90,10 @@ const Sidebar = ({ signOut }) => {
               <span>Orders</span>
             </li>
           </Link>
-          <Link to="/categories" style={{ textDecoration: "none" }}>
+          <Link to="/admin/categories" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -107,10 +107,10 @@ const Sidebar = ({ signOut }) => {
             </li>
           </Link>
           <p className="title">USEFUL</p>
-          <Link to="/Stats" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Stats" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -121,10 +121,10 @@ const Sidebar = ({ signOut }) => {
               <span>Stats</span>
             </li>
           </Link>
-          <Link to="/Notifications" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Notifications" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -138,10 +138,10 @@ const Sidebar = ({ signOut }) => {
             </li>
           </Link>
           <p className="title">SERVICE</p>
-          <Link to="/System Health" style={{ textDecoration: "none" }}>
+          <Link to="/admin/System Health" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -154,10 +154,10 @@ const Sidebar = ({ signOut }) => {
               <span>System Health</span>
             </li>
           </Link>
-          <Link to="/Logs" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Logs" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -168,10 +168,10 @@ const Sidebar = ({ signOut }) => {
               <span>Logs</span>
             </li>
           </Link>
-          <Link to="/Settings" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Settings" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -183,10 +183,10 @@ const Sidebar = ({ signOut }) => {
             </li>
           </Link>
           <p className="title">USER</p>
-          <Link to="/Profile" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Profile" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
@@ -197,10 +197,10 @@ const Sidebar = ({ signOut }) => {
               <span>Profile</span>
             </li>
           </Link>
-          <Link to="/Login" style={{ textDecoration: "none" }}>
+          <Link to="/admin/Login" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[3]);
+                setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
