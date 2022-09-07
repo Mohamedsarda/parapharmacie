@@ -223,19 +223,20 @@ const addProduct = async (req, res) => {
 
 const deleteProduct = (req, res) => {
   const { productId, productImage } = req.body;
-  try {
-    removeImageFromServer(productImage, "./images/");
-  } catch (e) {
-    return res
-      .status(200)
-      .send({ actionState: false, desc: `Image to remove not found` });
-  }
+
   db.query("CALL deleteProduct(?)", [productId], (err, result) => {
     if (err)
       return res.status(200).send({
         actionState: false,
         desc: `Something went wrong. Database error`,
       });
+    try {
+      removeImageFromServer(productImage, "./images/");
+    } catch (e) {
+      return res
+        .status(200)
+        .send({ actionState: false, desc: `Image to remove not found` });
+    }
     return res.status(200).send({
       actionState:
         result[0][0].Response ===
