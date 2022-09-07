@@ -1,4 +1,6 @@
 const db = require("../Database/db.js");
+const path = require("path");
+const fs = require("fs");
 const getCategories = (req, res) => {
   db.query(
     "SELECT * FROM products_categories ",
@@ -155,6 +157,99 @@ const editMark = (req, res) => {
   );
 };
 
+const addProduct = async (req, res) => {
+  // console.log(req.files.file.name);
+  const {
+    productName,
+    productDescription,
+    productOldPrice,
+    productCurrentPrice,
+    productMark,
+    productCategorie,
+    productQuantitie,
+  } = req.body;
+  let uploadedImg = await uploadImageToServer(req.files.file, "./images");
+  if (uploadedImg.uploaded === false)
+    return res
+      .status(200)
+      .send({ actionState: false, desc: "Image failed to upload" });
+
+  db.query(
+    `INSERT INTO products(
+        productName,
+        productDescription,
+        productOldPrice,
+        productCurrentPrice,
+        productMark,
+        productCategorie,
+        productImages,
+        productQuantities
+      ) VALUES(
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?
+      )`,
+    [
+      productName,
+      productDescription,
+      productOldPrice,
+      productCurrentPrice,
+      productMark,
+      productCategorie,
+      uploadedImg.imageName,
+      productQuantitie,
+    ],
+    (err, result) => {
+      if (err) {
+        removeImageFromServer(uploadedImg.imageName, `./images/`);
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      }
+      return res
+        .status(200)
+        .send({ actionState: true, desc: "Product added successfully" });
+      console.log(result);
+    }
+  );
+  // res.send({ msg: imageHashName });
+};
+
+const deleteProduct = (req, res) => {
+  const { productId, productImage } = req.body;
+};
+
+const uploadImageToServer = (image, pathToFolder) => {
+  console.log(image.name);
+  const imageName = Date.now();
+  return new Promise((resolve, reject) => {
+    image.mv(
+      `${pathToFolder}/${imageName + path.extname(image.name)}`,
+      (err) => {
+        if (err) {
+          console.log(err);
+          reject({ uploaded: false });
+        } else {
+          resolve({
+            uploaded: true,
+            imageName: imageName + path.extname(image.name),
+          });
+        }
+      }
+    );
+  });
+};
+
+const removeImageFromServer = (img, pathToFolder) => {
+  fs.unlinkSync(`${pathToFolder + img}`);
+};
+
 module.exports = {
   getCategories,
   addCategorie,
@@ -163,4 +258,5 @@ module.exports = {
   addMark,
   deleteMark,
   editMark,
+  addProduct,
 };

@@ -5,13 +5,16 @@ const sessions = require("express-session");
 const MySQLStore = require("express-mysql-session")(sessions);
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
+const fileUpload = require("express-fileupload");
 require("dotenv").config();
 
 // Setting up express middlewares
 app.use(express.json());
-app.use(bodyParser.json());
+app.use(fileUpload());
 
 // Setting up third party libraries
+app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -44,6 +47,9 @@ app.use("/adminAuthentication/v1/", require("./Routes/adminAuthentication.js"));
 
 // client actions router
 app.use("/clientActions/v1/", require("./Routes/clientActions.js"));
+
+// images route
+app.use(express.static(path.join(__dirname, "images")));
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening to the port ${process.env.PORT}`);

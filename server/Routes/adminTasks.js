@@ -11,6 +11,7 @@ const {
   addMark,
   deleteMark,
   editMark,
+  addProduct,
 } = require("../Controllers/adminTasks.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
@@ -32,5 +33,8 @@ AdminTasksRoute.post("/addMark", addMark);
 AdminTasksRoute.post("/deleteMark", deleteMark);
 // Editing a mark in the database
 AdminTasksRoute.post("/editMark", editMark);
+
+// Addint a product to database
+AdminTasksRoute.post("/addProduct", addProduct);
 
 module.exports = AdminTasksRoute;
