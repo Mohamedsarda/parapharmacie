@@ -228,19 +228,22 @@ const deleteProduct = (req, res) => {
     if (err)
       return res.status(200).send({
         actionState: false,
-        desc: `Something went wrong. Database error`,
+        desc: `Quelque chose s'est mal passé. Erreur de la base de données`,
       });
-    try {
-      removeImageFromServer(productImage, "./images/");
-    } catch (e) {
-      return res
-        .status(200)
-        .send({ actionState: false, desc: `Image to remove not found` });
+    if (result[0][0].Response === "Product has been deleted successfully") {
+      try {
+        removeImageFromServer(productImage, "./images/");
+      } catch (e) {
+        return res.status(200).send({
+          actionState: true,
+          desc: `Le produit a été supprimé avec succès`,
+        });
+      }
     }
     return res.status(200).send({
       actionState:
         result[0][0].Response ===
-        "This product is linked to some pending orders"
+        "Ce produit est lié à certaines commandes en attente"
           ? false
           : true,
       desc: result[0][0].Response,
