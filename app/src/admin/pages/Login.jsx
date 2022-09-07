@@ -22,7 +22,7 @@ const Login = ({ signIn }) => {
         if (response.data.actionState === true) {
           toast.success(response.data.desc);
           signIn();
-          naviagte("/");
+          naviagte("/admin");
         }
       })
       .catch((error) => {

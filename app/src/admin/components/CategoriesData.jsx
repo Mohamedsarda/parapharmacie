@@ -1,21 +1,71 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import axios from "axios";
 import CategorieForm from "./CategorieForm";
+import DeleteMsg from "./DeleteMsg";
+import { toast } from "react-toastify";
+import UpdateCategorie from "./UpdateCategorie";
 
 import "./scss/usersDataGird.scss";
 
 const CategoriesData = () => {
   const [deleteMsg, setDeleteMsg] = useState(false);
+  const [updateCategorieContainer, setUpdateCategorieContainer] =
+    useState(false);
   const [categorieName, setCategorieName] = useState("");
+  const [currentCateName, setCurrentCateName] = useState("");
+  const [currentCateId, setCurrentCateId] = useState("");
   const [categorieData, setCategorieData] = useState([]);
-  const [type, setType] = useState("");
+
+  const closeUpdateCategorieContainer = () => {
+    setUpdateCategorieContainer(false);
+  };
+  const openUpdateCategorieContainer = (currentCateName, currentCateId) => {
+    setCurrentCateName(currentCateName);
+    setCurrentCateId(currentCateId);
+    setUpdateCategorieContainer(true);
+  };
 
   const updateData = (catName, catId) => {
     setCategorieData([...categorieData, { categorieName: catName, id: catId }]);
   };
+  const hideDeleteMsg = () => {
+    setDeleteMsg(false);
+  };
+  const handleDelete = (name) => {
+    setDeleteMsg(true);
+    setCategorieName(name);
+  };
+  const deleteCat = () => {
+    axios
+      .post("http://localhost:8080/adminTask/v1/deleteCategorie", {
+        categorieName,
+      })
+      .then((res) => {
+        if (res.data.actionState === true) {
+          toast.success(res.data.desc);
+          setDeleteMsg(false);
+          setCategorieData(
+            categorieData.filter((cat) => cat.categorieName !== categorieName)
+          );
+        } else {
+          toast.error(res.data.desc);
+        }
+      });
+  };
+  useEffect(() => {
+    const getCategories = () => {
+      axios
+        .post("http://localhost:8080/adminTask/v1/getCategories")
+        .then((res) => {
+          setCategorieData(res.data.categories);
+        });
+    };
+
+    getCategories();
+  }, []);
+
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -40,40 +90,22 @@ const CategoriesData = () => {
             >
               Delete
             </div>
-            <div className="updateButton">Update</div>
+            <div
+              className="updateButton"
+              onClick={() =>
+                openUpdateCategorieContainer(
+                  params.row.categorieName,
+                  params.row.id
+                )
+              }
+            >
+              Update
+            </div>
           </div>
         );
       },
     },
   ];
-
-  const handleDelete = (name) => {
-    setDeleteMsg(true);
-    setCategorieName(name);
-  };
-  const deleteCat = () => {
-    axios
-      .post("http://localhost:8080/adminTask/v1/deleteCategorie", {
-        categorieName,
-      })
-      .then((res) => {
-        setDeleteMsg(false);
-        setCategorieData(
-          categorieData.filter((cat) => cat.categorieName !== categorieName)
-        );
-      });
-  };
-  useEffect(() => {
-    const getCategories = () => {
-      axios
-        .post("http://localhost:8080/adminTask/v1/getCategories")
-        .then((res) => {
-          setCategorieData(res.data.categories);
-        });
-    };
-
-    getCategories();
-  }, []);
 
   return (
     <div className="datatable">
@@ -87,23 +119,23 @@ const CategoriesData = () => {
         />
       </Box>
 
+      {updateCategorieContainer && (
+        <UpdateCategorie
+          currentCateId={currentCateId}
+          currentCateName={currentCateName}
+          updateData={updateData}
+          closeUpdateCategorieContainer={closeUpdateCategorieContainer}
+        />
+      )}
       <CategorieForm updateData={updateData} />
       {deleteMsg && (
-        <div className="deleteContainer">
-          <div className="content">
-            <WarningAmberIcon className="icon" />
-            <h2>Êtes-vous sûr de vouloir supprimer cette catégorie</h2>
-            <h5>Tous les produits liés à cette catégorie seront supprimés</h5>
-            <div className="btn">
-              <button className="delete" onClick={() => deleteCat()}>
-                Confirmer
-              </button>
-              <button className="cancel" onClick={() => setDeleteMsg(false)}>
-                Annuler
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeleteMsg
+          title="Êtes-vous sûr de vouloir supprimer cette catégorie"
+          subTitle="Tous les produits liés à cette catégorie seront supprimés"
+          action="deleteCategorie"
+          deleteCat={deleteCat}
+          hideDeleteMsg={hideDeleteMsg}
+        />
       )}
     </div>
   );

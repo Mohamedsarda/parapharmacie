@@ -4,6 +4,8 @@ import Home from "./admin/pages/Home";
 import Products from "./admin/pages/Products";
 import Login from "./admin/pages/Login";
 import Categories from "./admin/pages/Categories";
+import Marques from "./admin/pages/Marques";
+import Orders from "./admin/pages/Orders";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -48,6 +50,8 @@ function App() {
                 path="categories"
                 element={<Categories signOut={signOut} />}
               />
+              <Route path="marques" element={<Marques signOut={signOut} />} />
+              <Route path="orders" element={<Orders signOut={signOut} />} />
               <Route path="users">
                 <Route index element={<Users signOut={signOut} />} />
               </Route>

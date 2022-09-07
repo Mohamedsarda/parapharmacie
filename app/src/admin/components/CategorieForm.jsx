@@ -19,6 +19,8 @@ const CategorieForm = ({ updateData }) => {
             toast.success(res.data.desc);
           }
         });
+    } else {
+      toast.error("Veuillez entrer un nom de catégorie");
     }
   };
   return (

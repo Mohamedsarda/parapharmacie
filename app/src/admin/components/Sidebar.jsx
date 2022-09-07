@@ -2,16 +2,11 @@ import { useState, useEffect } from "react";
 import "./scss/sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import DnsIcon from "@mui/icons-material/Dns";
-import HubIcon from "@mui/icons-material/Hub";
-import SettingsIcon from "@mui/icons-material/Settings";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ signOut }) => {
@@ -59,7 +54,7 @@ const Sidebar = ({ signOut }) => {
               }}
             >
               <PersonOutlineOutlinedIcon className="icon" />
-              <span>Users</span>
+              <span>Utilisateurs</span>
             </li>
           </Link>
           <Link to="/admin/products" style={{ textDecoration: "none" }}>
@@ -73,7 +68,7 @@ const Sidebar = ({ signOut }) => {
               }}
             >
               <StorefrontIcon className="icon" />
-              <span>Products</span>
+              <span>Produit</span>
             </li>
           </Link>
           <Link to="/admin/orders" style={{ textDecoration: "none" }}>
@@ -87,7 +82,7 @@ const Sidebar = ({ signOut }) => {
               }}
             >
               <CreditCardOutlinedIcon className="icon" />
-              <span>Orders</span>
+              <span>Commandes</span>
             </li>
           </Link>
           <Link to="/admin/categories" style={{ textDecoration: "none" }}>
@@ -102,101 +97,26 @@ const Sidebar = ({ signOut }) => {
                     : "",
               }}
             >
-              <LocalShippingIcon className="icon" />
-              <span>Categories</span>
+              <AppsOutlinedIcon className="icon" />
+              <span>Catégories</span>
             </li>
           </Link>
-          <p className="title">USEFUL</p>
-          <Link to="/admin/Stats" style={{ textDecoration: "none" }}>
+          <Link to="/admin/marques" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
                 setCurrentNav(window.location.href.split("/")[4]);
               }}
               style={{
                 backgroundColor:
-                  currentNav === "Stats" ? "rgba(153, 153, 153, 0.274)" : "",
+                  currentNav === "marques" ? "rgba(153, 153, 153, 0.274)" : "",
               }}
             >
-              <LeaderboardIcon className="icon" />
-              <span>Stats</span>
+              <LocationCityIcon className="icon" />
+              <span>Marques</span>
             </li>
           </Link>
-          <Link to="/admin/Notifications" style={{ textDecoration: "none" }}>
-            <li
-              onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
-              }}
-              style={{
-                backgroundColor:
-                  currentNav === "Notifications"
-                    ? "rgba(153, 153, 153, 0.274)"
-                    : "",
-              }}
-            >
-              <NotificationsNoneIcon className="icon" />
-              <span>Notifications</span>
-            </li>
-          </Link>
-          <p className="title">SERVICE</p>
-          <Link to="/admin/System Health" style={{ textDecoration: "none" }}>
-            <li
-              onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
-              }}
-              style={{
-                backgroundColor:
-                  currentNav === "System Health"
-                    ? "rgba(153, 153, 153, 0.274)"
-                    : "",
-              }}
-            >
-              <DnsIcon className="icon" />
-              <span>System Health</span>
-            </li>
-          </Link>
-          <Link to="/admin/Logs" style={{ textDecoration: "none" }}>
-            <li
-              onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
-              }}
-              style={{
-                backgroundColor:
-                  currentNav === "Logs" ? "rgba(153, 153, 153, 0.274)" : "",
-              }}
-            >
-              <HubIcon className="icon" />
-              <span>Logs</span>
-            </li>
-          </Link>
-          <Link to="/admin/Settings" style={{ textDecoration: "none" }}>
-            <li
-              onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
-              }}
-              style={{
-                backgroundColor:
-                  currentNav === "Settings" ? "rgba(153, 153, 153, 0.274)" : "",
-              }}
-            >
-              <SettingsIcon className="icon" />
-              <span>Settings</span>
-            </li>
-          </Link>
+
           <p className="title">USER</p>
-          <Link to="/admin/Profile" style={{ textDecoration: "none" }}>
-            <li
-              onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
-              }}
-              style={{
-                backgroundColor:
-                  currentNav === "Profile" ? "rgba(153, 153, 153, 0.274)" : "",
-              }}
-            >
-              <AccountCircleOutlinedIcon className="icon" />
-              <span>Profile</span>
-            </li>
-          </Link>
           <Link to="/admin/Login" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
@@ -208,7 +128,7 @@ const Sidebar = ({ signOut }) => {
               }}
             >
               <LogoutOutlinedIcon className="icon" />
-              <span onClick={() => signOut()}>Logout</span>
+              <span onClick={() => signOut()}>Se déconnecter</span>
             </li>
           </Link>
         </ul>

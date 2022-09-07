@@ -26,7 +26,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 200px;
-      padding: 10px 0px;
+      padding: 5px 0px;
       color: #888;
     }
     .bottom {
@@ -34,20 +34,42 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .btn {
-        display: flex;
-        align-items: center;
-        .icon {
-          margin-left: 20px;
-          cursor: pointer;
-          font-size: 16px;
+
+      ._1_col {
+        h5 {
+          margin: 0px;
+          color: #666;
         }
-        .delete {
-          color: red;
+        h4 {
+          margin: 0px;
         }
-        .edit {
-          color: blue;
+      }
+      ._2_col {
+        h5 {
+          margin: 0px;
+          color: #666;
+          text-decoration: line-through;
         }
+        h4 {
+          margin: 0px;
+        }
+      }
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px 10px;
+      .icon {
+        margin-left: 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .delete {
+        color: red;
+      }
+      .edit {
+        color: blue;
       }
     }
   }
