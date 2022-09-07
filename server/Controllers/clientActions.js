@@ -98,5 +98,6 @@ const getProducts = (req, res) => {
     return res.status(200).send({ actionState: true, products: result });
   });
 };
+//fuck
 
 module.exports = { clientSignUp, selectCities, getProducts };
