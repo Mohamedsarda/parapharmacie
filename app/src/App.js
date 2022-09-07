@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import Users from "./admin/pages/Users";
 import Home from "./admin/pages/Home";
+import Products from "./admin/pages/Products";
 import Login from "./admin/pages/Login";
+import Categories from "./admin/pages/Categories";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,17 +35,25 @@ function App() {
         <ToastContainer />
         {!isAuth ? (
           <Routes>
-            <Route path="login" element={<Login signIn={signIn} />} />
+            <Route path="admin">
+              <Route path="login" element={<Login signIn={signIn} />} />
+            </Route>
           </Routes>
         ) : (
           <Routes>
-            <Route path="login" element={<Home signOut={signOut} />} />
-            <Route index element={<Home signOut={signOut} />} />
-            <Route path="users">
-              <Route index element={<Users signOut={signOut} />} />
-            </Route>
-            <Route path="products">
-              <Route index element={<Users />} />
+            <Route path="admin">
+              <Route index element={<Home signOut={signOut} />} />
+              <Route path="login" element={<Home signOut={signOut} />} />
+              <Route
+                path="categories"
+                element={<Categories signOut={signOut} />}
+              />
+              <Route path="users">
+                <Route index element={<Users signOut={signOut} />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Products />} />
+              </Route>
             </Route>
           </Routes>
         )}
