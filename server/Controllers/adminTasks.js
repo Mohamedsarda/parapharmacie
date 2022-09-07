@@ -223,6 +223,28 @@ const addProduct = async (req, res) => {
 
 const deleteProduct = (req, res) => {
   const { productId, productImage } = req.body;
+  try {
+    removeImageFromServer(productImage, "./images/");
+  } catch (e) {
+    return res
+      .status(200)
+      .send({ actionState: false, desc: `Image to remove not found` });
+  }
+  db.query("CALL deleteProduct(?)", [productId], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    return res.status(200).send({
+      actionState:
+        result[0][0].Response ===
+        "This product is linked to some pending orders"
+          ? false
+          : true,
+      desc: result[0][0].Response,
+    });
+  });
 };
 
 const uploadImageToServer = (image, pathToFolder) => {
@@ -259,4 +281,5 @@ module.exports = {
   deleteMark,
   editMark,
   addProduct,
+  deleteProduct,
 };

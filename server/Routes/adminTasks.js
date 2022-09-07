@@ -12,6 +12,7 @@ const {
   deleteMark,
   editMark,
   addProduct,
+  deleteProduct,
 } = require("../Controllers/adminTasks.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
@@ -36,5 +37,8 @@ AdminTasksRoute.post("/editMark", editMark);
 
 // Addint a product to database
 AdminTasksRoute.post("/addProduct", addProduct);
+
+// Removing a product from database
+AdminTasksRoute.post("/deleteProduct", deleteProduct);
 
 module.exports = AdminTasksRoute;
