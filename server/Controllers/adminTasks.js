@@ -1,6 +1,7 @@
 const db = require("../Database/db.js");
 const path = require("path");
 const fs = require("fs");
+const { resolve } = require("path");
 const getCategories = (req, res) => {
   db.query(
     "SELECT * FROM products_categories ",
@@ -85,6 +86,22 @@ const editCategorie = (req, res) => {
       });
     }
   );
+};
+
+const getMarks = (req, res) => {
+  const { from, to } = req.body;
+  db.query(`SELECT * FROM marks LIMI ?, ?`, [from, to], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    return res.status(200).send({
+      actionState: true,
+      desc: `Marks fetched successfully`,
+      marks: [],
+    });
+  });
 };
 
 const addMark = (req, res) => {
@@ -215,7 +232,6 @@ const addProduct = async (req, res) => {
       return res
         .status(200)
         .send({ actionState: true, desc: "Product added successfully" });
-      console.log(result);
     }
   );
   // res.send({ msg: imageHashName });
@@ -248,6 +264,76 @@ const deleteProduct = (req, res) => {
           : true,
       desc: result[0][0].Response,
     });
+  });
+};
+
+const editProduct = async (req, res) => {
+  if (req.files) {
+    let uploadImag = await uploadImageToServer(req.files.file, "./images");
+    if (uploadImag.uploaded === false)
+      return res
+        .status(200)
+        .send({ actionState: false, desc: `Failed to upload the image` });
+    else {
+      const editProd = await editProductWithImage(
+        uploadImag.imageName,
+        req.body
+      );
+      if (editProd.actionState) {
+        return res
+          .status(200)
+          .send({ actionState: true, desc: `Categorie updated successfully` });
+      }
+      console.log(editProd);
+    }
+
+    // await editProductWithImage(req.files.file, req.body);
+  } else
+    return res
+      .status(200)
+      .send({ actionState: false, desc: `There is no image to upload.` });
+
+  // console.log(req.files);
+};
+
+const editProductWithImage = async (imgName, infos) => {
+  console.log(infos);
+  return new Promise((resolve, reject) => {
+    db.query(
+      `
+      UPDATE products SET 
+      productName = ?,
+      productDescription = ?,
+      productOldPrice = ?,
+      productCurrentPrice = ?,
+      productMark = ?,
+      productCategorie = ?,
+      productImages = ?,
+      productQuantities = ?
+      WHERE productId = ?
+    `,
+      [
+        infos.productName,
+        infos.productDescription,
+        infos.productOldPrice,
+        infos.productCurrentPrice,
+        infos.productMark,
+        infos.productCategorie,
+        imgName,
+        infos.productQuantitie,
+        infos.productId,
+      ],
+      (err, result) => {
+        if (err) return reject({ actionState: false, desc: `Database error` });
+        resolve({
+          actionState: result.affectedRows === 0 ? false : true,
+          desc:
+            result.affectedRows === 0
+              ? `Product to update wasn't found`
+              : `Product updated successfully`,
+        });
+      }
+    );
   });
 };
 
@@ -286,4 +372,6 @@ module.exports = {
   editMark,
   addProduct,
   deleteProduct,
+  editProduct,
+  getMarks,
 };
