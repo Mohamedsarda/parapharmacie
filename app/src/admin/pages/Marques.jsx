@@ -100,18 +100,13 @@ const Marques = ({ signOut }) => {
       });
   };
   const getMarks = () => {
-    axios
-      .post("http://localhost:8080/adminTask/v1/getMarks", {
-        from: 0,
-        to: 5,
-      })
-      .then((res) => {
-        if (res.data.actionState === true) {
-          setMarksData(res.data.marks);
-        } else {
-          toast.error(res.data.desc);
-        }
-      });
+    axios.get("http://localhost:8080/clientActions/v1/getMarks").then((res) => {
+      if (res.data.actionState === true) {
+        setMarksData(res.data.marks);
+      } else {
+        toast.error(res.data.desc);
+      }
+    });
   };
   useEffect(() => {
     getMarks();

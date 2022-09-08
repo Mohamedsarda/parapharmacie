@@ -64,7 +64,7 @@ const CategoriesData = () => {
   useEffect(() => {
     const getCategories = () => {
       axios
-        .post("http://localhost:8080/clientActions/v1/getCategories")
+        .get("http://localhost:8080/clientActions/v1/getCategories")
         .then((res) => {
           setCategorieData(res.data.categories);
         });
