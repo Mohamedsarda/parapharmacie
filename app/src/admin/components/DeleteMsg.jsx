@@ -4,6 +4,7 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 const DeleteMsg = ({
   deleteUser,
   deleteCat,
+  handleDeleteMark,
   hideDeleteMsg,
   action,
   title,
@@ -14,6 +15,8 @@ const DeleteMsg = ({
       deleteCat();
     } else if (action === "deleteUser") {
       deleteUser();
+    } else if (action === "deleteMark") {
+      handleDeleteMark();
     }
   };
   return (
