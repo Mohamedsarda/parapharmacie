@@ -90,7 +90,7 @@ const editCategorie = (req, res) => {
 
 const getMarks = (req, res) => {
   const { from, to } = req.body;
-  db.query(`SELECT * FROM marks LIMI ?, ?`, [from, to], (err, result) => {
+  db.query(`SELECT * FROM marks LIMIT ?, ?`, [from, to], (err, result) => {
     if (err)
       return res.status(200).send({
         actionState: false,
