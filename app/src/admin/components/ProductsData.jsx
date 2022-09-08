@@ -16,7 +16,9 @@ const ProductsData = ({
   mark,
   oldPrice,
   newPrice,
+  quantity,
   updateProductData,
+  openEditForm,
 }) => {
   const deleteProduct = (img, id) => {
     axios
@@ -31,11 +33,10 @@ const ProductsData = ({
         } else {
           toast.error(res.data.desc);
         }
-        console.log(res.data);
       });
   };
   return (
-    <div key={id} className="GridItem">
+    <div className="GridItem">
       <img src={`http://localhost:8080/${img}`} alt={title} />
       <div className="content">
         <h2>{title}</h2>
@@ -44,6 +45,7 @@ const ProductsData = ({
           <div className="_1_col">
             <h4>{categorie}</h4>
             <h5>{mark}</h5>
+            <h5>{quantity}</h5>
           </div>
           <div className="_2_col">
             <h4>{newPrice} DH</h4>
@@ -60,6 +62,19 @@ const ProductsData = ({
           <i
             title="Edit This Product"
             className="fa-solid fa-pen-to-square icon edit"
+            onClick={() =>
+              openEditForm(
+                id,
+                title,
+                desc,
+                categorie,
+                mark,
+                newPrice,
+                oldPrice,
+                img,
+                quantity
+              )
+            }
           ></i>
         </div>
       </div>

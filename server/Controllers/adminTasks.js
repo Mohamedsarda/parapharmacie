@@ -149,6 +149,10 @@ const addProduct = async (req, res) => {
     productCategorie,
     productQuantitie,
   } = req.body;
+  if (!req.files)
+    return res
+      .status(200)
+      .send({ actionState: false, desc: "No image to upload" });
   let uploadedImg = await uploadImageToServer(req.files.file, "./images");
   if (uploadedImg.uploaded === false)
     return res
@@ -271,7 +275,7 @@ const editProduct = async (req, res) => {
   //   .status(200)
   //   .send({ actionState: false, desc: `There is no image to upload.` });
 
-  // console.log(req.files);
+  // console.log(req.files)
 };
 
 const editProductWithImage = async (imgName, infos) => {
@@ -315,7 +319,8 @@ const editProductWithImage = async (imgName, infos) => {
   });
 };
 
-const editProductWithoutImage = (async = (infos) => {
+const editProductWithoutImage = async (infos) => {
+  console.log(infos, "whiout");
   return new Promise((resolve, reject) => {
     db.query(
       `
@@ -355,7 +360,7 @@ const editProductWithoutImage = (async = (infos) => {
       }
     );
   });
-});
+};
 
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);

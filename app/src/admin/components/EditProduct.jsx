@@ -5,20 +5,20 @@ import "./scss/addProductForm.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AddProductForm = ({ closeProductForm, getProductsData }) => {
+const EditProduct = ({ getProductsData, closeEditForm, productData }) => {
   const [file, setFile] = useState("");
   const [marks, setMarks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
-    productName: "",
-    productOldPrice: "",
-    productCurrentPrice: "",
-    productDescription: "",
-    productMark: "",
-    productCategorie: "",
-    productQuantitie: "",
+    productId: productData.id,
+    productName: productData.title,
+    productOldPrice: productData.oldPrice,
+    productCurrentPrice: productData.newPrice,
+    productDescription: productData.desc,
+    productMark: productData.mark,
+    productCategorie: productData.categorie,
+    productQuantitie: productData.quantity,
   });
-
   const handleChange = (event) => {
     setProduct({
       ...product,
@@ -49,7 +49,10 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
 
   const handleAddProduct = (e) => {
     e.preventDefault();
+    console.log(product);
+    console.log(file);
     const formData = new FormData();
+    formData.append("productId", productData.id);
     formData.append("productName", product.productName);
     formData.append("productOldPrice", product.productOldPrice);
     formData.append("productCurrentPrice", product.productCurrentPrice);
@@ -59,26 +62,30 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
     formData.append("productQuantitie", product.productQuantitie);
     formData.append("file", file);
     axios
-      .post("http://localhost:8080/adminTask/v1/addProduct", formData)
+      .post("http://localhost:8080/adminTask/v1/editProduct", formData)
       .then((res) => {
-        console.log(res.data);
         if (res.data.actionState) {
-          getProductsData();
+          // getProductsData();
           toast.success(res.data.desc);
-          closeProductForm();
+          closeEditForm();
         } else {
           toast.error(res.data.desc);
         }
       });
   };
   return (
-    <div className="AddProductForm">
+    <div key="editForm" className="AddProductForm">
       <form>
-        <CloseIcon onClick={closeProductForm} className="close" />
+        <CloseIcon onClick={closeEditForm} className="close" />
         <div className="left">
           <div className="row">
             <label>Product Name</label>
-            <input type="text" name="productName" onChange={handleChange} />
+            <input
+              type="text"
+              name="productName"
+              defaultValue={productData.title}
+              onChange={handleChange}
+            />
           </div>
           <div className="__col">
             <div className="row">
@@ -86,6 +93,7 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
               <input
                 type="Number"
                 name="productCurrentPrice"
+                defaultValue={productData.newPrice}
                 onChange={handleChange}
               />
             </div>
@@ -94,6 +102,7 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
               <input
                 type="Number"
                 name="productOldPrice"
+                defaultValue={productData.oldPrice}
                 onChange={handleChange}
               />
             </div>
@@ -103,6 +112,7 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
             <input
               type="number"
               name="productQuantitie"
+              defaultValue={productData.quantity}
               onChange={handleChange}
             />
           </div>
@@ -111,7 +121,11 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
           <div className="row img">
             <label htmlFor="file">
               <img
-                src={file ? URL.createObjectURL(file) : "../no-image.jpg"}
+                src={
+                  file
+                    ? URL.createObjectURL(file)
+                    : `http://localhost:8080/${productData.img}`
+                }
                 alt=""
               />
             </label>
@@ -126,8 +140,10 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
           </div>
           <div className="row">
             <label>Select A Caegorie</label>
-            <select name="productCategorie" id="" onChange={handleChange}>
-              <option value="0">S</option>
+            <select name="productCategorie" onChange={handleChange}>
+              <option value={productData.categorie}>
+                {productData.categorie}
+              </option>
               {categories.map((categorie) => {
                 return (
                   <option value={categorie.categorieName}>
@@ -139,7 +155,8 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
           </div>
           <div className="row">
             <label>Select A Mark</label>
-            <select name="productMark" id="" onChange={handleChange}>
+            <select name="productMark" onChange={handleChange}>
+              <option value={productData.mark}>{productData.mark}</option>
               {marks.map((mark) => {
                 return <option value={mark.markName}>{mark.markName}</option>;
               })}
@@ -149,19 +166,20 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
             <label>Description</label>
             <textarea
               name="productDescription"
-              id=""
               cols="15"
               rows="10"
               onChange={handleChange}
-            ></textarea>
+            >
+              {productData.desc}
+            </textarea>
           </div>
         </div>
         <div className="btn">
-          <button onClick={(e) => handleAddProduct(e)}>add Product</button>
+          <button onClick={(e) => handleAddProduct(e)}>Edit Product</button>
         </div>
       </form>
     </div>
   );
 };
 
-export default AddProductForm;
+export default EditProduct;

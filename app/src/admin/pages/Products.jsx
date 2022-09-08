@@ -3,6 +3,7 @@ import ProductsData from "../components/ProductsData";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import AddProductForm from "../components/AddProductForm";
+import EditProduct from "../components/EditProduct";
 import axios from "axios";
 // import Message from "../components/Message";
 import "./scss/products.scss";
@@ -11,8 +12,47 @@ import "./scss/products.scss";
 const Products = () => {
   const [msg, setMsg] = useState(false);
   const [productForm, setProductForm] = useState(false);
+  const [editProductForm, setEditProductForm] = useState(false);
   const [productsData, setProductsData] = useState([]);
+  const [productData, setDroductData] = useState({
+    id: "",
+    title: "",
+    desc: "",
+    categorie: "",
+    mark: "",
+    newPrice: "",
+    oldPrice: "",
+    img: "",
+    quantity: "",
+  });
 
+  const openEditForm = (
+    id,
+    title,
+    desc,
+    categorie,
+    mark,
+    newPrice,
+    oldPrice,
+    img,
+    quantity
+  ) => {
+    setDroductData({
+      id,
+      title,
+      desc,
+      categorie,
+      mark,
+      newPrice,
+      oldPrice,
+      img,
+      quantity,
+    });
+    setEditProductForm(true);
+  };
+  const closeEditForm = () => {
+    setEditProductForm(false);
+  };
   const closeProductForm = () => {
     setProductForm(false);
   };
@@ -31,7 +71,7 @@ const Products = () => {
     axios
       .post("http://localhost:8080/clientActions/v1/getProducts", {
         from: 0,
-        to: 5,
+        to: 10,
       })
       .then((res) => {
         setProductsData(res.data.products);
@@ -59,17 +99,25 @@ const Products = () => {
                   desc={product.productDescription}
                   img={product.productImages}
                   categorie={product.productCategorie}
-                  mark={product.productName}
+                  mark={product.productMark}
                   oldPrice={product.productOldPrice}
                   newPrice={product.productCurrentPrice}
                   quantity={product.productQuantities}
                   action={toggleMsg}
                   updateProductData={updateProductData}
+                  openEditForm={openEditForm}
                 />
               );
             })}
           </div>
         </div>
+        {editProductForm && (
+          <EditProduct
+            closeEditForm={closeEditForm}
+            getProductsData={getProductsData}
+            productData={productData}
+          />
+        )}
         <div className="addUser" onClick={() => setProductForm(true)}>
           +
         </div>
