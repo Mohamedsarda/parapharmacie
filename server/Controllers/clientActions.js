@@ -100,6 +100,7 @@ const getProducts = (req, res) => {
 };
 
 const getCategories = (req, res) => {
+  console.log("here");
   db.query(
     "SELECT * FROM products_categories ",
 
@@ -122,8 +123,7 @@ const getCategories = (req, res) => {
   );
 };
 const getMarks = (req, res) => {
-  const { from, to } = req.body;
-  db.query(`SELECT * FROM marks LIMIT ?, ?`, [from, to], (err, result) => {
+  db.query(`SELECT * FROM marks`, (err, result) => {
     if (err)
       return res.status(200).send({
         actionState: false,
