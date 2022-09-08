@@ -1,7 +1,7 @@
 @use "../../variables" as v;
 .sideBar {
   border-right: 1px solid rgb(230, 230, 230);
-  max-height: 100vh;
+  height: 100vh;
   background-color: #fff;
   .top {
     height: 50px;

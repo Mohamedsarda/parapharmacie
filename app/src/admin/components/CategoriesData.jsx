@@ -30,6 +30,13 @@ const CategoriesData = () => {
   const updateData = (catName, catId) => {
     setCategorieData([...categorieData, { categorieName: catName, id: catId }]);
   };
+  const updataSingleCategorie = (name, id) => {
+    setCategorieData(
+      categorieData.map((p) => {
+        return p.id === id ? { ...p, id: p.id, categorieName: name } : p;
+      })
+    );
+  };
   const hideDeleteMsg = () => {
     setDeleteMsg(false);
   };
@@ -123,7 +130,7 @@ const CategoriesData = () => {
         <UpdateCategorie
           currentCateId={currentCateId}
           currentCateName={currentCateName}
-          updateData={updateData}
+          updataSingleCategorie={updataSingleCategorie}
           closeUpdateCategorieContainer={closeUpdateCategorieContainer}
         />
       )}

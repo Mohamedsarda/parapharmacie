@@ -7,6 +7,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.datatable {
+  margin: 10px;
+}
 .addUser {
   position: absolute;
   bottom: 20px;

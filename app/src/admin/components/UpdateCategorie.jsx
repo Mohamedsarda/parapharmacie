@@ -7,7 +7,7 @@ const UpdateCategorie = ({
   closeUpdateCategorieContainer,
   currentCateName,
   currentCateId,
-  updateData,
+  updataSingleCategorie,
 }) => {
   const [newCateName, setNewCateName] = useState("");
   const handleUpdate = () => {
@@ -18,7 +18,7 @@ const UpdateCategorie = ({
           newCateName,
         })
         .then((res) => {
-          // updateData(newCateName, currentCateId);
+          updataSingleCategorie(newCateName, currentCateId);
           closeUpdateCategorieContainer();
           toast.success(res.data.desc);
         });
