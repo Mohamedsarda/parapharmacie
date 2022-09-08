@@ -2,28 +2,6 @@ const db = require("../Database/db.js");
 const path = require("path");
 const fs = require("fs");
 
-const getCategories = (req, res) => {
-  db.query(
-    "SELECT * FROM products_categories ",
-
-    (err, result) => {
-      if (err)
-        return res.status(200).send({
-          actionState: false,
-          desc: `Something went wrong. Database error`,
-          categories: [],
-        });
-      return res.status(200).send({
-        actionState: true,
-        desc:
-          result.length > 0
-            ? `Categories fetched successfully`
-            : `There is no categories in the database`,
-        categories: result,
-      });
-    }
-  );
-};
 const addCategorie = (req, res) => {
   const { categorieName } = req.body;
   db.query("CALL addCategorie(?)", [categorieName], (err, result) => {
@@ -86,22 +64,6 @@ const editCategorie = (req, res) => {
       });
     }
   );
-};
-
-const getMarks = (req, res) => {
-  const { from, to } = req.body;
-  db.query(`SELECT * FROM marks LIMIT ?, ?`, [from, to], (err, result) => {
-    if (err)
-      return res.status(200).send({
-        actionState: false,
-        desc: `Something went wrong. Database error`,
-      });
-    return res.status(200).send({
-      actionState: true,
-      desc: `Marks fetched successfully`,
-      marks: result,
-    });
-  });
 };
 
 const addMark = (req, res) => {
@@ -174,23 +136,6 @@ const editMark = (req, res) => {
       });
     }
   );
-};
-
-const getProducts = (req, res) => {
-  const { from, to } = req.body;
-  db.query("SELECT * FROM products LIMIT ?, ?", [from, to], (err, result) => {
-    if (err)
-      return res.status(200).send({
-        actionState: false,
-        desc: "Somthing went wrong. Database error",
-        products: [],
-      });
-    return res.status(200).send({
-      actionState: true,
-      desc: `Products fetched successfully`,
-      products: result,
-    });
-  });
 };
 
 const addProduct = async (req, res) => {
@@ -438,16 +383,13 @@ const removeImageFromServer = (img, pathToFolder) => {
 };
 
 module.exports = {
-  getCategories,
   addCategorie,
   deleteCategorie,
   editCategorie,
   addMark,
   deleteMark,
-  getMarks,
   editMark,
   addProduct,
   deleteProduct,
   editProduct,
-  getProducts,
 };

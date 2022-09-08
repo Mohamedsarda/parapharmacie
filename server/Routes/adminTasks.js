@@ -14,41 +14,35 @@ const {
   addProduct,
   deleteProduct,
   editProduct,
-  getMarks,
-  getProducts,
 } = require("../Controllers/adminTasks.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
 const AdminTasksRoute = express.Router();
 // Selecting categories from database
-AdminTasksRoute.post("/getCategories", getCategories);
+
 // Adding a categorie to database
-AdminTasksRoute.post("/addCategorie", addCategorie);
+AdminTasksRoute.post("/addCategorie", isAdminAuthenticated, addCategorie);
 // Removing a categorie from database
-AdminTasksRoute.post("/deleteCategorie", deleteCategorie);
+AdminTasksRoute.post("/deleteCategorie", isAdminAuthenticated, deleteCategorie);
 // Editing a categorie in the database
-AdminTasksRoute.post("/editCategorie", editCategorie);
+AdminTasksRoute.post("/editCategorie", isAdminAuthenticated, editCategorie);
 // Adding a client in the database
-AdminTasksRoute.post("/clientSignUp", isAdminAuthenticated, clientSignUp);
+AdminTasksRoute.post("/clientSignUp", clientSignUp);
 
-// Select marks from database
-AdminTasksRoute.post("/getMarks", getMarks);
 // Adding a mark in the database
-AdminTasksRoute.post("/addMark", addMark);
+AdminTasksRoute.post("/addMark", isAdminAuthenticated, addMark);
 // Removing a mark from database
-AdminTasksRoute.post("/deleteMark", deleteMark);
+AdminTasksRoute.post("/deleteMark", isAdminAuthenticated, deleteMark);
 // Editing a mark in the database
-AdminTasksRoute.post("/editMark", editMark);
+AdminTasksRoute.post("/editMark", isAdminAuthenticated, editMark);
 
-// Select products from database
-AdminTasksRoute.post("/getProducts", getProducts);
 // Addint a product to database
-AdminTasksRoute.post("/addProduct", addProduct);
+AdminTasksRoute.post("/addProduct", isAdminAuthenticated, addProduct);
 
 // Removing a product from database
-AdminTasksRoute.post("/deleteProduct", deleteProduct);
+AdminTasksRoute.post("/deleteProduct", isAdminAuthenticated, deleteProduct);
 
 // Editing a product in database
-AdminTasksRoute.post("/editProduct", editProduct);
+AdminTasksRoute.post("/editProduct", isAdminAuthenticated, editProduct);
 
 module.exports = AdminTasksRoute;
