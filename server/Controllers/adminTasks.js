@@ -118,9 +118,11 @@ const addMark = (req, res) => {
         desc: `Mark wasn't added. Something went wrong`,
       });
     else if (result[0][0].Response === 1)
-      return res
-        .status(200)
-        .send({ actionState: true, desc: `Mark has been added..` });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Mark has been added..`,
+        insertedId: result[0][0].insertedId,
+      });
   });
 };
 
