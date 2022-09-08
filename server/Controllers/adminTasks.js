@@ -99,7 +99,7 @@ const getMarks = (req, res) => {
     return res.status(200).send({
       actionState: true,
       desc: `Marks fetched successfully`,
-      marks: [],
+      marks: result,
     });
   });
 };
