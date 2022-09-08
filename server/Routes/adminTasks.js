@@ -13,6 +13,8 @@ const {
   editMark,
   addProduct,
   deleteProduct,
+  editProduct,
+  getMarks,
 } = require("../Controllers/adminTasks.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
@@ -28,6 +30,8 @@ AdminTasksRoute.post("/editCategorie", editCategorie);
 // Adding a client in the database
 AdminTasksRoute.post("/clientSignUp", isAdminAuthenticated, clientSignUp);
 
+// Select marks from database
+AdminTasksRoute.post("/getMarks", getMarks);
 // Adding a mark in the database
 AdminTasksRoute.post("/addMark", addMark);
 // Removing a mark from database
@@ -40,5 +44,8 @@ AdminTasksRoute.post("/addProduct", addProduct);
 
 // Removing a product from database
 AdminTasksRoute.post("/deleteProduct", deleteProduct);
+
+// Editing a product in database
+AdminTasksRoute.post("/editProduct", editProduct);
 
 module.exports = AdminTasksRoute;
