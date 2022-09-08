@@ -1,7 +1,7 @@
 const db = require("../Database/db.js");
 const path = require("path");
 const fs = require("fs");
-const { resolve } = require("path");
+
 const getCategories = (req, res) => {
   db.query(
     "SELECT * FROM products_categories ",
@@ -176,6 +176,23 @@ const editMark = (req, res) => {
   );
 };
 
+const getProducts = (req, res) => {
+  const { from, to } = req.body;
+  db.query("SELECT * FROM products LIMIT ?, ?", [from, to], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: "Somthing went wrong. Database error",
+        products: [],
+      });
+    return res.status(200).send({
+      actionState: true,
+      desc: `Products fetched successfully`,
+      products: result,
+    });
+  });
+};
+
 const addProduct = async (req, res) => {
   // console.log(req.files.file.name);
   const {
@@ -281,19 +298,33 @@ const editProduct = async (req, res) => {
         uploadImag.imageName,
         req.body
       );
-      if (editProd.actionState) {
-        return res
-          .status(200)
-          .send({ actionState: true, desc: `Categorie updated successfully` });
+      if (!editProd.actionState) {
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
       }
-      console.log(editProd);
+      return res
+        .status(200)
+        .send({ actionState: true, desc: `Product updated successfully` });
     }
 
     // await editProductWithImage(req.files.file, req.body);
-  } else
+  } else {
+    const editProd = await editProductWithoutImage(req.body);
+    if (!editProd.actionState) {
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    }
     return res
       .status(200)
-      .send({ actionState: false, desc: `There is no image to upload.` });
+      .send({ actionState: true, desc: `Product updated successfully` });
+  }
+  // return res
+  //   .status(200)
+  //   .send({ actionState: false, desc: `There is no image to upload.` });
 
   // console.log(req.files);
 };
@@ -339,6 +370,48 @@ const editProductWithImage = async (imgName, infos) => {
   });
 };
 
+const editProductWithoutImage = (async = (infos) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `
+      UPDATE products SET 
+      productName = ?,
+      productDescription = ?,
+      productOldPrice = ?,
+      productCurrentPrice = ?,
+      productMark = ?,
+      productCategorie = ?,
+      productQuantities = ?
+      WHERE productId = ?
+    `,
+      [
+        infos.productName,
+        infos.productDescription,
+        infos.productOldPrice,
+        infos.productCurrentPrice,
+        infos.productMark,
+        infos.productCategorie,
+        infos.productQuantitie,
+        infos.productId,
+      ],
+      (err, result) => {
+        if (err)
+          return reject({
+            actionState: false,
+            desc: `Something went wrong. Database error`,
+          });
+        resolve({
+          actionState: result.affectedRows === 0 ? false : true,
+          desc:
+            result.affectedRows === 0
+              ? `Product to update wasn't found`
+              : `Product updated successfully`,
+        });
+      }
+    );
+  });
+});
+
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);
   const imageName = Date.now();
@@ -371,9 +444,10 @@ module.exports = {
   editCategorie,
   addMark,
   deleteMark,
+  getMarks,
   editMark,
   addProduct,
   deleteProduct,
   editProduct,
-  getMarks,
+  getProducts,
 };
