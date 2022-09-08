@@ -13,6 +13,7 @@ const Marques = ({ signOut }) => {
   const [marksData, setMarksData] = useState([]);
   const [deleteMarkName, setDeleteMarkName] = useState("");
   const [updateMarkName, setUpdateMarkName] = useState("");
+  const [updateMarkId, setUpdateMarkId] = useState("");
   const [addMarkState, setAddMarkState] = useState(false);
   const [editMarkState, setEditMarkState] = useState(false);
   const [deleteMsgContainer, setDeleteMsgContainer] = useState(false);
@@ -29,9 +30,18 @@ const Marques = ({ signOut }) => {
 
   //////////////////////////////////
 
-  const handleUpdateMark = (markName) => {
+  const handleUpdateMark = (markName, id) => {
     setUpdateMarkName(markName);
+    setUpdateMarkId(id);
     setEditMarkState(true);
+  };
+
+  const updataSingleMark = (name, id) => {
+    setMarksData(
+      marksData.map((p) => {
+        return p.id === id ? { ...p, id: p.id, markName: name } : p;
+      })
+    );
   };
 
   const updateMark = (newMarkName) => {
@@ -42,9 +52,7 @@ const Marques = ({ signOut }) => {
       })
       .then((res) => {
         if (res.data.actionState === true) {
-          // setMarksData(
-          //   marksData.filter((mark) => mark.markName !== deleteMarkName)
-          // );
+          updataSingleMark(newMarkName, updateMarkId);
           toast.success(res.data.desc);
           setEditMarkState(false);
         } else {
@@ -134,7 +142,9 @@ const Marques = ({ signOut }) => {
             </div>
             <div
               className="updateButton"
-              onClick={() => handleUpdateMark(params.row.markName)}
+              onClick={() =>
+                handleUpdateMark(params.row.markName, params.row.id)
+              }
             >
               Update
             </div>
@@ -181,6 +191,7 @@ const Marques = ({ signOut }) => {
           <EditMark
             hideEditMarkContainer={hideEditMarkContainer}
             updateMark={updateMark}
+            updateMarkName={updateMarkName}
           />
         )}
       </div>

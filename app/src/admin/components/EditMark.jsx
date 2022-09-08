@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
-const EditMark = ({ hideEditMarkContainer, updateMark }) => {
+const EditMark = ({ hideEditMarkContainer, updateMark, updateMarkName }) => {
   const [markName, setMarkName] = useState("");
   return (
     <div className="categorieInput">
@@ -11,6 +11,7 @@ const EditMark = ({ hideEditMarkContainer, updateMark }) => {
         <input
           type="text"
           value={markName}
+          placeholder={updateMarkName}
           onChange={(e) => setMarkName(e.target.value)}
         />
         <button
