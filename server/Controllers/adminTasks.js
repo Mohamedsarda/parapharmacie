@@ -139,7 +139,7 @@ const editMark = (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  // console.log(req.files.file.name);
+  // console.log(req.files);
   const {
     productName,
     productDescription,

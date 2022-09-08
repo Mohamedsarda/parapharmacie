@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import "./scss/addProductForm.scss";
@@ -7,13 +7,15 @@ import { toast } from "react-toastify";
 
 const AddProductForm = ({ closeProductForm, getProductsData }) => {
   const [file, setFile] = useState("");
+  const [marks, setMarks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
     productName: "",
     productOldPrice: "",
     productCurrentPrice: "",
     productDescription: "",
-    productMark: "Zabi",
-    productCategorie: "salah",
+    productMark: "",
+    productCategorie: "",
     productQuantitie: 2,
   });
 
@@ -23,6 +25,29 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
       [event.target.name]: event.target.value,
     });
   };
+  const getMarks = () => {
+    axios.get("http://localhost:8080/clientActions/v1/getMarks").then((res) => {
+      if (res.data.actionState === true) {
+        setMarks(res.data.marks);
+        console.log(marks);
+      }
+    });
+  };
+  const getCategories = () => {
+    axios
+      .get("http://localhost:8080/clientActions/v1/getCategories")
+      .then((res) => {
+        if (res.data.actionState === true) {
+          setCategories(res.data.categories);
+          console.log(categories);
+        }
+      });
+  };
+
+  useEffect(() => {
+    getMarks();
+    getCategories();
+  }, []);
 
   const handleAddProduct = (e) => {
     e.preventDefault();
@@ -92,6 +117,27 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
               // onChange={handleChange}
               style={{ display: "none" }}
             />
+          </div>
+          <div className="row">
+            <label>Select A Caegorie</label>
+            <select name="productCategorie" id="" onChange={handleChange}>
+              <option value="0">S</option>
+              {categories.map((categorie) => {
+                return (
+                  <option value={categorie.categorieName}>
+                    {categorie.categorieName}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="row">
+            <label>Select A Mark</label>
+            <select name="productMark" id="" onChange={handleChange}>
+              {marks.map((mark) => {
+                return <option value={mark.markName}>{mark.markName}</option>;
+              })}
+            </select>
           </div>
           <div className="row">
             <label>Description</label>
