@@ -98,6 +98,49 @@ const getProducts = (req, res) => {
     return res.status(200).send({ actionState: true, products: result });
   });
 };
-//fuck
 
-module.exports = { clientSignUp, selectCities, getProducts };
+const getCategories = (req, res) => {
+  db.query(
+    "SELECT * FROM products_categories ",
+
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          categories: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc:
+          result.length > 0
+            ? `Categories fetched successfully`
+            : `There is no categories in the database`,
+        categories: result,
+      });
+    }
+  );
+};
+const getMarks = (req, res) => {
+  const { from, to } = req.body;
+  db.query(`SELECT * FROM marks LIMIT ?, ?`, [from, to], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    return res.status(200).send({
+      actionState: true,
+      desc: `Marks fetched successfully`,
+      marks: result,
+    });
+  });
+};
+
+module.exports = {
+  clientSignUp,
+  selectCities,
+  getProducts,
+  getCategories,
+  getMarks,
+};

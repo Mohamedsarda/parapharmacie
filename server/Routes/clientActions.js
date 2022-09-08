@@ -4,6 +4,8 @@ const {
   clientSignUp,
   selectCities,
   getProducts,
+  getCategories,
+  getMarks,
 } = require("../Controllers/clientActions.js");
 const {
   isClientNotAuthenticated,
@@ -17,6 +19,8 @@ ClientActionsRoute.post(
 );
 
 ClientActionsRoute.get("/getCities", selectCities);
+ClientActionsRoute.get("/getMarks", getMarks);
+ClientActionsRoute.get("/getCategories", getCategories);
 
 ClientActionsRoute.post("/getProducts", getProducts);
 
