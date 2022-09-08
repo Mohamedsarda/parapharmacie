@@ -5,10 +5,15 @@ import SideBar from "../components/Sidebar";
 import UserForm from "../components/UserForm";
 import UpdateUserForm from "../components/UpdateUserForm";
 import UsersDataGrid from "../components/UsersDataGrid";
+import Loading from "../components/loading";
 
 const Users = ({ signOut }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [userForm, setUserForm] = useState(false);
   const [updateUserForm, setUpdateUserForm] = useState(false);
+  const closeLoading = () => {
+    setIsLoading(true);
+  };
   const closeUserForm = () => {
     setUserForm(false);
   };
@@ -20,18 +25,29 @@ const Users = ({ signOut }) => {
   };
   return (
     <div className="users">
-      <SideBar signOut={signOut} />
-      <div className="usersContainer">
-        <NavBar />
-        <UsersDataGrid openUpdateUserForm={openUpdateUserForm} />
-        <div className="addUser" onClick={() => setUserForm(true)}>
-          +
-        </div>
-        {userForm && <UserForm closeUserForm={closeUserForm} />}
-        {updateUserForm && (
-          <UpdateUserForm closeUpdateUserForm={closeUpdateUserForm} />
-        )}
-      </div>
+      {!isLoading ? (
+        <>
+          <SideBar signOut={signOut} />
+          <div className="usersContainer">
+            <NavBar />
+            <UsersDataGrid openUpdateUserForm={openUpdateUserForm} />
+            <div className="addUser" onClick={() => setUserForm(true)}>
+              +
+            </div>
+            {userForm && (
+              <UserForm
+                closeLoading={closeLoading}
+                closeUserForm={closeUserForm}
+              />
+            )}
+            {updateUserForm && (
+              <UpdateUserForm closeUpdateUserForm={closeUpdateUserForm} />
+            )}
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

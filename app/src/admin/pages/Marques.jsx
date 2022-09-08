@@ -8,8 +8,10 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Loading from "../components/loading";
 
 const Marques = ({ signOut }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [marksData, setMarksData] = useState([]);
   const [deleteMarkName, setDeleteMarkName] = useState("");
   const [updateMarkName, setUpdateMarkName] = useState("");
@@ -150,46 +152,52 @@ const Marques = ({ signOut }) => {
   ];
   return (
     <div className="categories">
-      <SideBar signOut={signOut} />
-      <div className="categotiesContainer">
-        <NavBar />
-        <div className="datatable">
-          <Box sx={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={marksData}
-              columns={columns.concat(actionColumn)}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              experimentalFeatures={{ newEditingApi: true }}
-            />
-          </Box>
-          {deleteMsgContainer && (
-            <DeleteMsg
-              title="Êtes-vous sûr de vouloir supprimer cet marque"
-              subTitle=""
-              action="deleteMark"
-              handleDeleteMark={handleDeleteMark}
-              hideDeleteMsg={hideDeleteMsgContainer}
-            />
-          )}
-        </div>
-        <div className="addUser" onClick={() => setAddMarkState(true)}>
-          +
-        </div>
-        {addMarkState && (
-          <AddMarks
-            hideAddMarkContainer={hideAddMarkContainer}
-            handleAddMark={handleAddMark}
-          />
-        )}
-        {editMarkState && (
-          <EditMark
-            hideEditMarkContainer={hideEditMarkContainer}
-            updateMark={updateMark}
-            updateMarkName={updateMarkName}
-          />
-        )}
-      </div>
+      {isLoading ? (
+        <>
+          <SideBar signOut={signOut} />
+          <div className="categotiesContainer">
+            <NavBar />
+            <div className="datatable">
+              <Box sx={{ height: 400, width: "100%" }}>
+                <DataGrid
+                  rows={marksData}
+                  columns={columns.concat(actionColumn)}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              </Box>
+              {deleteMsgContainer && (
+                <DeleteMsg
+                  title="Êtes-vous sûr de vouloir supprimer cet marque"
+                  subTitle=""
+                  action="deleteMark"
+                  handleDeleteMark={handleDeleteMark}
+                  hideDeleteMsg={hideDeleteMsgContainer}
+                />
+              )}
+            </div>
+            <div className="addUser" onClick={() => setAddMarkState(true)}>
+              +
+            </div>
+            {addMarkState && (
+              <AddMarks
+                hideAddMarkContainer={hideAddMarkContainer}
+                handleAddMark={handleAddMark}
+              />
+            )}
+            {editMarkState && (
+              <EditMark
+                hideEditMarkContainer={hideEditMarkContainer}
+                updateMark={updateMark}
+                updateMarkName={updateMarkName}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

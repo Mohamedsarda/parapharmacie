@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const UserForm = ({ closeUserForm }) => {
+const UserForm = ({ closeUserForm, closeLoading }) => {
   const [cities, setCities] = useState([]);
   const [client, setClient] = useState({
     clientName: "",

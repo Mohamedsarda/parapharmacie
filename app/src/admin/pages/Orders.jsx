@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../components/Navbar";
 import SideBar from "../components/Sidebar";
+import Loading from "../components/loading";
 
 const Marques = ({ signOut }) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <div className="categories">
-      <SideBar signOut={signOut} />
-      <div className="categotiesContainer">
-        <NavBar />
-      </div>
+      {isLoading ? (
+        <>
+          <SideBar signOut={signOut} />
+          <div className="categotiesContainer">
+            <NavBar />
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };
