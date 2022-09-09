@@ -7,10 +7,10 @@ const NavBar = () => {
   return (
     <div className="navBar">
       <div className="left">
-        <div className="search">
+        {/* <div className="search">
           <input type="search" placeholder="Search..." />
           <SearchIcon />
-        </div>
+        </div> */}
       </div>
       <div className="right">
         <div className="items">

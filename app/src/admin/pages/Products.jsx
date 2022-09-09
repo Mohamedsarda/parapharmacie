@@ -132,7 +132,7 @@ const Products = () => {
                 closeProductForm={closeProductForm}
               />
             )}
-          </div>{" "}
+          </div>
         </>
       ) : (
         <Loading />

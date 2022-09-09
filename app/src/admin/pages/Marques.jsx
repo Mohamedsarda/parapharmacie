@@ -47,6 +47,7 @@ const Marques = ({ signOut }) => {
   };
 
   const updateMark = (newMarkName) => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/editMark", {
         markCurrentName: updateMarkName,
@@ -57,6 +58,7 @@ const Marques = ({ signOut }) => {
           updataSingleMark(newMarkName, updateMarkId);
           toast.success(res.data.desc);
           setEditMarkState(false);
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -67,23 +69,32 @@ const Marques = ({ signOut }) => {
     setDeleteMsgContainer(true);
   };
   const handleDeleteMark = () => {
-    axios
-      .post("http://localhost:8080/adminTask/v1/deleteMark", {
-        markName: deleteMarkName,
-      })
-      .then((res) => {
-        if (res.data.actionState === true) {
-          setMarksData(
-            marksData.filter((mark) => mark.markName !== deleteMarkName)
-          );
-          toast.success(res.data.desc);
-          setDeleteMsgContainer(false);
-        } else {
-          toast.error(res.data.desc);
-        }
-      });
+    setIsLoading(false);
+    if (deleteMarkName) {
+      axios
+        .post("http://localhost:8080/adminTask/v1/deleteMark", {
+          markName: deleteMarkName,
+        })
+        .then((res) => {
+          if (res.data.actionState === true) {
+            setDeleteMarkName("");
+            setMarksData(
+              marksData.filter((mark) => mark.markName !== deleteMarkName)
+            );
+            toast.success(res.data.desc);
+            setDeleteMsgContainer(false);
+            setIsLoading(true);
+          } else {
+            toast.error(res.data.desc);
+            setIsLoading(true);
+          }
+        });
+    } else {
+      toast.error("erreur veuillez réessayer");
+    }
   };
   const handleAddMark = (markName) => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/addMark", {
         markName,
@@ -96,6 +107,7 @@ const Marques = ({ signOut }) => {
           ]);
           toast.success(res.data.desc);
           setAddMarkState(false);
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -105,6 +117,7 @@ const Marques = ({ signOut }) => {
     axios.get("http://localhost:8080/clientActions/v1/getMarks").then((res) => {
       if (res.data.actionState === true) {
         setMarksData(res.data.marks);
+        setIsLoading(true);
       } else {
         toast.error(res.data.desc);
       }

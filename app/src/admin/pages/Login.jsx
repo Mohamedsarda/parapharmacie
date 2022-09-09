@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/loading";
 
 const Login = ({ signIn }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const naviagte = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminAuthentication/v1/signIn", {
         adminEmail: email,
@@ -21,13 +22,16 @@ const Login = ({ signIn }) => {
         console.log(response);
         if (response.data.actionState === false)
           toast.error(response.data.desc);
+        setIsLoading(true);
         if (response.data.actionState === true) {
+          setIsLoading(true);
           toast.success(response.data.desc);
           signIn();
           naviagte("/admin");
         }
       })
       .catch((error) => {
+        setIsLoading(true);
         toast.error(error.data.desc);
       });
   };

@@ -3,6 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const EditMark = ({ hideEditMarkContainer, updateMark, updateMarkName }) => {
   const [markName, setMarkName] = useState("");
+
   return (
     <div className="categorieInput">
       <div className="content">

@@ -47,6 +47,7 @@ const CategoriesData = ({ closeLoading }) => {
     setCategorieName(name);
   };
   const deleteCat = () => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/deleteCategorie", {
         categorieName,
@@ -58,6 +59,7 @@ const CategoriesData = ({ closeLoading }) => {
           setCategorieData(
             categorieData.filter((cat) => cat.categorieName !== categorieName)
           );
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -70,7 +72,6 @@ const CategoriesData = ({ closeLoading }) => {
         .then((res) => {
           setCategorieData(res.data.categories);
           setIsLoading(true);
-          toast.loading("hiiiiiiii");
         });
     };
 
