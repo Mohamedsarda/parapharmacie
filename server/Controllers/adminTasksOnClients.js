@@ -83,4 +83,55 @@ const deleteClient = (req, res) => {
     });
   });
 };
-module.exports = { getClients, searchForClient, deleteClient };
+
+const editClient = (req, res) => {
+  const {
+    clientId,
+    clientName,
+    clientLastName,
+    clientEmail,
+    clientPhone,
+    clientCity,
+    clientAdress,
+  } = req.body;
+  db.query(
+    `UPDATE clients SET
+  clientName = ?,
+  clientLastName = ?,
+  clientEmail = ?,
+  clientPhone = ?,
+  clientCity = ?,
+  clientAdress = ?
+  WHERE clientId = ?
+  `,
+    [
+      clientName,
+      clientLastName,
+      clientEmail,
+      clientPhone,
+      clientCity,
+      clientAdress,
+      clientId,
+    ],
+    (err, result) => {
+      console.log(err);
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      return res.status(200).send({
+        actionState: result.affectedRows === 0 ? false : true,
+        desc:
+          result.affectedRows === 0
+            ? "No row affected"
+            : "Client updated successfully",
+      });
+    }
+  );
+};
+
+const getOrders = (req, res) => {
+  // const {from, to}
+};
+module.exports = { getClients, searchForClient, deleteClient, editClient };

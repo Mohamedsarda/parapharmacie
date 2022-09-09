@@ -19,6 +19,7 @@ const {
   getClients,
   searchForClient,
   deleteClient,
+  editClient,
 } = require("../Controllers/adminTasksOnClients.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
@@ -54,4 +55,6 @@ AdminTasksRoute.post("/getClients", isAdminAuthenticated, getClients);
 AdminTasksRoute.post("/findClient", isAdminAuthenticated, searchForClient);
 // Delete client from database
 AdminTasksRoute.post("/deleteClient", deleteClient);
+// edit client in the database
+AdminTasksRoute.post("/editClient", editClient);
 module.exports = AdminTasksRoute;
