@@ -5,7 +5,7 @@ const getClients = (req, res) => {
   db.query(
     `
         SELECT 
-        clientId,
+        id,
         clientName,
         clientLastName,
         clientEmail,
@@ -38,7 +38,7 @@ const searchForClient = (req, res) => {
 
   db.query(
     ` SELECT 
-        clientId,
+        id,
         clientName,
         clientLastName,
         clientEmail,
@@ -74,9 +74,13 @@ const deleteClient = (req, res) => {
         desc: `Something went wrong. Database error`,
       });
     console.log(result);
-    return res
-      .status(200)
-      .send({ actionState: false, desc: "Client has gone 😥" });
+    return res.status(200).send({
+      actionState:
+        result[0][0].Result === "This client still have some pending orders"
+          ? false
+          : true,
+      desc: "Client has gone 😥",
+    });
   });
 };
 module.exports = { getClients, searchForClient, deleteClient };
