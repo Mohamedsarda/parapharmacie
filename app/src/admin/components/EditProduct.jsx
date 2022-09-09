@@ -20,6 +20,7 @@ const EditProduct = ({ getProductsData, closeEditForm, productData }) => {
     productMark: productData.mark,
     productCategorie: productData.categorie,
     productQuantitie: productData.quantity,
+    oldImg: productData.img,
   });
   const handleChange = (event) => {
     setProduct({
@@ -62,6 +63,7 @@ const EditProduct = ({ getProductsData, closeEditForm, productData }) => {
     formData.append("productCategorie", product.productCategorie);
     formData.append("productQuantitie", product.productQuantitie);
     formData.append("file", file);
+    formData.append("oldImg", productData.img);
     setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/editProduct", formData)
