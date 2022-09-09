@@ -64,4 +64,19 @@ const searchForClient = (req, res) => {
     }
   );
 };
-module.exports = { getClients, searchForClient };
+
+const deleteClient = (req, res) => {
+  const { clientId } = req.body;
+  db.query(`CALL deleteClient(?)`, [clientId], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    console.log(result);
+    return res
+      .status(200)
+      .send({ actionState: false, desc: "Client has gone 😥" });
+  });
+};
+module.exports = { getClients, searchForClient, deleteClient };
