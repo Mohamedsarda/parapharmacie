@@ -5,6 +5,7 @@ import "./scss/productsData.scss";
 // import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import DeleteMsg from "./DeleteMsg";
 
 const ProductsData = ({
   action,
@@ -20,11 +21,24 @@ const ProductsData = ({
   updateProductData,
   openEditForm,
 }) => {
-  const deleteProduct = (img, id) => {
+  const [deleteMsg, setDeleteMsg] = useState(false);
+  const [productId, setproductId] = useState("");
+  const [productImage, setproductImage] = useState("");
+  const hideDeleteMsg = () => {
+    setDeleteMsg(false);
+  };
+
+  const getIdImgproduct = (img, id) => {
+    setDeleteMsg(true);
+    setproductId(id);
+    setproductImage(img);
+  };
+
+  const deleteProduct = () => {
     axios
       .post("http://localhost:8080/adminTask/v1/deleteProduct", {
-        productId: id,
-        productImage: img,
+        productId,
+        productImage,
       })
       .then((res) => {
         if (res.data.actionState === true) {
@@ -57,7 +71,7 @@ const ProductsData = ({
           <i
             title="Delete This Product"
             className="fa-solid fa-trash icon delete"
-            onClick={() => deleteProduct(img, id)}
+            onClick={() => getIdImgproduct(img, id)}
           ></i>
           <i
             title="Edit This Product"
@@ -78,6 +92,15 @@ const ProductsData = ({
           ></i>
         </div>
       </div>
+      {deleteMsg && (
+        <DeleteMsg
+          title="Êtes-vous sûr de vouloir supprimer ce produit"
+          subTitle=""
+          action="deleteProduit"
+          deleteProduct={deleteProduct}
+          hideDeleteMsg={hideDeleteMsg}
+        />
+      )}
     </div>
   );
 };

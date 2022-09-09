@@ -127,7 +127,7 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
           <div className="row">
             <label>Select A Caegorie</label>
             <select name="productCategorie" id="" onChange={handleChange}>
-              <option value="0">S</option>
+              <option value="">Select a Caegorie</option>
               {categories.map((categorie) => {
                 return (
                   <option value={categorie.categorieName}>
@@ -140,6 +140,7 @@ const AddProductForm = ({ closeProductForm, getProductsData }) => {
           <div className="row">
             <label>Select A Mark</label>
             <select name="productMark" id="" onChange={handleChange}>
+              <option value="">select a mark</option>
               {marks.map((mark) => {
                 return <option value={mark.markName}>{mark.markName}</option>;
               })}

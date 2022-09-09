@@ -3,10 +3,17 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import "./scss/usersDataGird.scss";
 import DeleteMsg from "./DeleteMsg";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Loading from "../components/loading";
 
-const UsersDataGrid = ({ openUpdateUserForm }) => {
+const UsersDataGrid = ({ openUpdateUserForm, usersData, getUsers }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteMsgContainer, setDeleteMsgContainer] = useState(false);
   const [userId, setUserId] = useState("");
+
+  //////////////////
+
   const hideDeleteMsg = () => {
     setDeleteMsgContainer(false);
   };
@@ -15,32 +22,48 @@ const UsersDataGrid = ({ openUpdateUserForm }) => {
     setDeleteMsgContainer(true);
   };
   const deleteUser = () => {
-    console.log(userId);
+    setIsLoading(false);
+    axios
+      .post("http://localhost:8080/adminTask/v1/deleteClient", {
+        clientId: userId,
+      })
+      .then((res) => {
+        if (res.data.actionState) {
+          setIsLoading(true);
+          getUsers();
+          hideDeleteMsg();
+          toast.success(res.data.desc);
+        } else {
+          setIsLoading(true);
+          toast.error(res.data.desc);
+        }
+      });
   };
 
+  /////////////////////
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
-      field: "firstName",
+      field: "clientName",
       headerName: "Prénom",
-      width: 150,
+      width: 100,
       editable: true,
     },
     {
-      field: "lastName",
+      field: "clientLastName",
       headerName: "Nom",
-      width: 150,
+      width: 100,
       editable: true,
     },
     {
-      field: "email",
+      field: "clientEmail",
       headerName: "Email",
       type: "number",
       width: 200,
       editable: true,
     },
     {
-      field: "age",
+      field: "clientPhone",
       headerName: "Numéro de téléphone",
       type: "number",
       width: 200,
@@ -48,71 +71,6 @@ const UsersDataGrid = ({ openUpdateUserForm }) => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      lastName: "Snow",
-      firstName: "Jon",
-      age: 35,
-      email: "email@gmail.com",
-    },
-    {
-      id: 2,
-      lastName: "Lannister",
-      firstName: "Cersei",
-      age: 42,
-      email: "email@gmail.com",
-    },
-    {
-      id: 3,
-      lastName: "Lannister",
-      firstName: "Jaime",
-      age: 45,
-      email: "email@gmail.com",
-    },
-    {
-      id: 4,
-      lastName: "Stark",
-      firstName: "Arya",
-      age: 16,
-      email: "email@gmail.com",
-    },
-    {
-      id: 5,
-      lastName: "Targaryen",
-      firstName: "Daenerys",
-      age: null,
-      email: "email@gmail.com",
-    },
-    {
-      id: 6,
-      lastName: "Melisandre",
-      firstName: null,
-      age: 150,
-      email: "email@gmail.com",
-    },
-    {
-      id: 7,
-      lastName: "Clifford",
-      firstName: "Ferrara",
-      age: 44,
-      email: "email@gmail.com",
-    },
-    {
-      id: 8,
-      lastName: "Frances",
-      firstName: "Rossini",
-      age: 36,
-      email: "email@gmail.com",
-    },
-    {
-      id: 9,
-      lastName: "Roxie",
-      firstName: "Harvey",
-      age: 65,
-      email: "email@gmail.com",
-    },
-  ];
   const actionColumn = [
     {
       field: "action",
@@ -146,15 +104,21 @@ const UsersDataGrid = ({ openUpdateUserForm }) => {
   ];
   return (
     <div className="datatable">
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns.concat(actionColumn)}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          experimentalFeatures={{ newEditingApi: true }}
-        />
-      </Box>
+      {isLoading ? (
+        <>
+          <Box sx={{ height: 400, width: "100%" }}>
+            <DataGrid
+              rows={usersData}
+              columns={columns.concat(actionColumn)}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </Box>
+        </>
+      ) : (
+        <Loading />
+      )}
       {deleteMsgContainer && (
         <DeleteMsg
           title="Êtes-vous sûr de vouloir supprimer cet utilisateur"

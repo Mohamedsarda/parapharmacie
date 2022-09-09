@@ -42,7 +42,7 @@ const Widget = ({ type }) => {
       break;
     case "earnings":
       data = {
-        title: "EARNINGS",
+        title: "TOTAL EARNINGS",
         isMoney: true,
         link: "View net earnings",
         icon: (
@@ -55,7 +55,7 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
-        title: "BALANCE",
+        title: "EARNINGS THIS WEEK",
         isMoney: true,
         link: "View details",
         icon: (
@@ -80,7 +80,7 @@ const Widget = ({ type }) => {
       </div>
       <div className="right">
         <div className="percentage positive">
-          20 % <KeyboardArrowUpOutlinedIcon />
+          <KeyboardArrowUpOutlinedIcon />
         </div>
         {data.icon}
       </div>

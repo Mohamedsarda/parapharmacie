@@ -6,10 +6,11 @@ import CategorieForm from "./CategorieForm";
 import DeleteMsg from "./DeleteMsg";
 import { toast } from "react-toastify";
 import UpdateCategorie from "./UpdateCategorie";
+import Loading from "../components/loading";
 
 import "./scss/usersDataGird.scss";
 
-const CategoriesData = () => {
+const CategoriesData = ({ closeLoading }) => {
   const [deleteMsg, setDeleteMsg] = useState(false);
   const [updateCategorieContainer, setUpdateCategorieContainer] =
     useState(false);
@@ -17,6 +18,7 @@ const CategoriesData = () => {
   const [currentCateName, setCurrentCateName] = useState("");
   const [currentCateId, setCurrentCateId] = useState("");
   const [categorieData, setCategorieData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const closeUpdateCategorieContainer = () => {
     setUpdateCategorieContainer(false);
@@ -45,6 +47,7 @@ const CategoriesData = () => {
     setCategorieName(name);
   };
   const deleteCat = () => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/deleteCategorie", {
         categorieName,
@@ -56,6 +59,7 @@ const CategoriesData = () => {
           setCategorieData(
             categorieData.filter((cat) => cat.categorieName !== categorieName)
           );
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -67,6 +71,7 @@ const CategoriesData = () => {
         .get("http://localhost:8080/clientActions/v1/getCategories")
         .then((res) => {
           setCategorieData(res.data.categories);
+          setIsLoading(true);
         });
     };
 
@@ -116,15 +121,21 @@ const CategoriesData = () => {
 
   return (
     <div className="datatable">
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={categorieData}
-          columns={columns.concat(actionColumn)}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          experimentalFeatures={{ newEditingApi: true }}
-        />
-      </Box>
+      {isLoading ? (
+        <>
+          <Box sx={{ height: 400, width: "100%" }}>
+            <DataGrid
+              rows={categorieData}
+              columns={columns.concat(actionColumn)}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </Box>
+        </>
+      ) : (
+        <Loading />
+      )}
 
       {updateCategorieContainer && (
         <UpdateCategorie

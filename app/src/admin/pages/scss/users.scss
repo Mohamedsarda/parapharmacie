@@ -6,6 +6,24 @@
   .usersContainer {
     height: 100vh;
     overflow: auto;
+    .search {
+      display: flex;
+      align-items: center;
+      padding: 5px 20px;
+      margin: 10px;
+      border: 0.5px solid rgb(230, 230, 230);
+      border-radius: 10px;
+      width: fit-content;
+      input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        width: fit-content;
+        &::placeholder {
+          font-size: 12px;
+        }
+      }
+    }
   }
   .deleteContainer {
     position: absolute;

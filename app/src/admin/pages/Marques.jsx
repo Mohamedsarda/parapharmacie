@@ -8,8 +8,10 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Loading from "../components/loading";
 
 const Marques = ({ signOut }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [marksData, setMarksData] = useState([]);
   const [deleteMarkName, setDeleteMarkName] = useState("");
   const [updateMarkName, setUpdateMarkName] = useState("");
@@ -45,6 +47,7 @@ const Marques = ({ signOut }) => {
   };
 
   const updateMark = (newMarkName) => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/editMark", {
         markCurrentName: updateMarkName,
@@ -55,6 +58,7 @@ const Marques = ({ signOut }) => {
           updataSingleMark(newMarkName, updateMarkId);
           toast.success(res.data.desc);
           setEditMarkState(false);
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -65,23 +69,32 @@ const Marques = ({ signOut }) => {
     setDeleteMsgContainer(true);
   };
   const handleDeleteMark = () => {
-    axios
-      .post("http://localhost:8080/adminTask/v1/deleteMark", {
-        markName: deleteMarkName,
-      })
-      .then((res) => {
-        if (res.data.actionState === true) {
-          setMarksData(
-            marksData.filter((mark) => mark.markName !== deleteMarkName)
-          );
-          toast.success(res.data.desc);
-          setDeleteMsgContainer(false);
-        } else {
-          toast.error(res.data.desc);
-        }
-      });
+    setIsLoading(false);
+    if (deleteMarkName) {
+      axios
+        .post("http://localhost:8080/adminTask/v1/deleteMark", {
+          markName: deleteMarkName,
+        })
+        .then((res) => {
+          if (res.data.actionState === true) {
+            setDeleteMarkName("");
+            setMarksData(
+              marksData.filter((mark) => mark.markName !== deleteMarkName)
+            );
+            toast.success(res.data.desc);
+            setDeleteMsgContainer(false);
+            setIsLoading(true);
+          } else {
+            toast.error(res.data.desc);
+            setIsLoading(true);
+          }
+        });
+    } else {
+      toast.error("erreur veuillez réessayer");
+    }
   };
   const handleAddMark = (markName) => {
+    setIsLoading(false);
     axios
       .post("http://localhost:8080/adminTask/v1/addMark", {
         markName,
@@ -94,6 +107,7 @@ const Marques = ({ signOut }) => {
           ]);
           toast.success(res.data.desc);
           setAddMarkState(false);
+          setIsLoading(true);
         } else {
           toast.error(res.data.desc);
         }
@@ -103,6 +117,7 @@ const Marques = ({ signOut }) => {
     axios.get("http://localhost:8080/clientActions/v1/getMarks").then((res) => {
       if (res.data.actionState === true) {
         setMarksData(res.data.marks);
+        setIsLoading(true);
       } else {
         toast.error(res.data.desc);
       }
@@ -150,46 +165,52 @@ const Marques = ({ signOut }) => {
   ];
   return (
     <div className="categories">
-      <SideBar signOut={signOut} />
-      <div className="categotiesContainer">
-        <NavBar />
-        <div className="datatable">
-          <Box sx={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={marksData}
-              columns={columns.concat(actionColumn)}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              experimentalFeatures={{ newEditingApi: true }}
-            />
-          </Box>
-          {deleteMsgContainer && (
-            <DeleteMsg
-              title="Êtes-vous sûr de vouloir supprimer cet marque"
-              subTitle=""
-              action="deleteMark"
-              handleDeleteMark={handleDeleteMark}
-              hideDeleteMsg={hideDeleteMsgContainer}
-            />
-          )}
-        </div>
-        <div className="addUser" onClick={() => setAddMarkState(true)}>
-          +
-        </div>
-        {addMarkState && (
-          <AddMarks
-            hideAddMarkContainer={hideAddMarkContainer}
-            handleAddMark={handleAddMark}
-          />
-        )}
-        {editMarkState && (
-          <EditMark
-            hideEditMarkContainer={hideEditMarkContainer}
-            updateMark={updateMark}
-            updateMarkName={updateMarkName}
-          />
-        )}
-      </div>
+      {isLoading ? (
+        <>
+          <SideBar signOut={signOut} />
+          <div className="categotiesContainer">
+            <NavBar />
+            <div className="datatable">
+              <Box sx={{ height: 400, width: "100%" }}>
+                <DataGrid
+                  rows={marksData}
+                  columns={columns.concat(actionColumn)}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              </Box>
+              {deleteMsgContainer && (
+                <DeleteMsg
+                  title="Êtes-vous sûr de vouloir supprimer cet marque"
+                  subTitle=""
+                  action="deleteMark"
+                  handleDeleteMark={handleDeleteMark}
+                  hideDeleteMsg={hideDeleteMsgContainer}
+                />
+              )}
+            </div>
+            <div className="addUser" onClick={() => setAddMarkState(true)}>
+              +
+            </div>
+            {addMarkState && (
+              <AddMarks
+                hideAddMarkContainer={hideAddMarkContainer}
+                handleAddMark={handleAddMark}
+              />
+            )}
+            {editMarkState && (
+              <EditMark
+                hideEditMarkContainer={hideEditMarkContainer}
+                updateMark={updateMark}
+                updateMarkName={updateMarkName}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

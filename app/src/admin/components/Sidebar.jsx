@@ -10,12 +10,14 @@ import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ signOut }) => {
-  const [currentNav, setCurrentNav] = useState(
-    window.location.href.split("/")[4]
-  );
+  const [currentNav, setCurrentNav] = useState();
   useEffect(() => {
-    setCurrentNav(window.location.href.split("/")[4]);
-  }, [window.location.href.split("/")[4]]);
+    if (!window.location.href.split("/")[4]) {
+      setCurrentNav(window.location.href.split("/")[3]);
+    } else {
+      setCurrentNav(window.location.href.split("/")[4]);
+    }
+  }, []);
 
   return (
     <div className="sideBar">
@@ -31,11 +33,11 @@ const Sidebar = ({ signOut }) => {
           <Link to="/admin" style={{ textDecoration: "none" }}>
             <li
               onClick={() => {
-                setCurrentNav(window.location.href.split("/")[4]);
+                setCurrentNav(window.location.href.split("/")[3]);
               }}
               style={{
                 backgroundColor:
-                  currentNav === "" ? "rgba(153, 153, 153, 0.274)" : "",
+                  currentNav === "admin" ? "rgba(153, 153, 153, 0.274)" : "",
               }}
             >
               <DashboardIcon className="icon" />
