@@ -24,14 +24,44 @@ const getClients = (req, res) => {
           desc: `Something went wrong. Database error`,
           clients: [],
         });
-      return res
-        .status(200)
-        .send({
-          actionState: true,
-          desc: "Clients list fetched successfully",
-          clients: result,
-        });
+      return res.status(200).send({
+        actionState: true,
+        desc: "Clients list fetched successfully",
+        clients: result,
+      });
     }
   );
 };
-module.exports = { getClients };
+
+const searchForClient = (req, res) => {
+  const { searchedClient } = req.body;
+
+  db.query(
+    ` SELECT 
+        clientId,
+        clientName,
+        clientLastName,
+        clientEmail,
+        clientPhone,
+        clientCity,
+        clientAdress,
+        clientPhoto
+        FROM clients 
+        WHERE clientLastName LIKE ? LIMIT 0, 10`,
+    ["%" + searchedClient + "%"],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          clients: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Client list fetched successfully`,
+        clients: result,
+      });
+    }
+  );
+};
+module.exports = { getClients, searchForClient };
