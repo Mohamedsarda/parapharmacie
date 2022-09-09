@@ -15,7 +15,10 @@ const {
   deleteProduct,
   editProduct,
 } = require("../Controllers/adminTasks.js");
-const { getClients } = require("../Controllers/adminTasksOnClients.js");
+const {
+  getClients,
+  searchForClient,
+} = require("../Controllers/adminTasksOnClients.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
 const AdminTasksRoute = express.Router();
@@ -46,5 +49,6 @@ AdminTasksRoute.post("/editProduct", isAdminAuthenticated, editProduct);
 
 // Selecting clients from database
 AdminTasksRoute.post("/getClients", isAdminNotAuthenticated, getClients);
-
+// Search for a client in database
+AdminTasksRoute.post("/findClient", isAdminNotAuthenticated, searchForClient);
 module.exports = AdminTasksRoute;
