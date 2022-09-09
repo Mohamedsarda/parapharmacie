@@ -236,7 +236,16 @@ const deleteProduct = (req, res) => {
 };
 
 const editProduct = async (req, res) => {
+  console.log(req.body);
   if (req.files) {
+    try {
+      removeImageFromServer(req.body.oldImg, "./images/");
+    } catch (e) {
+      return res.status(200).send({
+        actionState: false,
+        desc: `Failed to delete the old image`,
+      });
+    }
     let uploadImag = await uploadImageToServer(req.files.file, "./images");
     if (uploadImag.uploaded === false)
       return res
