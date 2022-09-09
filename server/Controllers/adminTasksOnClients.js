@@ -73,13 +73,13 @@ const deleteClient = (req, res) => {
         actionState: false,
         desc: `Something went wrong. Database error`,
       });
-    console.log(result);
+
     return res.status(200).send({
       actionState:
         result[0][0].Result === "This client still have some pending orders"
           ? false
           : true,
-      desc: "Client has gone 😥",
+      desc: result[0][0].Result,
     });
   });
 };
