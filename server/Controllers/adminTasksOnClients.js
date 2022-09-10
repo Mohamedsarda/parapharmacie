@@ -157,4 +157,10 @@ WHERE orders.orderState = ? LIMIT ?, ?`,
     }
   );
 };
-module.exports = { getClients, searchForClient, deleteClient, editClient };
+module.exports = {
+  getClients,
+  searchForClient,
+  deleteClient,
+  editClient,
+  getOrders,
+};
