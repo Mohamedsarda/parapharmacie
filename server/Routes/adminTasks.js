@@ -16,6 +16,7 @@ const {
   editProduct,
   getOrders,
   editOrder,
+  deleteOrder,
 } = require("../Controllers/adminTasks.js");
 const {
   getClients,
@@ -64,5 +65,7 @@ AdminTasksRoute.post("/editClient", editClient);
 AdminTasksRoute.post("/getOrders", getOrders);
 // Edit an order in database
 AdminTasksRoute.post("/editOrder", editOrder);
+// Delete order in database
+AdminTasksRoute.post("/deleteOrder", deleteOrder);
 
 module.exports = AdminTasksRoute;
