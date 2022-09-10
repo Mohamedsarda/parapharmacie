@@ -371,6 +371,32 @@ const editProductWithoutImage = async (infos) => {
   });
 };
 
+const getOrders = (req, res) => {
+  const { from, to, type } = req.body;
+  db.query(
+    `SELECT orders.orderId, orders.orderClient,orders.orderState,orders.orderTime, clients.clientName, clients.clientLastName ,
+products.productName, products.productCurrentPrice, products.productImages
+FROM orders 
+INNER JOIN clients ON orders.orderClient = clients.id
+INNER JOIN products ON orders.orderProduct = products.productId
+WHERE orders.orderState = ? LIMIT ?, ?`,
+    [type, from, to],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: "Something went wrong. Database error",
+          orders: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: "Orders fetched successfully",
+        orders: result,
+      });
+    }
+  );
+};
+
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);
   const imageName = Date.now();
@@ -406,4 +432,5 @@ module.exports = {
   addProduct,
   deleteProduct,
   editProduct,
+  getOrders,
 };
