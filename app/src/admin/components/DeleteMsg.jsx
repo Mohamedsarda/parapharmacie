@@ -5,6 +5,7 @@ const DeleteMsg = ({
   deleteUser,
   deleteCat,
   handleDeleteMark,
+  deleteOrder,
   deleteProduct,
   hideDeleteMsg,
   action,
@@ -20,6 +21,8 @@ const DeleteMsg = ({
       handleDeleteMark();
     } else if (action === "deleteProduit") {
       deleteProduct();
+    } else if (action === "deleteOrder") {
+      deleteOrder();
     }
   };
   return (
