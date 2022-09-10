@@ -397,6 +397,28 @@ WHERE orders.orderState = ? LIMIT ?, ?`,
   );
 };
 
+const editOrder = (req, res) => {
+  const { id, type } = req.body;
+  db.query(
+    `UPDATE orders SET orderState = ? WHERE orderId = ?`,
+    [type, id],
+    (err, result) => {
+      if (err)
+        return res
+          .status(200)
+          .send({ actionState: false, desc: `Something went wrong` });
+      return res.status(200).send({
+        actionState: result.affectedRows === 0 ? false : true,
+        desc:
+          result.affectedRows === 0
+            ? "No row affected"
+            : "Order updated successfully",
+      });
+    }
+  );
+};
+
+// img upload funtions
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);
   const imageName = Date.now();
@@ -433,4 +455,5 @@ module.exports = {
   deleteProduct,
   editProduct,
   getOrders,
+  editOrder,
 };
