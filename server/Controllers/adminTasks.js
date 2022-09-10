@@ -418,6 +418,22 @@ const editOrder = (req, res) => {
   );
 };
 
+const deleteOrder = (req, res) => {
+  const { id } = req.body;
+  db.query(`CALL deleteOrder(?)`, [id], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+    return res.status(200).send({
+      actionState:
+        result[0][0].Response === "This order is still pending" ? false : true,
+      desc: result[0][0].Response,
+    });
+  });
+};
+
 // img upload funtions
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);
@@ -456,4 +472,5 @@ module.exports = {
   editProduct,
   getOrders,
   editOrder,
+  deleteOrder,
 };
