@@ -14,13 +14,13 @@ const {
   addProduct,
   deleteProduct,
   editProduct,
+  getOrders,
 } = require("../Controllers/adminTasks.js");
 const {
   getClients,
   searchForClient,
   deleteClient,
   editClient,
-  getOrders,
 } = require("../Controllers/adminTasksOnClients.js");
 const { clientSignUp } = require("../Controllers/clientActions.js");
 
