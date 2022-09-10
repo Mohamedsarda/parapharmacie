@@ -106,7 +106,7 @@ const UserForm = ({ closeUserForm, closeLoading, getUsers }) => {
             </div>
             <div className="row">
               <label>Adress</label>
-              <input type="text" name="clientAdress" />
+              <input type="text" onChange={handleChange} name="clientAdress" />
             </div>
             <button>Create</button>
           </form>

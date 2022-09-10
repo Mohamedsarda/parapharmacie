@@ -16,6 +16,7 @@ const Users = ({ signOut }) => {
   const [updateUserForm, setUpdateUserForm] = useState(false);
   const [usersData, setUsersData] = useState([]);
   const [searchedClientL, setSearchedClient] = useState("");
+  const [updateUser, setUpdateUser] = useState({});
 
   const closeLoading = () => {
     setIsLoading(true);
@@ -25,6 +26,7 @@ const Users = ({ signOut }) => {
   };
   const openUpdateUserForm = (id) => {
     setUpdateUserForm(true);
+    setUpdateUser(usersData.find((user) => user.id === id));
   };
   const closeUpdateUserForm = () => {
     setUpdateUserForm(false);
@@ -97,7 +99,11 @@ const Users = ({ signOut }) => {
               />
             )}
             {updateUserForm && (
-              <UpdateUserForm closeUpdateUserForm={closeUpdateUserForm} />
+              <UpdateUserForm
+                getUsers={getUsers}
+                updateUser={updateUser}
+                closeUpdateUserForm={closeUpdateUserForm}
+              />
             )}
           </div>
         </>

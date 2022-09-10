@@ -13,6 +13,10 @@ const UsersDataGrid = ({ openUpdateUserForm, usersData, getUsers }) => {
   const [userId, setUserId] = useState("");
 
   //////////////////
+  // const openUpdateUserForm = () => {
+  //   setUpdateUserContainer(true);
+  //   setUserInfo();
+  // };
 
   const hideDeleteMsg = () => {
     setDeleteMsgContainer(false);
@@ -39,7 +43,6 @@ const UsersDataGrid = ({ openUpdateUserForm, usersData, getUsers }) => {
         }
       });
   };
-
   /////////////////////
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -79,12 +82,6 @@ const UsersDataGrid = ({ openUpdateUserForm, usersData, getUsers }) => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            {/* <Link
-                to={`/${type}/${params.row.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div className="viewButton">View</div>
-              </Link> */}
             <div
               className="deleteButton"
               onClick={() => getUserId(params.row.id)}
@@ -93,7 +90,7 @@ const UsersDataGrid = ({ openUpdateUserForm, usersData, getUsers }) => {
             </div>
             <div
               className="updateButton"
-              // onClick={() => openUpdateUserForm(params.row.id)}
+              onClick={() => openUpdateUserForm(params.row.id)}
             >
               Éditer
             </div>

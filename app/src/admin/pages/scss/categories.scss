@@ -6,3 +6,32 @@
     overflow-y: auto;
   }
 }
+.typeContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  button {
+    padding: 10px 30px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .Canceled {
+    color: crimson;
+    background-color: rgba(220, 20, 60, 0.267);
+  }
+  .Approved {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.247);
+  }
+  .Pending {
+    color: goldenrod;
+    background-color: rgba(189, 189, 3, 0.103);
+  }
+  .Delivered {
+    color: blue;
+    background-color: rgba(0, 0, 255, 0.253);
+  }
+}

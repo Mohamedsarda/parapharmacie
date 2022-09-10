@@ -101,7 +101,7 @@ const editClient = (req, res) => {
   clientLastName = ?,
   clientEmail = ?,
   clientPhone = ?,
-  clientCity = (SELECT cityId FROM cities WHERE cityName = ?),
+  clientCity = ?,
   clientAdress = ?
   WHERE id = ?
   `,
@@ -115,7 +115,7 @@ const editClient = (req, res) => {
       clientId,
     ],
     (err, result) => {
-      console.log(err);
+      // console.log(result);
       if (err)
         return res.status(200).send({
           actionState: false,
