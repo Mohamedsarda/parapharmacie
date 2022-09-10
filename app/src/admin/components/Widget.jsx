@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./scss/widget.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Widget = ({ type }) => {
+  const [number, setNumber] = useState({});
   let data;
   switch (type) {
     case "user":
       data = {
-        title: "USERS",
+        title: "CLIENT",
         isMoney: false,
-        link: "See all users",
+        link: "Voir tous les utilisateurs",
+        a: "users",
+        num: number.Clients,
         icon: (
           <PersonOutlineOutlinedIcon
             className="icon"
@@ -26,9 +31,11 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
-        title: "ORDERS",
+        title: "COMMANDES",
         isMoney: false,
-        link: "View all orders",
+        link: "Voir toutes les commandes",
+        a: "orders",
+        num: number.Orders,
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -42,9 +49,11 @@ const Widget = ({ type }) => {
       break;
     case "earnings":
       data = {
-        title: "TOTAL EARNINGS",
+        title: "TOTAL DES GAINS",
         isMoney: true,
-        link: "View net earnings",
+        link: "Bénéfice net",
+        a: "",
+        num: number.Earning,
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -55,11 +64,13 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
-        title: "EARNINGS THIS WEEK",
-        isMoney: true,
-        link: "View details",
+        title: "TOTAL DES PRODUITS",
+        isMoney: false,
+        link: "voir tous les produits",
+        a: "products",
+        num: number.Products,
         icon: (
-          <AccountBalanceWalletOutlinedIcon
+          <StorefrontIcon
             className="icon"
             style={{ color: "purple", backgroundColor: "rgba(128,0,128,0.2)" }}
           />
@@ -67,16 +78,32 @@ const Widget = ({ type }) => {
       };
       break;
   }
-
+  const getWidgetData = () => {
+    axios
+      .post("http://localhost:8080/adminTask/v1/fetchDashboardData")
+      .then((res) => {
+        setNumber(res.data.widgetsData[0]);
+      });
+  };
+  useEffect(() => {
+    getWidgetData();
+  }, []);
   return (
     <div className="widget">
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"}
-          500
+          {data.num}
+          <span>{data.isMoney && "DH"}</span>
         </span>
-        <span className="link">{data.link}</span>
+        <span className="link">
+          <Link
+            style={{ textDecoration: "none", color: "#111" }}
+            to={`/admin/${data.a}`}
+          >
+            {data.link}
+          </Link>
+        </span>
       </div>
       <div className="right">
         <div className="percentage positive">

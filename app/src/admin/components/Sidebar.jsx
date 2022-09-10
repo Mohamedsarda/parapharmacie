@@ -56,7 +56,7 @@ const Sidebar = ({ signOut }) => {
               }}
             >
               <PersonOutlineOutlinedIcon className="icon" />
-              <span>Utilisateurs</span>
+              <span>Client</span>
             </li>
           </Link>
           <Link to="/admin/products" style={{ textDecoration: "none" }}>

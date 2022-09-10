@@ -17,6 +17,7 @@ const {
   getOrders,
   editOrder,
   deleteOrder,
+  fetchDashboardData,
 } = require("../Controllers/adminTasks.js");
 const {
   getClients,
@@ -30,7 +31,11 @@ const AdminTasksRoute = express.Router();
 // Selecting categories from database
 
 // Fetching dahsboard data
-AdminTasksRoute.post("/fetchDashboardData", isAdminAuthenticated, addCategorie);
+AdminTasksRoute.post(
+  "/fetchDashboardData",
+  isAdminAuthenticated,
+  fetchDashboardData
+);
 
 // Adding a categorie to database
 AdminTasksRoute.post("/addCategorie", isAdminAuthenticated, addCategorie);
