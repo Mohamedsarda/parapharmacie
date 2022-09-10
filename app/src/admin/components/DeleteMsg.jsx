@@ -13,17 +13,38 @@ const DeleteMsg = ({
   subTitle,
 }) => {
   const handleDelete = () => {
-    if (action === "deleteCategorie") {
-      deleteCat();
-    } else if (action === "deleteUser") {
-      deleteUser();
-    } else if (action === "deleteMark") {
-      handleDeleteMark();
-    } else if (action === "deleteProduit") {
-      deleteProduct();
-    } else if (action === "deleteOrder") {
-      deleteOrder();
+    switch (action) {
+      case "deleteCategorie":
+        deleteCat();
+        break;
+      case "deleteUser":
+        deleteUser();
+        break;
+      case "deleteMark":
+        handleDeleteMark();
+        break;
+      case "deleteProduit":
+        deleteProduct();
+        break;
+      case "deleteOrder":
+        deleteOrder();
+        break;
+      default:
+        console.log(`No case matched`);
     }
+    // if (action === "deleteCategorie") {
+    //   deleteCat();
+    // } else if (action === "deleteUser") {
+    //   deleteUser();
+    // } else if (action === "deleteMark") {
+    //   handleDeleteMark();
+    // } else if (action === "deleteProduit") {
+    //   deleteProduct();
+    // } else if (action === "deleteOrder") {
+    //   deleteOrder();
+    // } else if (action === "deleteOrderFromDash") {
+    //   deleteOrderDash();
+    // }
   };
   return (
     <div className="deleteContainer">

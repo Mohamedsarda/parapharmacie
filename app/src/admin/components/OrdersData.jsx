@@ -134,7 +134,7 @@ const List = ({ type }) => {
                   </TableCell>
                   <TableCell className="tableCell">{row.orderTime}</TableCell>
                   <TableCell className="tableCell">
-                    {row.productCurrentPrice}
+                    {row.productCurrentPrice} DH
                   </TableCell>
                   <TableCell className={`tableCell center`}>
                     <span
