@@ -29,6 +29,9 @@ const { clientSignUp } = require("../Controllers/clientActions.js");
 const AdminTasksRoute = express.Router();
 // Selecting categories from database
 
+// Fetching dahsboard data
+AdminTasksRoute.post("/fetchDashboardData", isAdminAuthenticated, addCategorie);
+
 // Adding a categorie to database
 AdminTasksRoute.post("/addCategorie", isAdminAuthenticated, addCategorie);
 // Removing a categorie from database
