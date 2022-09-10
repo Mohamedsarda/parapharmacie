@@ -434,6 +434,28 @@ const deleteOrder = (req, res) => {
   });
 };
 
+const fetchDashboardData = (req, res) => {
+  db.query(
+    `SELECT COUNT(*) AS 'Clients', 
+    (SELECT COUNT(*) FROM orders) AS 'Orders', 
+    (SELECT SUM(productCurrentPrice) FROM products) AS 'Earning',
+    (SELECT COUNT(*) FROM products) AS 'Products' FROM clients`,
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Dabase error`,
+          widgetsData: {},
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Widgets fetched successfully`,
+        widgetsData: {},
+      });
+    }
+  );
+};
+
 // img upload funtions
 const uploadImageToServer = (image, pathToFolder) => {
   console.log(image.name);
@@ -473,4 +495,5 @@ module.exports = {
   getOrders,
   editOrder,
   deleteOrder,
+  fetchDashboardData,
 };
