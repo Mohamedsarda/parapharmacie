@@ -57,15 +57,15 @@ AdminTasksRoute.post("/getClients", isAdminAuthenticated, getClients);
 // Search for a client in database
 AdminTasksRoute.post("/findClient", isAdminAuthenticated, searchForClient);
 // Delete client from database
-AdminTasksRoute.post("/deleteClient", deleteClient);
+AdminTasksRoute.post("/deleteClient", isAdminAuthenticated, deleteClient);
 // edit client in the database
-AdminTasksRoute.post("/editClient", editClient);
+AdminTasksRoute.post("/editClient", isAdminAuthenticated, editClient);
 
 // Select orders from database
-AdminTasksRoute.post("/getOrders", getOrders);
+AdminTasksRoute.post("/getOrders", isAdminAuthenticated, getOrders);
 // Edit an order in database
-AdminTasksRoute.post("/editOrder", editOrder);
+AdminTasksRoute.post("/editOrder", isAdminAuthenticated, editOrder);
 // Delete order in database
-AdminTasksRoute.post("/deleteOrder", deleteOrder);
+AdminTasksRoute.post("/deleteOrder", isAdminAuthenticated, deleteOrder);
 
 module.exports = AdminTasksRoute;
