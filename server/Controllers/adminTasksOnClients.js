@@ -85,6 +85,7 @@ const deleteClient = (req, res) => {
 };
 
 const editClient = (req, res) => {
+  //fixed
   const {
     clientId,
     clientName,
@@ -100,7 +101,7 @@ const editClient = (req, res) => {
   clientLastName = ?,
   clientEmail = ?,
   clientPhone = ?,
-  clientCity = (SELECT cityId WHERE cityName = ?),
+  clientCity = (SELECT cityId FROM cities WHERE cityName = ?),
   clientAdress = ?
   WHERE id = ?
   `,
