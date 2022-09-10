@@ -85,6 +85,7 @@ const deleteClient = (req, res) => {
 };
 
 const editClient = (req, res) => {
+  //fixed
   const {
     clientId,
     clientName,
