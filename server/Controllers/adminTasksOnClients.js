@@ -102,7 +102,7 @@ const editClient = (req, res) => {
   clientPhone = ?,
   clientCity = ?,
   clientAdress = ?
-  WHERE clientId = ?
+  WHERE id = ?
   `,
     [
       clientName,
@@ -132,6 +132,6 @@ const editClient = (req, res) => {
 };
 
 const getOrders = (req, res) => {
-  // const {from, to}
+  // const {from, to, type}
 };
 module.exports = { getClients, searchForClient, deleteClient, editClient };
