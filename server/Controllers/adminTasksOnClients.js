@@ -100,7 +100,7 @@ const editClient = (req, res) => {
   clientLastName = ?,
   clientEmail = ?,
   clientPhone = ?,
-  clientCity = ?,
+  clientCity = (SELECT cityId WHERE cityName = ?),
   clientAdress = ?
   WHERE id = ?
   `,
