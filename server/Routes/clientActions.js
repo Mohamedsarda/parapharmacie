@@ -15,7 +15,7 @@ const {
 
 ClientActionsRoute.post(
   "/clientSignUp",
-  isClientNotAuthenticated,
+
   clientSignUp
 );
 ClientActionsRoute.post(
