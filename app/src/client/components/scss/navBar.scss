@@ -1,0 +1,104 @@
+.Navbar {
+  width: 100%;
+  .TopNavBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    height: 10px;
+    .left {
+      display: flex;
+      align-items: center;
+      > div {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 15px;
+        .icon {
+          color: #888;
+          margin: 0px 10px;
+          font-size: 15px;
+        }
+      }
+    }
+    .right {
+      .icon {
+        cursor: pointer;
+        margin-left: 10px;
+        font-size: 17px;
+      }
+    }
+  }
+  .navbarContent {
+    width: calc(100% - 100px);
+    z-index: 2;
+    height: 10vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 50px;
+    border: 1px solid #999;
+    transition: all 0.2s ease-out;
+
+    &.active {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+      height: 9vh;
+      top: 0px;
+      position: fixed;
+    }
+
+    .logo {
+      letter-spacing: 5px;
+      color: #95a595;
+      cursor: pointer;
+    }
+    .searchBar {
+      border: 1px solid #999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 400px;
+      padding: 10px;
+      border-radius: 10px;
+      input {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 15px;
+      }
+    }
+    .right {
+      .icon {
+        margin-left: 20px;
+        font-size: 30px;
+        color: #555;
+        cursor: pointer;
+      }
+    }
+  }
+  .nav-links {
+    position: relative;
+    margin: 0px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background-color: #99a39a;
+    transition: all 0.4s;
+    li {
+      padding: 10px 30px;
+      margin-left: 10px;
+      color: white;
+      cursor: pointer;
+      &:hover {
+        border-bottom: 1px solid #fff;
+      }
+      &.active {
+        border-bottom: 2px solid #fff;
+      }
+    }
+  }
+}

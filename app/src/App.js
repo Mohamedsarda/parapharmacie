@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import Users from "./admin/pages/Users";
+import ClientHome from "./client/pages/Home";
+import ContactUs from "./client/pages/ContactUs";
+import About from "./client/pages/About";
+import Parapharmacie from "./client/pages/Parapharmacie";
+
+/////////////admin pages///////////////
 import Home from "./admin/pages/Home";
+import Users from "./admin/pages/Users";
 import Products from "./admin/pages/Products";
 import Login from "./admin/pages/Login";
 import Categories from "./admin/pages/Categories";
@@ -39,6 +45,12 @@ function App() {
           <Routes>
             <Route path="admin">
               <Route path="login" element={<Login signIn={signIn} />} />
+            </Route>
+            <Route path="/">
+              <Route index element={<ClientHome />} />
+              <Route path="ContactUs" element={<ContactUs />} />
+              <Route path="About" element={<About />} />
+              <Route path="Parapharmacie" element={<Parapharmacie />} />
             </Route>
           </Routes>
         ) : (
