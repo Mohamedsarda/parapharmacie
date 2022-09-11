@@ -2,6 +2,7 @@ const express = require("express");
 const ClientActionsRoute = express.Router();
 const {
   clientSignUp,
+  clientSignIn,
   selectCities,
   getProducts,
   getCategories,
@@ -16,6 +17,11 @@ ClientActionsRoute.post(
   "/clientSignUp",
   isClientNotAuthenticated,
   clientSignUp
+);
+ClientActionsRoute.post(
+  "/clientSignIn",
+  isClientNotAuthenticated,
+  clientSignIn
 );
 
 ClientActionsRoute.get("/getCities", selectCities);

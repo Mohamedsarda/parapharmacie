@@ -62,6 +62,41 @@ const clientSignUp = async (req, res) => {
   );
 };
 
+const clientSignIn = (req, res) => {
+  const { clientEmail, clientPassword } = req.body;
+  if (!checkEmail(clientEmail))
+    return res
+      .status(200)
+      .send({ actionState: false, desc: `The given email is not valide` });
+
+  db.query(
+    `SELECT id, clientEmail, clientPassword FROM clients WHERE clientEmail = ?`,
+    [clientEmail],
+    async (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      if (result.length === 0)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Email is incorrect`,
+        });
+      if (await bcrypt.compare(clientPassword, result[0].clientPassword)) {
+        req.session.client = result[0].id;
+        return res
+          .status(200)
+          .send({ actionState: true, desc: `Client Signed successfully` });
+      } else {
+        return res
+          .status(200)
+          .send({ actionState: false, desc: `Password is incorrect` });
+      }
+    }
+  );
+};
+
 const checkEmail = (email) => {
   // checking if the given email is a valid email
   const re =
@@ -143,4 +178,5 @@ module.exports = {
   getProducts,
   getCategories,
   getMarks,
+  clientSignIn,
 };
