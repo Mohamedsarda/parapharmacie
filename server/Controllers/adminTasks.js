@@ -91,27 +91,21 @@ const addMark = (req, res) => {
 const deleteMark = (req, res) => {
   const { markName } = req.body;
 
-  db.query(
-    "DELETE FROM marks WHERE markName = ?",
-    [markName],
-    (err, result) => {
-      if (err)
-        return res.status(200).send({
-          actionState: false,
-          desc: "Something went wrong. Database error",
-        });
+  db.query("CALL deleteMark(?)", [markName], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: "Something went wrong. Database error",
+      });
 
-      if (result.affectedRows === 0)
-        return res.status(200).send({
-          actionState: false,
-          desc: "Something went wrong. No row affected",
-        });
-      else if (result.affectedRows > 0)
-        return res
-          .status(200)
-          .send({ actionState: true, desc: `Mark deleted successfully.` });
-    }
-  );
+    return res.status(200).send({
+      actionState:
+        result[0][0].Response === "This mark is linked to some products"
+          ? false
+          : true,
+      desc: result[0][0].Response,
+    });
+  });
 };
 
 const editMark = (req, res) => {
@@ -139,7 +133,6 @@ const editMark = (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  // console.log(req.files);
   const {
     productName,
     productDescription,
@@ -236,7 +229,6 @@ const deleteProduct = (req, res) => {
 };
 
 const editProduct = async (req, res) => {
-  console.log(req.body);
   if (req.files) {
     try {
       removeImageFromServer(req.body.oldImg, "./images/");
@@ -283,12 +275,9 @@ const editProduct = async (req, res) => {
   // return res
   //   .status(200)
   //   .send({ actionState: false, desc: `There is no image to upload.` });
-
-  // console.log(req.files)
 };
 
 const editProductWithImage = async (imgName, infos) => {
-  console.log(infos);
   return new Promise((resolve, reject) => {
     db.query(
       `
@@ -329,7 +318,6 @@ const editProductWithImage = async (imgName, infos) => {
 };
 
 const editProductWithoutImage = async (infos) => {
-  console.log(infos, "whiout");
   return new Promise((resolve, reject) => {
     db.query(
       `
@@ -438,7 +426,7 @@ const fetchDashboardData = (req, res) => {
   db.query(
     `SELECT COUNT(*) AS 'Clients', 
     (SELECT COUNT(*) FROM orders) AS 'Orders', 
-    (SELECT SUM(productCurrentPrice) FROM products) AS 'Earning',
+    (SELECT SUM(orderPrice) FROM orders WHERE orderState = 'pending' OR orderState = 'approved' OR orderState = 'delivered') AS 'Earning',
     (SELECT COUNT(*) FROM products) AS 'Products' FROM clients`,
     (err, result) => {
       if (err)
@@ -458,14 +446,12 @@ const fetchDashboardData = (req, res) => {
 
 // img upload funtions
 const uploadImageToServer = (image, pathToFolder) => {
-  console.log(image.name);
   const imageName = Date.now();
   return new Promise((resolve, reject) => {
     image.mv(
       `${pathToFolder}/${imageName + path.extname(image.name)}`,
       (err) => {
         if (err) {
-          console.log(err);
           reject({ uploaded: false });
         } else {
           resolve({
