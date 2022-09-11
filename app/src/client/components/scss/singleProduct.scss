@@ -1,0 +1,108 @@
+.blur {
+  background-color: rgba(201, 201, 201, 0.47);
+  backdrop-filter: blur(3px);
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  transition: 0.3s;
+
+  .icon {
+    background-color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      transform: scale(0.9);
+    }
+  }
+
+  .productSingle {
+    animation: slide 0.4s;
+    width: 30%;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    border-radius: 0px !important;
+    border: 1px solid #999;
+    padding: 20px;
+    cursor: pointer;
+    img {
+      width: 300px;
+      height: 300px;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      h2 {
+        font-size: 20px;
+        padding: 5px 0px;
+        text-align: center;
+      }
+      ._2-col {
+        display: flex;
+        align-items: center;
+        padding: 10px 0px;
+        &.btns {
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .quantityCount {
+          span {
+            border: 1px solid #999;
+            padding: 5px 10px;
+            user-select: none;
+          }
+        }
+        h5 {
+          color: #333;
+          margin-left: 10px;
+        }
+        .line-through {
+          color: #666;
+          text-decoration: line-through;
+        }
+      }
+      button {
+        display: flex;
+        align-items: center;
+        background-color: #222;
+        border: none;
+        color: white;
+        padding: 10px 50px;
+        margin: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover {
+          background-color: #444;
+        }
+        .icon {
+          font-size: 15px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translate(60%);
+  }
+  to {
+    transform: translate(0px);
+  }
+}

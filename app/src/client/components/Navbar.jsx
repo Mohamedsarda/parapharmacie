@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./scss/navBar.scss";
+
 import TopNavBar from "./TopNavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
