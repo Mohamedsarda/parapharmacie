@@ -3,7 +3,7 @@ import "./scss/singleProduct.scss";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-const ViewProduct = ({ closeSingleProductContainer }) => {
+const ViewProduct = ({ closeSingleProductContainer, handleAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const addToQuantity = () => {
     if (quantity === 5) {
@@ -50,7 +50,7 @@ const ViewProduct = ({ closeSingleProductContainer }) => {
               <span onClick={addToQuantity}>+</span>
             </div>
             <div>
-              <button>
+              <button onClick={handleAddToCart}>
                 <ShoppingCartOutlinedIcon /> AJOUTER AU PANIER
               </button>
             </div>

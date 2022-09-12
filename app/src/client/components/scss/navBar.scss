@@ -1,3 +1,6 @@
+img {
+  user-select: none;
+}
 .Navbar {
   width: 100%;
   .TopNavBar {
@@ -77,11 +80,18 @@
       }
     }
     .right {
+      display: flex;
+      align-items: center;
       .icon {
         margin-left: 20px;
         font-size: 30px;
         color: #555;
         cursor: pointer;
+      }
+      .badge {
+        .icon {
+          font-size: 25px;
+        }
       }
     }
   }

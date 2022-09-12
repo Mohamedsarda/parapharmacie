@@ -21,6 +21,12 @@ const CategorieForm = ({ updateData }) => {
             setInputContainerState(false);
             toast.success(res.data.desc);
             setIsLoading(true);
+            setCategorieName("");
+          } else {
+            setInputContainerState(false);
+            setIsLoading(true);
+            setCategorieName("");
+            toast.error(res.data.desc);
           }
         });
     } else {

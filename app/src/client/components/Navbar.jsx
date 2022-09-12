@@ -4,9 +4,12 @@ import TopNavBar from "./TopNavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -31,7 +34,9 @@ const Navbar = () => {
         </div>
         <div className="right">
           <PersonOutlineIcon className="icon" />
-          <ShoppingCartOutlinedIcon className="icon" />
+          <Badge badgeContent={cartCounter} className="badge" color="success">
+            <ShoppingCartOutlinedIcon className="icon" />
+          </Badge>
         </div>
       </div>
       <ul className="nav-links">

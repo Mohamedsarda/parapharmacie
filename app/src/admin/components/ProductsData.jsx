@@ -44,7 +44,9 @@ const ProductsData = ({
         if (res.data.actionState === true) {
           toast.success(res.data.desc);
           updateProductData(id);
+          setproductId("");
         } else {
+          setproductId("");
           toast.error(res.data.desc);
         }
       });
@@ -59,7 +61,7 @@ const ProductsData = ({
           <div className="_1_col">
             <h4>{categorie}</h4>
             <h5>{mark}</h5>
-            <h5>{quantity}</h5>
+            <h5>Quantity: {quantity}</h5>
           </div>
           <div className="_2_col">
             <h4>{newPrice} DH</h4>

@@ -56,11 +56,13 @@ const CategoriesData = ({ closeLoading }) => {
         if (res.data.actionState === true) {
           toast.success(res.data.desc);
           setDeleteMsg(false);
+          setCategorieName("");
           setCategorieData(
             categorieData.filter((cat) => cat.categorieName !== categorieName)
           );
           setIsLoading(true);
         } else {
+          setCategorieName("");
           toast.error(res.data.desc);
         }
       });

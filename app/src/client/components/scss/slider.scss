@@ -42,11 +42,12 @@
       button {
         display: flex;
         align-items: center;
-        background-color: #222;
+        background-color: #95a595;
         border: none;
         color: white;
-        padding: 5px;
-        margin: 5px;
+        padding: 8px 15px;
+        margin: 10px 5px;
+        border-radius: 10px;
         cursor: pointer;
         .icon {
           font-size: 15px;
