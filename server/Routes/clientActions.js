@@ -7,6 +7,7 @@ const {
   getProducts,
   getCategories,
   getMarks,
+  openLandingPage,
 } = require("../Controllers/clientActions.js");
 const {
   isClientNotAuthenticated,
@@ -27,7 +28,7 @@ ClientActionsRoute.post(
 ClientActionsRoute.get("/getCities", selectCities);
 ClientActionsRoute.get("/getMarks", getMarks);
 ClientActionsRoute.get("/getCategories", getCategories);
-
 ClientActionsRoute.post("/getProducts", getProducts);
+ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
 module.exports = ClientActionsRoute;

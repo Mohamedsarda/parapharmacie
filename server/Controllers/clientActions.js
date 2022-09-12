@@ -135,7 +135,6 @@ const getProducts = (req, res) => {
 };
 
 const getCategories = (req, res) => {
-  console.log("here");
   db.query(
     "SELECT * FROM products_categories ",
 
@@ -172,6 +171,129 @@ const getMarks = (req, res) => {
   });
 };
 
+const openLandingPage = (req, res) => {
+  const {
+    firstCategorie,
+    secondCategorie,
+    thirdCategorie,
+    fourthCategorie,
+    fifthCategorie,
+    sixthCategroie,
+  } = req.body;
+  db.query(
+    `(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0, 5)
+UNION
+(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0,5)
+UNION 
+(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0,5)
+UNION 
+(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0,5)
+UNION 
+(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0,5)
+UNION 
+(SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT 0,5)`,
+    [
+      firstCategorie,
+      secondCategorie,
+      thirdCategorie,
+      fourthCategorie,
+      fifthCategorie,
+      sixthCategroie,
+    ],
+    async (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error. 1`,
+          products: {},
+          categories: [],
+          cart: [],
+        });
+      const categories = await getCategoriesForLandingPage();
+      if (!categories.fetchState)
+        return res.status(200).send({
+          actionState: false,
+          desc: "Something went wrong. Database error 2",
+          products: {},
+          categories: [],
+          cart: [],
+        });
+      if (!req.session.client)
+        return res.status(200).send({
+          actionState: true,
+          desc: `Products and categories fetched successfully`,
+          categories: categories.categories,
+          products: splitLandingPageProducts(result),
+          cart: [],
+        });
+      const cart = await getProductsInTheCard(req.session.client);
+      if (!cart.fetchState)
+        return res.status(200).send({
+          actionState: false,
+          desc: "Something went wrong. Database error 3",
+          products: {},
+          categories: [],
+          cart: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Products and categories fetched successfully`,
+        categories: categories.categories,
+        products: splitLandingPageProducts(result),
+        cart: cart.cartProducts,
+      });
+    }
+  );
+};
+const getCategoriesForLandingPage = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM products_categories LIMIT 0, 20", (err, result) => {
+      if (err)
+        return reject({
+          fetchState: false,
+          desc: `Database error`,
+          categories: [],
+        });
+      return resolve({
+        fetchState: true,
+        desc: `Categories fetched successfully`,
+        categories: result,
+      });
+    });
+  });
+};
+const getProductsInTheCard = (clientId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM orders WHERE orderClient = ? AND orderState = 'cart'`,
+      [clientId],
+      (err, result) => {
+        if (err)
+          return reject({
+            fetchState: false,
+            desc: `Database error 3`,
+            cartProducts: [],
+          });
+        return resolve({
+          fetchState: true,
+          desc: `Cart fetched successfully`,
+          cartProducts: result,
+        });
+      }
+    );
+  });
+};
+const splitLandingPageProducts = (products) => {
+  let productsObj = { firstSlider: [], secondSlider: [] };
+  for (let i = 0; i < products.length / 2; i++) {
+    productsObj.firstSlider.push(products[i]);
+  }
+  for (let i = products.length / 2; i < products.length; i++) {
+    productsObj.secondSlider.push(products[i]);
+  }
+  return productsObj;
+};
+
 module.exports = {
   clientSignUp,
   selectCities,
@@ -179,4 +301,5 @@ module.exports = {
   getCategories,
   getMarks,
   clientSignIn,
+  openLandingPage,
 };
