@@ -1,0 +1,63 @@
+.ClientLogin {
+  position: absolute;
+  background-color: #fff;
+  top: 21vh;
+  right: 50px;
+  width: 300px;
+  //   height: 200px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  animation: slideUp 0.3s;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    .row {
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0px;
+      label {
+        color: #666;
+      }
+      input {
+        outline: none;
+        padding: 5px;
+        // border-radius: 5px;
+        border: none;
+        border-bottom: 1px solid #666;
+      }
+    }
+  }
+  p {
+    border-top: 1px solid #222;
+    padding-top: 10px;
+    text-align: center;
+    color: #444;
+    font-size: 12px;
+  }
+  button {
+    margin: 10px 0px;
+    padding: 7px 30px;
+    background-color: #95a595;
+    border: none;
+    color: white;
+    cursor: pointer;
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}

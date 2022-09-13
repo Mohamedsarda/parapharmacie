@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 07, 2022 at 05:27 PM
+-- Generation Time: Sep 11, 2022 at 04:32 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -45,7 +45,7 @@ CREATE  PROCEDURE `addCategorie` (IN `categorieName_proc` VARCHAR(50))   BEGIN
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addClient` (IN `clientName_proc` VARCHAR(50), IN `clientLastName_proc` VARCHAR(50), IN `clientEmail_proc` VARCHAR(60), IN `clientPhone_proc` VARCHAR(12), IN `clientAdress_proc` VARCHAR(100), IN `clientPassword_proc` TEXT, IN `clientCity_proc` VARCHAR(50))   BEGIN 
+CREATE  PROCEDURE `addClient` (IN `clientName_proc` VARCHAR(50), IN `clientLastName_proc` VARCHAR(50), IN `clientEmail_proc` VARCHAR(60), IN `clientPhone_proc` VARCHAR(12), IN `clientAdress_proc` VARCHAR(100), IN `clientPassword_proc` TEXT, IN `clientCity_proc` VARCHAR(50))   BEGIN 
 	SET @emailCount = (SELECT COUNT(*) FROM clients WHERE clientEmail = clientEmail_proc);
     SET @phoneCount = (SELECT COUNT(*) FROM clients WHERE clientPhone = clientPhone_proc);
     
@@ -82,7 +82,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addClient` (IN `clientName_proc` VA
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addMark` (IN `markName_proc` VARCHAR(50))   BEGIN
+CREATE  PROCEDURE `addMark` (IN `markName_proc` VARCHAR(50))   BEGIN
 	SET @markCount = (SELECT COUNT(*) FROM marks WHERE markName = markName_proc);
     
     IF @markCount > 0 THEN
@@ -92,12 +92,46 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addMark` (IN `markName_proc` VARCHA
     ELSE 
     BEGIN
     	INSERT INTO marks(markName) VALUES(markName_proc);
-        SELECT 1 AS 'Response';
+        SELECT 1 AS 'Response' , (SELECT LAST_INSERT_ID()) AS 'insertedId';
     END;
     END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct` (IN `productId_proc` INT)   BEGIN
+CREATE  PROCEDURE `deleteClient` (IN `clientId_proc` INT)   BEGIN
+	SET @orderCount = (SELECT COUNT(*) FROM orders WHERE orderClient = clientId_proc AND orderState = 'pending');
+    IF @orderCount > 0 THEN
+    	SELECT 'This client still have some pending orders' AS 'Result';
+    ELSEIF @orderCount = 0 THEN
+    BEGIN
+    	DELETE FROM clients WHERE id = clientId_proc;
+        SELECT 'Client has been deleted successfully' AS 'Result';
+    END;
+    END IF;
+END$$
+
+CREATE  PROCEDURE `deleteMark` (IN `markName_proc` VARCHAR(50))   BEGIN
+	SET @linkedProds = (SELECT COUNT(*) FROM products WHERE productMark = markName_proc);
+    IF @linkedProds > 0 THEN
+    	SELECT 'This mark is linked to some products' AS 'Response';
+    ELSEIF @linkedProds = 0 THEN
+    BEGIN
+    	DELETE FROM marks WHERE markName = markName_proc;
+        SELECT 'Mark has been deleted successfully' AS 'Response';
+    END ;
+    END IF ;
+END$$
+
+CREATE  PROCEDURE `deleteOrder` (IN `orderId_proc` INT)   BEGIN
+	SET @orderState = (SELECT orderState FROM orders WHERE orderId = orderId_proc);
+    IF @orderState = 'pending' THEN
+    	SELECT 'This order is still pending' AS 'Response';
+    ELSE 
+    	DELETE FROM orders WHERE orderId = orderId_proc;
+        SELECT 'This order has been deleted' AS 'Response';
+    END IF;
+END$$
+
+CREATE  PROCEDURE `deleteProduct` (IN `productId_proc` INT)   BEGIN
 
 	SET @ordersCount = (SELECT COUNT(*) FROM orders WHERE orderProduct = productId_proc AND orderState = 'pending');
     IF @ordersCount > 0 THEN
@@ -554,7 +588,7 @@ INSERT INTO `cities` (`cityId`, `cityName`) VALUES
 --
 
 CREATE TABLE `clients` (
-  `clientId` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `clientName` varchar(50) NOT NULL,
   `clientLastName` varchar(50) NOT NULL,
   `clientEmail` varchar(60) NOT NULL,
@@ -569,11 +603,14 @@ CREATE TABLE `clients` (
 -- Dumping data for table `clients`
 --
 
-INSERT INTO `clients` (`clientId`, `clientName`, `clientLastName`, `clientEmail`, `clientPhone`, `clientCity`, `clientAdress`, `clientPhoto`, `clientPassword`) VALUES
-(8, 'salah', 'Bahadi', 'salah@gmail.com', '06123', 1, 'amal', NULL, '123'),
-(9, 'aymane', 'hafidi', 'aymane@gmail.com', '0678', 6, 'miftah', NULL, '12547'),
-(10, 'Simo', 'Aboutaleb', 'simoh@gmail.com', '07854', 23, 'Wafa', NULL, '$2b$10$hQ6XOGO2t0Iel4G8PtU9meKTW9W/yJb3uU/jEmchx3whc3m7334u6'),
-(11, 'Simo', 'Aboutaleb', 'simolh@gmail.com', '070854', 23, 'Wafa', NULL, '$2b$10$pPq4/IdU7eFRcOzs5hL95eJGO81n06ST7ki1QQUqHfogbGuBFFlSO');
+INSERT INTO `clients` (`id`, `clientName`, `clientLastName`, `clientEmail`, `clientPhone`, `clientCity`, `clientAdress`, `clientPhoto`, `clientPassword`) VALUES
+(15, 'Salah eddine', 'Last', 'salah@gmail.com', '0652897416', 13, 'Address', NULL, '$2b$10$HkMfOXjDscu6doEOSa3g1.W1pRyt/ShcZv5SIDaZq8oa.UwHrClMW'),
+(16, 'Aymane', 'aymane', 'aymane@gmail.com', '0157678554', 13, 'Address', NULL, '$2b$10$RGO8RtyTLU0U2fQhihHQr.x0ofVL.D3SZjJnsiHX9zEMlUf/BGdUy'),
+(17, 'Simo', 'simo', 'simo@gmail.com', '0654782169', 16, 'Quartier ezouhari', NULL, '$2b$10$DLkESegbRyQSvnLJYo.igu6PmYgH20UzTqhFQvejmlhzQHcg1q2Hm'),
+(18, 'Nissrine', 'nissrine', 'nissrine@gmail.com', '0651479258', 12, 'Quariter el woroud', NULL, '$2b$10$nG9TAnw6GjmCpOhMUEUVleRU0FHsvEEti6ziPbdFPzxb59q8vTX3G'),
+(19, 'Hafssa', 'hafssa', 'hafssa@gmail.com', '0651478924', 14, 'Quartier el manssour', NULL, '$2b$10$1kJJNPGWbPhgnS7tSMHd0eruuomnSN/z9qry8PsTHkN.X6s8c4Np2'),
+(20, 'Najwa', 'najwa', 'najwa@gmail.com', '0514893257', 64, 'Quatier toroke', NULL, '$2b$10$4FY8lCYcvr0BQwHQNrb/LuhjtZKI2xwZKN1M7uvOtcX681JDD2WiO'),
+(21, 'Chaima', 'chaima', 'chaima@gmail.com', '0547921658', 26, 'Quariter el mokhtar', NULL, '$2b$10$SsYJZIHzFvazgSNJjmHCv.n.I2EGETmp85wL49KQEM1RrWnjfrY9i');
 
 -- --------------------------------------------------------
 
@@ -582,15 +619,21 @@ INSERT INTO `clients` (`clientId`, `clientName`, `clientLastName`, `clientEmail`
 --
 
 CREATE TABLE `marks` (
-  `markName` varchar(50) NOT NULL
+  `markName` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `marks`
 --
 
-INSERT INTO `marks` (`markName`) VALUES
-('Zabi');
+INSERT INTO `marks` (`markName`, `id`) VALUES
+('ACM', 5),
+('3 CHÊNES', 6),
+('AVENE', 7),
+('BIODERMA', 8),
+('BIODERMINY', 9),
+('BIONIKE', 10);
 
 -- --------------------------------------------------------
 
@@ -602,9 +645,22 @@ CREATE TABLE `orders` (
   `orderId` int(11) NOT NULL,
   `orderClient` int(11) NOT NULL,
   `orderProduct` int(11) NOT NULL,
-  `orderTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `orderState` enum('approved','pending','delivered','canceled') DEFAULT NULL
+  `orderState` enum('approved','pending','delivered','canceled') DEFAULT NULL,
+  `orderTime` date DEFAULT current_timestamp(),
+  `orderQuantity` int(11) NOT NULL,
+  `orderPrice` double(8,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`orderId`, `orderClient`, `orderProduct`, `orderState`, `orderTime`, `orderQuantity`, `orderPrice`) VALUES
+(11, 21, 28, 'pending', '2022-09-11', 1, 170.000),
+(12, 18, 25, 'pending', '2022-09-11', 2, 126.000),
+(13, 15, 24, 'approved', '2022-09-11', 1, 121.000),
+(14, 16, 24, 'delivered', '2022-09-11', 1, 121.000),
+(15, 17, 28, 'canceled', '2022-09-11', 100, 170.000);
 
 -- --------------------------------------------------------
 
@@ -629,12 +685,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`productId`, `productName`, `productDescription`, `productOldPrice`, `productCurrentPrice`, `productMark`, `productCategorie`, `productImages`, `productQuantities`) VALUES
-(7, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662547999125.jpg', 100),
-(8, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662548288814.jpg', 100),
-(9, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662548300133.jpg', 100),
-(12, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662548331049.jpg', 100),
-(13, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662561065275.jpg', 100),
-(14, 'Firs prod', 'prod desc', 12.500, 7.500, 'Zabi', 'Waa l7wa', '1662561067244.jpg', 100);
+(23, 'LES 3 CHÊNES SÉBACTASE CRÈME 50ML', 'Les problèmes de peau touchent un grand nombre d’adolescents et d’adultes. On les considère comme un mauvais moment à passer, mais cela peut avoir des conséquences non négligeables sur la qualité de vie et le bien-être psychologique des individus atteints. Le stress, la pollution, les déséquilibres hormonaux et certains cosmétiques peuvent modifier la sécrétion de sébum en le rendant plus abondant et plus irritant. Des bactéries se développent favorisant l’apparition des boutons, la peau grasse et les comédons\r\n\r\nGrâce à la combinaison optimale des ingrédients actifs, la crème :\r\n\r\nmatifie et empêche efficacement la peau de briller\r\nprévient les excès de sébum\r\ndiminue les symptômes de l’acné\r\ndiminue les rougeurs et irritations\r\naméliore le teint\r\nprotège contre les rayons UV (SPF 15)\r\nhydrate et tonifie la peau.', 0.000, 135.000, '3 CHÊNES', 'Soins visage', '1662905725963.jpg', 5),
+(24, 'ACM SÉBIONEX GEL NETTOYANT (200 ML)', 'Le gel moussant Sebionex a été conçu pour nettoyer les peaux grasses ou à tendance acnéique sans les dessécher ni les agresser. Le gel moussant Sébionex respecte le pH de la peau. Ne contient pas de savon.', 0.000, 121.000, 'ACM', 'Soins visage', '1662905833797.jpg', 15),
+(25, 'ACM NOVIDERM BORÉADE R SOIN RÉPARATEUR APAISANT 40', 'Le soin réparateur apaisant Boréade R des laboratoires Noviderm, est un soin du visage utilisé pour nourrir intensément la peau suite au dessèchement provoqué par des traitements dermatologiques contre l’acné. Avec sa texture onctueuse et non grasse, il fond très rapidement sur la peau afin d’apporter un réconfort immédiat tout en la laissant souple et parfaitement hydratée.\r\n\r\nLa formulation de ce soin réparateur apaisant Boréade R se compose de plusieurs actifs au fort pouvoir hydratant, comme la glycérine, l’oléodistillat de tournesol et des céramides 3. Grâce à eux, la peau est parfaitement hydratée toute la journée, ce qui permet de compenser le dessèchement lié aux traitements dermatologiques anti acnéiques, comme l’isotrétinoïne par exemple.\r\nL’association de beurre de karité, d’extrait de maca et de vitamine E, avec leurs formidables propriétés réparatrices et anti-oxydantes, va apaiser la peau, la rendre plus souple et la réparer en même temps.\r\nAfin d’amplifier ces actions bienfaisantes pour la peau, des peptides de quinoa, actifs que l’on retrouve dans la totalité des soins des laboratoires Noviderm, sont également présents dans cette formulation. Ils ont également des propriétés apaisantes et réparatrices permettant de limiter l’inflammation cutanée liée au dessèchement de la peau. Ils possèdent également des vertus protectrices puisqu’ils vont aider à la restauration de la fonction barrière naturelle de la peau. Enfin, leur action stimulante sur la production d’acide hyaluronique va aider à améliorer l’hydratation de l’épiderme, puisque cette molécule à un fort pouvoir de rétention d’eau, bien utile pour contrer le dessèchement cutané.\r\nEn utilisant ce soin, les sensations d’inconfort sont diminuées directement après son application sur la peau, cette dernière étant intensément nourrie et réparée.\r\n\r\nAppliquez matin et soir sur le visage propre et sec.\r\nConstitue une excellente base de maquillage', 0.000, 126.000, 'ACM', 'Soins visage', '1662905896638.jpg', 30),
+(26, 'ALGOTHERM ALGOPURE CORRECTEUR INTENSIF IMPERFECTIO', 'Le soin ciblé anti-imperfections diminue visiblement les imperfections et les rougeurs. Localement et en douceur, il assèche les boutons. La peau retrouve sa netteté. Ses plus : efficace en 24H. TESTÉ SOUS CONTRÔLE DERMATOLOGIQUE - SANS PARABÈNE - SANS PHÉNOXYÉTHANOL\r\n\r\n\r\nCONSEIL D\'UTILISATION :\r\n\r\nAppliquer localement sur les imperfections.', 0.000, 135.000, 'BIODERMINY', 'Soins visage', '1662906006419.jpg', 3),
+(27, 'B COM BIO ORGANIC DÈODORANT SANS SEL ALUMINIUM ET ', 'B-COM-BIO Déodorant longue durée certifié Bio, sans Sels d’Aluminium, sans Alcool, qui régule les odeurs sans perturber l’équilibre de la peau. Les odeurs sont neutralisées efficacement et durablement. La peau est fraîche et délicatement parfumée. Sans paraben.\r\n\r\n \r\n\r\nAppliquer sous les aisselles sur une peau propre et sèche.\r\n\r\nEau florale de Sauge BIO, Mélanges d’huiles essentielles, Acides aminés, actifs déodorants naturels.', 0.000, 90.000, '3 CHÊNES', 'Corps', '1662906076685.jpg', 66),
+(28, 'FILORGA MOUSSE DÉMAQUILLANTE', 'Descriptif :\r\nLA 1ere MOUSSE anti-âge démaquillante\r\nDébarrasser la peau de tout ce qui la pollue et l’asphyxie, tout en lui apportant les éléments qui lui manquent…\r\nC’est le pari physiologique et technologique de la Mousse Démaquillante Filorga, enrichie en Acide Hyaluronique et Lys Blanc.\r\n\r\nAu-delà de sa texture unique, la Mousse Démaquillante Filorga apporte autant qu’elle enlève. Et c’est là toute sa force…\r\nPremier démaquillant du marché fortement concentré en Acide Hyaluronique et en Lys Blanc, il combine 4 voies d’action originales :\r\n- Une première hydratation : Grâce à sa capacité à retenir 1000 fois son poids en eau, l’Acide Hyaluronique véhiculé par la Mousse Démaquillante Filorga vient se déposer à la surface de la peau pour former un film protecteur isolant, comme ouaté. Ce film limite les pertes hydriques trans-épidermiques et empêche la déshydratation souvent consécutive au rinçage à l’eau, quel qu’il soit.\r\n/ Aucune rougeur, aucun tiraillement, la peau, toute veloutée, semble parfaitement sereine et réhydratée.\r\n- Un repulping immédiat des traits : Grâce à son haut poids moléculaire (1,8 millions de daltons), l’acide hyaluronique de la formule se glisse aussi entre les cellules de la couche cornée pour repulper l’épiderme et lisser les ridules de déshydratation.\r\n/ La peau semble toute fraîche, bien lisse et reposée.\r\n- Une réparation épidermique : Bien connu pour ses propriétés apaisantes, adoucissantes et réparatrices, le Lys Blanc calme les irritations dans l’instant, atténue sérieusement l’inflammation et favorise une cicatrisation accélérée des microlésions apparues dans la journée.\r\n/ La peau, parfaitement régénérée, apparaît plus homogène, plus saine, plus résistante.\r\n- Une protection anti-radicalaire : Le Lys Blanc, puissant anti-oxydant, est également capable de désactiver les radicaux libres déjà présents dans la peau, pour limiter tous les processus d’oxydation.\r\n/ Avec son système de défense intact, la peau peut ensuite mieux affronter les agresseurs quotidiens.\r\n\r\nIndications :\r\nNettoie - Démaquille - Hydrate\r\nVisage et Yeux\r\n\r\nLa Mousse Démaquillante Filorga s’adresse à toutes les peaux, mêmes les plus sensibles. Egalement conseillée aux peaux matures, sujettes au tiraillement, qui ont tendance à produire moins de lipides avec l’âge.\r\n\r\n \r\n\r\nConseils d\'utilisation :\r\nUtilisée matin et soir, toute l’année, la Mousse Démaquillante Filorga purifie la peau et remet ses compteurs à zéro, pour démultiplier l’effet du soin suivant.\r\n/ C’est l’étape clé d’un rituel anti-âge idéal…\r\n1/ Appliquer 2 ou 3 noix de cette mousse fraîche, limpide et légèrement parfumée, dans le creux de la main.\r\n2/ Déposer les noix sur visage humide et émulsionner doucement du bout des doigts en gestes circulaires, y compris sur le contour de l’oeil.\r\n3/ Rincer abondamment à l’eau tiède et recommencer l’opération si nécessaire.\r\nEffet Flash. La peau, purifiée, peut à nouveau parfaitement respirer. Le teint, dégrisé, s’éclaire. Le grain de peau se veloute. Le visage tout entier se transforme en une trame parfaite pour mieux assimiler les actifs des soins de jour ou de nuit.', 200.000, 170.000, 'AVENE', 'NATURE ET BIO', '1662906155760.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -652,14 +708,13 @@ CREATE TABLE `products_categories` (
 --
 
 INSERT INTO `products_categories` (`categorieName`, `id`) VALUES
-('Fucking cateeeeeeee 2', 2),
-('sdfd', 4),
-('Waa l7wa', 6),
-('lll', 7),
-('sd', 8),
-('new cateee', 9),
-('Okey go to next mission', 10),
-('salah', 11);
+('Soins visage', 14),
+('Corps', 15),
+('Maman et Bébé', 16),
+('ANTI-INSECTES', 17),
+('SOIN CIBLE', 18),
+('NATURE ET BIO', 19),
+('PALETTE', 20);
 
 -- --------------------------------------------------------
 
@@ -678,7 +733,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('ASdyBFkJm3gyaHbT4VvkgAB-r_vOkrZS', 1662572061, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"admin\":1}');
+('zSWYoP7V0xgdT3AEPcXxy0ksJVXXMOq8', 1662992877, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"client\":15,\"admin\":1}');
 
 --
 -- Indexes for dumped tables
@@ -700,7 +755,7 @@ ALTER TABLE `cities`
 -- Indexes for table `clients`
 --
 ALTER TABLE `clients`
-  ADD PRIMARY KEY (`clientId`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `clientEmail` (`clientEmail`),
   ADD UNIQUE KEY `clientPhone` (`clientPhone`),
   ADD KEY `clientLocation` (`clientCity`);
@@ -709,7 +764,8 @@ ALTER TABLE `clients`
 -- Indexes for table `marks`
 --
 ALTER TABLE `marks`
-  ADD PRIMARY KEY (`markName`);
+  ADD PRIMARY KEY (`markName`),
+  ADD UNIQUE KEY `markId` (`id`);
 
 --
 -- Indexes for table `orders`
@@ -760,25 +816,31 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `clientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `marks`
+--
+ALTER TABLE `marks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `products_categories`
 --
 ALTER TABLE `products_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
@@ -794,7 +856,7 @@ ALTER TABLE `clients`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orderClientId` FOREIGN KEY (`orderClient`) REFERENCES `clients` (`clientId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderClientId` FOREIGN KEY (`orderClient`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `orderProductId` FOREIGN KEY (`orderProduct`) REFERENCES `products` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

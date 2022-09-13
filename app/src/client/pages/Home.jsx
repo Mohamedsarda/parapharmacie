@@ -1,17 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
 import Footer from "../components/Footer";
 import "../components/scss/navBar.scss";
+import ViewProduct from "../components/ViewProduct";
 import { motion } from "framer-motion";
+import { Splide } from "@splidejs/react-splide";
+import { addCounter } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 const Home = () => {
+  const [singleProduct, setSingleProduct] = useState(false);
+
+  const dispatch = useDispatch();
+
+  //////////////
+  const handleAddToCart = () => {
+    dispatch(addCounter());
+    toast.success("Le produit a été ajouté au panier");
+  };
+  const closeSingleProductContainer = () => {
+    setSingleProduct(false);
+  };
+  const openGetProductInfo = () => {
+    setSingleProduct(true);
+  };
+
+  const getLandingPageData = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/openLandingPage", {
+        firstCategorie: "Soins visage",
+        secondCategorie: "Corps",
+        thirdCategorie: "Maman et Bébé",
+        fourthCategorie: "ANTI-INSECTES",
+        fifthCategorie: "SOIN CIBLE",
+        sixthCategroie: "NATURE ET BIO",
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
+  useEffect(() => {
+    getLandingPageData();
+  }, []);
   return (
     <div>
       <Navbar />
       <div className="_3-col-imgs">
-        <img src="../110-e1658840911800.jpg" alt="" />
-        <img src="../100-e1658840863133.jpg" alt="" />
-        <img src="../90-e1658840931456.jpg" alt="" />
+        <img
+          src="https://i.pinimg.com/736x/35/bd/a7/35bda78db14230d78d72165bc968fbf1.jpg"
+          alt=""
+        />
+        <img
+          src="https://cdn.shopify.com/s/files/1/2494/5078/products/masquevisageargile_a34ce26c-f212-48b5-b5b3-326c907057e0_2048x2048.jpg?v=1648133735"
+          alt=""
+        />
+        <img
+          src="https://www.clarins.co.uk/on/demandware.static/-/Sites/en_GB/dw03cbf763/1-Clarins/01-Shop/600-MakeUp/2022/2022_MakeUp-Imsges_Bspot%20452x502.jpg"
+          alt=""
+        />
       </div>
       <motion.div
         animate={{ opacity: 1 }}
@@ -19,7 +69,40 @@ const Home = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Slider />
+        <div className="sliderWrapper">
+          <Splide
+            options={{
+              perPage: 5,
+              arrows: false,
+              pagination: false,
+              gap: "1rem",
+              breakpoints: {
+                1050: {
+                  perPage: 3,
+                  arrows: true,
+                },
+                767: {
+                  perPage: 2,
+                  arrows: true,
+                },
+                500: {
+                  perPage: 1,
+                },
+              },
+            }}
+          >
+            <Slider
+              handleAddToCart={handleAddToCart}
+              openGetProductInfo={openGetProductInfo}
+            />
+          </Splide>
+          {singleProduct && (
+            <ViewProduct
+              closeSingleProductContainer={closeSingleProductContainer}
+              handleAddToCart={handleAddToCart}
+            />
+          )}
+        </div>
       </motion.div>
       <div className="_2-col-imgs">
         <img
@@ -31,15 +114,6 @@ const Home = () => {
           alt=""
         />
       </div>
-      <motion.div
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <Slider />
-      </motion.div>
-
       <Footer />
     </div>
   );

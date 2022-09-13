@@ -79,15 +79,18 @@
       button {
         display: flex;
         align-items: center;
-        background-color: #222;
+        background-color: #95a595;
         border: none;
         color: white;
         padding: 10px 50px;
         margin: 5px;
         cursor: pointer;
         transition: 0.3s;
+        &:active {
+          transform: scale(0.98);
+        }
         &:hover {
-          background-color: #444;
+          background-color: #95a595a1;
         }
         .icon {
           font-size: 15px;

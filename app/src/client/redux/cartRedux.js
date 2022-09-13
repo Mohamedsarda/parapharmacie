@@ -8,8 +8,11 @@ const cartSlice = createSlice({
     addCounter: (state, action) => {
       state.cartCounter += 1;
     },
+    setCounter: (state, action) => {
+      state.cartCounter = action.payload;
+    },
   },
 });
 
-export const { addCounter } = cartSlice.actions;
+export const { addCounter, setCounter } = cartSlice.actions;
 export default cartSlice.reducer;

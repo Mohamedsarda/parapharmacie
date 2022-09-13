@@ -3,6 +3,7 @@ import ClientHome from "./client/pages/Home";
 import ContactUs from "./client/pages/ContactUs";
 import About from "./client/pages/About";
 import Parapharmacie from "./client/pages/Parapharmacie";
+import Bag from "./client/pages/Bag";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -51,6 +52,7 @@ function App() {
               <Route path="ContactUs" element={<ContactUs />} />
               <Route path="About" element={<About />} />
               <Route path="Parapharmacie" element={<Parapharmacie />} />
+              <Route path="bag" element={<Bag />} />
             </Route>
           </Routes>
         ) : (

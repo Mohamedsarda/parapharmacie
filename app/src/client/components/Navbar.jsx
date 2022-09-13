@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import ClientLogin from "./ClientLogin";
 import TopNavBar from "./TopNavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -10,7 +11,12 @@ import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
+  const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
+
+  const closeLoginContainer = () => {
+    setClientLoginContainer(false);
+  };
 
   useEffect(() => {
     const onScroll = () => setOffset(window.pageYOffset);
@@ -33,11 +39,19 @@ const Navbar = () => {
           <SearchIcon />
         </div>
         <div className="right">
-          <PersonOutlineIcon className="icon" />
-          <Badge badgeContent={cartCounter} className="badge" color="success">
-            <ShoppingCartOutlinedIcon className="icon" />
-          </Badge>
+          <PersonOutlineIcon
+            className="icon"
+            onClick={() => setClientLoginContainer(!ClientLoginContainer)}
+          />
+          <Link to="/bag">
+            <Badge badgeContent={cartCounter} className="badge" color="success">
+              <ShoppingCartOutlinedIcon className="icon" />
+            </Badge>
+          </Link>
         </div>
+        {ClientLoginContainer && (
+          <ClientLogin closeLoginContainer={closeLoginContainer} />
+        )}
       </div>
       <ul className="nav-links">
         <Link to="/" style={{ textDecoration: "none" }}>

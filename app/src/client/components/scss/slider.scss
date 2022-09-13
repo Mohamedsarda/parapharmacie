@@ -49,6 +49,9 @@
         margin: 10px 5px;
         border-radius: 10px;
         cursor: pointer;
+        &:active {
+          transform: scale(0.98);
+        }
         .icon {
           font-size: 15px;
           margin-right: 10px;

@@ -56,6 +56,9 @@ img {
       .searchBar {
         padding: 5px;
       }
+      .ClientLogin {
+        top: 11vh;
+      }
     }
 
     .logo {
@@ -118,13 +121,14 @@ img {
     }
   }
 }
-
 ._3-col-imgs {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
   margin: 20px;
   img {
+    height: 600px;
+    object-fit: cover;
     width: 100%;
     cursor: pointer;
   }
