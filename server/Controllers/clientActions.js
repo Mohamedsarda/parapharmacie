@@ -126,7 +126,24 @@ const removeProductFromCart = (req, res) => {
       .send({ actionState: true, desc: `Product removed successfully` });
   });
 };
-
+const editProductInCart = (req, res) => {
+  const { orderId, orderQuantity } = req.body;
+  db.query(
+    `UPDATE orders SET orderQuantity = ? WHERE orderId = ?`,
+    [orderQuantity, orderId],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Product in cart update successfully`,
+      });
+    }
+  );
+};
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -261,4 +278,5 @@ module.exports = {
   openLandingPage,
   getProductsFromCart,
   removeProductFromCart,
+  editProductInCart,
 };
