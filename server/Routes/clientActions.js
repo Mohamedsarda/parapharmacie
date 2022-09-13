@@ -9,6 +9,7 @@ const {
   getProductsFromCart,
   removeProductFromCart,
   openLandingPage,
+  editProductInCart,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -46,6 +47,11 @@ ClientActionsRoute.post(
   "/removeProductsFromCart",
   isClientAuthenticated,
   removeProductFromCart
+);
+ClientActionsRoute.post(
+  "/editProductInCart",
+  isClientAuthenticated,
+  editProductInCart
 );
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
