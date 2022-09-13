@@ -121,6 +121,9 @@ const removeProductFromCart = (req, res) => {
         actionState: false,
         desc: `Something went wrong. Database error`,
       });
+    return res
+      .status(200)
+      .send({ actionState: true, desc: `Product removed successfully` });
   });
 };
 
@@ -257,4 +260,5 @@ module.exports = {
   addProductToCart,
   openLandingPage,
   getProductsFromCart,
+  removeProductFromCart,
 };
