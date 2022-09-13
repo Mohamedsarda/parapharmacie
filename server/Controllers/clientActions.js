@@ -94,7 +94,9 @@ const addProductToCart = (req, res) => {
 };
 const getProductsFromCart = (req, res) => {
   db.query(
-    `SELECT * FROM orders WHERE orderState = 'cart' AND orderClient = ?`,
+    `SELECT *, products.productImages, products.productName, products.productDescription FROM orders 
+    INNER JOIN products ON orders.orderProduct = products.productId
+    WHERE orderState = 'cart' AND orderClient = ?`,
     [req.session.client],
     (err, result) => {
       if (err)
@@ -112,7 +114,14 @@ const getProductsFromCart = (req, res) => {
   );
 };
 const removeProductFromCart = (req, res) => {
-  // db.query(`DELETE FROM orders WHERE orderId`);
+  const { orderId } = req.body;
+  db.query(`DELETE FROM orders WHERE orderId = ?`, [orderId], (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Database error`,
+      });
+  });
 };
 
 // landing page action
