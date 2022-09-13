@@ -94,9 +94,9 @@ const addProductToCart = (req, res) => {
 };
 const getProductsFromCart = (req, res) => {
   db.query(
-    `SELECT *, products.productImages, products.productName, products.productDescription FROM orders 
-    INNER JOIN products ON orders.orderProduct = products.productId
-    WHERE orderState = 'cart' AND orderClient = ?`,
+    `SELECT orders.orderId,orders.orderQuantity,orders.orderPrice, products.productImages, products.productName, products.productDescription, products.productCurrentPrice, products.productOldPrice FROM orders 
+      INNER JOIN products ON orders.orderProduct = products.productId
+      WHERE orderState = 'cart' AND orderClient = ?`,
     [req.session.client],
     (err, result) => {
       if (err)
