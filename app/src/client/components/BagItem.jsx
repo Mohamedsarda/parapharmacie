@@ -12,6 +12,7 @@ const BagItem = ({
   productImages,
   productName,
   productOldPrice,
+  updateTotalPrice,
 }) => {
   const [quantity, setQuantity] = useState(orderQuantity);
   const addToQuantity = () => {
@@ -19,6 +20,7 @@ const BagItem = ({
       setQuantity(1);
     } else {
       setQuantity(quantity + 1);
+      updateTotalPrice(productCurrentPrice, "+");
     }
   };
   const removeFromQuantity = () => {
@@ -26,6 +28,7 @@ const BagItem = ({
       console.log("no");
     } else {
       setQuantity(quantity - 1);
+      updateTotalPrice(productCurrentPrice, "-");
     }
   };
   return (

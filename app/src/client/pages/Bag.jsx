@@ -7,10 +7,11 @@ import axios from "axios";
 const Bag = () => {
   const [bagProducts, setBagProducts] = useState([]);
   const [currentOrderPrice, setCurrentOrderPrice] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const removeProductsFromCart = (orderId) => {
     axios
-      .post("http://localhost:8080/clientActions/v1//removeProductsFromCart", {
+      .post("http://localhost:8080/clientActions/v1/removeProductsFromCart", {
         orderId,
       })
       .then((res) => {
@@ -29,12 +30,24 @@ const Bag = () => {
         console.log(res.data);
         if (res.data.actionState) {
           setBagProducts(res.data.cart);
+          let totalPriceCalc = 0;
+          res.data.cart.forEach((cart, idx) => {
+            // console.log(cart.productCurrentPrice, idx);
+            totalPriceCalc += cart.productCurrentPrice;
+          });
+          setTotalPrice(totalPriceCalc);
         }
       });
   };
   useEffect(() => {
     getProductsInCart();
   }, []);
+  const updateTotalPrice = (sum, action) => {
+    let currentPrice = totalPrice;
+    if (action === "+") currentPrice += sum;
+    else currentPrice -= sum;
+    setTotalPrice(currentPrice);
+  };
   return (
     <div>
       <Navbar />
@@ -53,6 +66,7 @@ const Bag = () => {
                 productImages={product.productImages}
                 productName={product.productName}
                 productOldPrice={product.productOldPrice}
+                updateTotalPrice={updateTotalPrice}
               />
             );
           })}
@@ -63,7 +77,7 @@ const Bag = () => {
             <h4>Sous-total : 200 DH</h4>
             <h4>Expédition</h4>
             <p>Shipping costs are calculated during checkout.</p>
-            <h3>TOTAL : 230 DH</h3>
+            <h3>TOTAL : {totalPrice} DH</h3>
           </div>
         </div>
       </div>
