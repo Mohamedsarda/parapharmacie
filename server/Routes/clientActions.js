@@ -1,34 +1,36 @@
 const express = require("express");
 const ClientActionsRoute = express.Router();
 const {
-  clientSignUp,
-  clientSignIn,
   selectCities,
   getProducts,
   getCategories,
   getMarks,
+  addProductToCart,
   openLandingPage,
 } = require("../Controllers/clientActions.js");
+const {
+  clientSignUp,
+  clientSignIn,
+  isClientAuth,
+} = require("../Controllers/clientAuthentication.js");
 const {
   isClientNotAuthenticated,
   isClientAuthenticated,
 } = require("../Middlewares/clientAuthentication.js");
 
-ClientActionsRoute.post(
-  "/clientSignUp",
-
-  clientSignUp
-);
+ClientActionsRoute.post("/clientSignUp", clientSignUp);
 ClientActionsRoute.post(
   "/clientSignIn",
   isClientNotAuthenticated,
   clientSignIn
 );
 
+ClientActionsRoute.get("/isClientAuthenticated", isClientAuth);
 ClientActionsRoute.get("/getCities", selectCities);
 ClientActionsRoute.get("/getMarks", getMarks);
 ClientActionsRoute.get("/getCategories", getCategories);
 ClientActionsRoute.post("/getProducts", getProducts);
+ClientActionsRoute.post("/addProductToCart", addProductToCart);
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
 module.exports = ClientActionsRoute;

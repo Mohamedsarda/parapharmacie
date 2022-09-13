@@ -4,7 +4,6 @@ const {
   isAdminNotAuthenticated,
 } = require("../Middlewares/adminAuthentication.js");
 const {
-  getCategories,
   addCategorie,
   deleteCategorie,
   editCategorie,
@@ -25,7 +24,7 @@ const {
   deleteClient,
   editClient,
 } = require("../Controllers/adminTasksOnClients.js");
-const { clientSignUp } = require("../Controllers/clientActions.js");
+const { clientSignUp } = require("../Controllers/clientAuthentication.js");
 
 const AdminTasksRoute = express.Router();
 // Selecting categories from database
