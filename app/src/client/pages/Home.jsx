@@ -13,21 +13,74 @@ import axios from "axios";
 
 const Home = () => {
   const [singleProduct, setSingleProduct] = useState(false);
+  const [firstSlider, setFirstSlider] = useState([]);
+  const [secondSlider, setSecondSlider] = useState([]);
+  const [singleProductData, setSingleProductData] = useState({
+    id: "",
+    img: "",
+    productName: "",
+    productOldPrice: "",
+    productQuantities: "",
+    productAddedTime: "",
+    productCategorie: "",
+    productCurrentPrice: "",
+    productDescription: "",
+    productMark: "",
+  });
 
   const dispatch = useDispatch();
 
   //////////////
-  const handleAddToCart = () => {
-    dispatch(addCounter());
-    toast.success("Le produit a été ajouté au panier");
-  };
+  // const handleAddToCart = (id, quantity, productCurrentPrice) => {
+  //   dispatch(addCounter());
+  //   addProductToCart(id, quantity, productCurrentPrice);
+  // };
   const closeSingleProductContainer = () => {
     setSingleProduct(false);
   };
-  const openGetProductInfo = () => {
+  const openGetProductInfo = (
+    id,
+    img,
+    productName,
+    productOldPrice,
+    productQuantities,
+    productAddedTime,
+    productCategorie,
+    productCurrentPrice,
+    productDescription,
+    productMark
+  ) => {
     setSingleProduct(true);
+    setSingleProductData({
+      id,
+      img,
+      productName,
+      productOldPrice,
+      productQuantities,
+      productAddedTime,
+      productCategorie,
+      productCurrentPrice,
+      productDescription,
+      productMark,
+    });
+    console.log(singleProductData);
   };
 
+  const handleAddToCart = (id, quantity, productCurrentPrice) => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/addProductToCart", {
+        productId: id,
+        productPrice: quantity,
+        orderQuantity: productCurrentPrice,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.actionState) {
+          dispatch(addCounter());
+          toast.success("Le produit a été ajouté au panier");
+        }
+      });
+  };
   const getLandingPageData = () => {
     axios
       .post("http://localhost:8080/clientActions/v1/openLandingPage", {
@@ -39,7 +92,10 @@ const Home = () => {
         sixthCategroie: "NATURE ET BIO",
       })
       .then((res) => {
-        console.log(res.data);
+        if (res.data.actionState) {
+          setFirstSlider(res.data.products.firstSlider);
+          setSecondSlider(res.data.products.secondSlider);
+        }
       });
   };
 
@@ -77,7 +133,7 @@ const Home = () => {
               pagination: false,
               gap: "1rem",
               breakpoints: {
-                1050: {
+                1200: {
                   perPage: 3,
                   arrows: true,
                 },
@@ -91,17 +147,26 @@ const Home = () => {
               },
             }}
           >
-            <Slider
-              handleAddToCart={handleAddToCart}
-              openGetProductInfo={openGetProductInfo}
-            />
+            {firstSlider.map((slider) => {
+              return (
+                <Slider
+                  key={slider.productId}
+                  handleAddToCart={handleAddToCart}
+                  openGetProductInfo={openGetProductInfo}
+                  id={slider.productId}
+                  img={slider.productImages}
+                  productName={slider.productName}
+                  productOldPrice={slider.productOldPrice}
+                  productQuantities={slider.productQuantities}
+                  productAddedTime={slider.productAddedTime}
+                  productCategorie={slider.productCategorie}
+                  productCurrentPrice={slider.productCurrentPrice}
+                  productDescription={slider.productDescription}
+                  productMark={slider.productMark}
+                />
+              );
+            })}
           </Splide>
-          {singleProduct && (
-            <ViewProduct
-              closeSingleProductContainer={closeSingleProductContainer}
-              handleAddToCart={handleAddToCart}
-            />
-          )}
         </div>
       </motion.div>
       <div className="_2-col-imgs">
@@ -114,7 +179,63 @@ const Home = () => {
           alt=""
         />
       </div>
+      <motion.div
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="sliderWrapper">
+          <Splide
+            options={{
+              perPage: 5,
+              arrows: false,
+              pagination: false,
+              gap: "1rem",
+              breakpoints: {
+                1200: {
+                  perPage: 3,
+                  arrows: true,
+                },
+                767: {
+                  perPage: 2,
+                  arrows: true,
+                },
+                500: {
+                  perPage: 1,
+                },
+              },
+            }}
+          >
+            {secondSlider.map((slider) => {
+              return (
+                <Slider
+                  key={slider.productId}
+                  handleAddToCart={handleAddToCart}
+                  openGetProductInfo={openGetProductInfo}
+                  id={slider.productId}
+                  img={slider.productImages}
+                  productName={slider.productName}
+                  productOldPrice={slider.productOldPrice}
+                  productQuantities={slider.productQuantities}
+                  productAddedTime={slider.productAddedTime}
+                  productCategorie={slider.productCategorie}
+                  productCurrentPrice={slider.productCurrentPrice}
+                  productDescription={slider.productDescription}
+                  productMark={slider.productMark}
+                />
+              );
+            })}
+          </Splide>
+        </div>
+      </motion.div>
       <Footer />
+      {singleProduct && (
+        <ViewProduct
+          closeSingleProductContainer={closeSingleProductContainer}
+          handleAddToCart={handleAddToCart}
+        />
+      )}
     </div>
   );
 };

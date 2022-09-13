@@ -14,6 +14,8 @@
     border: 1px solid #999;
     padding: 10px;
     cursor: pointer;
+    position: relative;
+    height: 400px;
     img {
       width: 170px;
       height: 200px;
@@ -21,14 +23,24 @@
     .content {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      position: absolute;
+      bottom: 0px;
+      padding: 10px;
       h2 {
         font-size: 15px;
         padding: 5px 0px;
         text-align: center;
       }
+      ._1-col {
+        padding: 5px 0px;
+        h5 {
+          color: #333;
+          font-size: 10px;
+        }
+      }
       ._2-col {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
         h5 {
           color: #333;
@@ -37,6 +49,7 @@
         .line-through {
           color: #666;
           text-decoration: line-through;
+          font-size: 10px;
         }
       }
       button {
