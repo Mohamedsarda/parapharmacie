@@ -72,11 +72,12 @@ const addProductToCart = (req, res) => {
   const { productId, productPrice, orderQuantity } = req.body;
   db.query(
     `INSERT INTO orders(orderClient,orderState,orderProduct, orderQuantity, orderPrice)
-  VALUES(?, 'cart', ?, ?, ?)`[
-      (req.session.client,
+  VALUES(?, 'cart', ?, ?, ?)`,
+    [
+      req.session.client,
       productId,
       orderQuantity,
-      productPrice * orderQuantity)
+      productPrice * orderQuantity,
     ],
     (err, result) => {
       if (err)
