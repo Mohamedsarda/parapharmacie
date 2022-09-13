@@ -92,6 +92,25 @@ const addProductToCart = (req, res) => {
     }
   );
 };
+const getProductsFromCart = (req, res) => {
+  db.query(
+    `SELECT * FROM orders WHERE productState = 'cart' AND orderClient = ?`,
+    [req.session.client],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          cart: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Product in cart fetched succesfully`,
+        cart: result,
+      });
+    }
+  );
+};
 
 // landing page action
 const openLandingPage = (req, res) => {
@@ -225,4 +244,5 @@ module.exports = {
   getMarks,
   addProductToCart,
   openLandingPage,
+  getProductsFromCart,
 };

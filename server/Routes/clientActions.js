@@ -6,6 +6,7 @@ const {
   getCategories,
   getMarks,
   addProductToCart,
+  getProductsFromCart,
   openLandingPage,
 } = require("../Controllers/clientActions.js");
 const {
@@ -30,7 +31,16 @@ ClientActionsRoute.get("/getCities", selectCities);
 ClientActionsRoute.get("/getMarks", getMarks);
 ClientActionsRoute.get("/getCategories", getCategories);
 ClientActionsRoute.post("/getProducts", getProducts);
-ClientActionsRoute.post("/addProductToCart", addProductToCart);
+ClientActionsRoute.post(
+  "/addProductToCart",
+  isClientAuthenticated,
+  addProductToCart
+);
+ClientActionsRoute.post(
+  "/getProductInCart",
+  isClientAuthenticated,
+  getProductsFromCart
+);
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
 module.exports = ClientActionsRoute;
