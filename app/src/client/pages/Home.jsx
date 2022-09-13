@@ -6,7 +6,7 @@ import "../components/scss/navBar.scss";
 import ViewProduct from "../components/ViewProduct";
 import { motion } from "framer-motion";
 import { Splide } from "@splidejs/react-splide";
-import { addCounter } from "../redux/cartRedux";
+import { addCounter, setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -63,21 +63,23 @@ const Home = () => {
       productDescription,
       productMark,
     });
-    console.log(singleProductData);
   };
 
   const handleAddToCart = (id, quantity, productCurrentPrice) => {
     axios
       .post("http://localhost:8080/clientActions/v1/addProductToCart", {
         productId: id,
-        productPrice: quantity,
-        orderQuantity: productCurrentPrice,
+        productPrice: productCurrentPrice,
+        orderQuantity: quantity,
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.actionState) {
           dispatch(addCounter());
           toast.success("Le produit a été ajouté au panier");
+        } else {
+          toast.error(
+            "vous avez besoin d'un compte pour ajouter un produit au panier"
+          );
         }
       });
   };
@@ -92,9 +94,11 @@ const Home = () => {
         sixthCategroie: "NATURE ET BIO",
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
+          dispatch(setCounter(res.data.cart.length));
         }
       });
   };

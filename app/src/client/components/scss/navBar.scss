@@ -145,6 +145,39 @@ img {
   }
 }
 
+.bagContainer {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  position: relative;
+
+  .bagTotal {
+    border-radius: 10px;
+    margin: 10px;
+    border: 1px solid #666;
+    padding: 10px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    h2 {
+      margin: 20px 0px;
+      border-bottom: 1px solid #888;
+    }
+    .info {
+      h4 {
+        color: #555;
+      }
+      p {
+        text-align: center;
+      }
+      h3 {
+        color: #333;
+      }
+    }
+  }
+}
+
 @media (max-width: 900px) {
   .Navbar {
     .navbarContent {

@@ -1,0 +1,57 @@
+.BagItem {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #666;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .title {
+      width: 80%;
+      h1 {
+        font-size: 15px;
+      }
+      p {
+        width: 70%;
+        padding: 10px 0px;
+      }
+    }
+
+    .row {
+      width: 100%;
+      h5 {
+        color: #333;
+      }
+      .line-through {
+        color: #666;
+        text-decoration: line-through;
+      }
+    }
+
+    .quantityCount {
+      margin-top: 20px;
+      span {
+        border: 1px solid #999;
+        padding: 5px 10px;
+        user-select: none;
+      }
+    }
+    .icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+  }
+}
