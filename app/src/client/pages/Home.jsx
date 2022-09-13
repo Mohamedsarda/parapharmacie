@@ -234,6 +234,7 @@ const Home = () => {
         <ViewProduct
           closeSingleProductContainer={closeSingleProductContainer}
           handleAddToCart={handleAddToCart}
+          singleProductData={singleProductData}
         />
       )}
     </div>

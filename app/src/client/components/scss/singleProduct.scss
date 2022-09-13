@@ -9,6 +9,7 @@
   display: flex;
   justify-content: flex-end;
   transition: 0.3s;
+  height: 100vh;
 
   .icon {
     background-color: #fff;
@@ -25,9 +26,9 @@
   }
 
   .productSingle {
+    overflow: scroll;
     animation: slide 0.4s;
     width: 30%;
-    height: 100vh;
     background-color: #fff;
     display: flex;
     align-items: center;

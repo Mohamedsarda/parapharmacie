@@ -3,10 +3,14 @@ import "./scss/singleProduct.scss";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-const ViewProduct = ({ closeSingleProductContainer, handleAddToCart }) => {
+const ViewProduct = ({
+  closeSingleProductContainer,
+  handleAddToCart,
+  singleProductData,
+}) => {
   const [quantity, setQuantity] = useState(1);
   const addToQuantity = () => {
-    if (quantity === 5) {
+    if (quantity === singleProductData.productQuantities) {
       setQuantity(1);
     } else {
       setQuantity(quantity + 1);
@@ -26,23 +30,16 @@ const ViewProduct = ({ closeSingleProductContainer, handleAddToCart }) => {
         className="icon"
       />
       <div className="productSingle">
-        <img
-          src="https://monrituel.ma/wp-content/uploads/2022/08/6414-2-600x600.jpg"
-          alt=""
-        />
+        <img src={`http://localhost:8080/${singleProductData.img}`} alt="" />
         <div className="content">
-          <h2>ARM & HAMMER ESSENTIALS DEO NATURAL JUNIPER BERRY</h2>
+          <h2>{singleProductData.productName}</h2>
           <div className="_2-col">
-            <h5 className="line-through">150 DH</h5>
-            <h5>99,00 DH</h5>
+            <h5 className="line-through">
+              {singleProductData.productOldPrice}
+            </h5>
+            <h5>{singleProductData.productCurrentPrice}</h5>
           </div>
-          <p>
-            Réduit la transpiration des aisselles Pour une protection de 24
-            heures protection qui aide à neutraliser les bactéries responsables
-            des odeurs Sans aluminium, sans paraben, contient du bicarbonate de
-            soude et des extraits naturels de plantes pour absorber et combattre
-            les odeurs.
-          </p>
+          <p>{singleProductData.productDescription}</p>
           <div className="_2-col btns">
             <div className="quantityCount">
               <span onClick={removeFromQuantity}>-</span>
@@ -50,13 +47,21 @@ const ViewProduct = ({ closeSingleProductContainer, handleAddToCart }) => {
               <span onClick={addToQuantity}>+</span>
             </div>
             <div>
-              <button onClick={handleAddToCart}>
+              <button
+                onClick={() =>
+                  handleAddToCart(
+                    singleProductData.id,
+                    quantity,
+                    singleProductData.productCurrentPrice
+                  )
+                }
+              >
                 <ShoppingCartOutlinedIcon /> AJOUTER AU PANIER
               </button>
             </div>
           </div>
           <h5>
-            Catégorie: <span>DEODORANT</span>
+            Catégorie: <span>{singleProductData.productCategorie}</span>
           </h5>
         </div>
       </div>
