@@ -7,6 +7,7 @@ const {
   getMarks,
   addProductToCart,
   getProductsFromCart,
+  removeProductFromCart,
   openLandingPage,
 } = require("../Controllers/clientActions.js");
 const {
@@ -40,6 +41,11 @@ ClientActionsRoute.post(
   "/getProductsInCart",
   isClientAuthenticated,
   getProductsFromCart
+);
+ClientActionsRoute.post(
+  "/removeProductsFromCart",
+  isClientAuthenticated,
+  removeProductFromCart
 );
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
