@@ -94,7 +94,7 @@ const addProductToCart = (req, res) => {
 };
 const getProductsFromCart = (req, res) => {
   db.query(
-    `SELECT * FROM orders WHERE productState = 'cart' AND orderClient = ?`,
+    `SELECT * FROM orders WHERE orderState = 'cart' AND orderClient = ?`,
     [req.session.client],
     (err, result) => {
       if (err)
@@ -110,6 +110,9 @@ const getProductsFromCart = (req, res) => {
       });
     }
   );
+};
+const removeProductFromCart = (req, res) => {
+  // db.query(`DELETE FROM orders WHERE orderId`);
 };
 
 // landing page action
