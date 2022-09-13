@@ -37,7 +37,7 @@ ClientActionsRoute.post(
   addProductToCart
 );
 ClientActionsRoute.post(
-  "/getProductInCart",
+  "/getProductsInCart",
   isClientAuthenticated,
   getProductsFromCart
 );
