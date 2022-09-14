@@ -2,10 +2,22 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./scss/clientLogin.scss";
 import { toast } from "react-toastify";
+import { setCounter } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
 const ClientLogin = ({ closeLoginContainer }) => {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const getCartCounter = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/getProductInCart")
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (clientEmail && clientPassword) {
@@ -18,6 +30,7 @@ const ClientLogin = ({ closeLoginContainer }) => {
           if (res.data.actionState) {
             closeLoginContainer();
             toast.success(res.data.desc);
+            getCartCounter();
           } else {
             toast.error(res.data.desc);
           }

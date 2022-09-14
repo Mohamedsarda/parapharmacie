@@ -94,7 +94,7 @@ const Home = ({ clientIsSignIn }) => {
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
-          dispatch(setCounter(res.data.cart[0].ordersCount));
+          // dispatch(setCounter(res.data.cart[0].ordersCount));
           setCategoriesData(res.data.categories);
         }
       });
