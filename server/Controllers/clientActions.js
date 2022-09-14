@@ -237,7 +237,7 @@ const getProductsInTheCard = (req, res) => {
           cart: [],
         });
       return res.status(200).send({
-        actionState: false,
+        actionState: true,
         desc: `Cart fetched successfully`,
         cart: result,
       });
