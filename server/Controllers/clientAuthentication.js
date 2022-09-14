@@ -95,6 +95,13 @@ const checkEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+const clientSignOut = (req, res) => {
+  req.session.destroy();
+  res
+    .status(200)
+    .send({ actionState: true, desc: `Client signed out successfully` });
+};
+
 const isClientAuth = (req, res) => {
   if (req.session.client)
     return res
@@ -105,4 +112,4 @@ const isClientAuth = (req, res) => {
     .send({ actionState: false, desc: "Client is not authenticated" });
 };
 
-module.exports = { clientSignUp, clientSignIn, isClientAuth };
+module.exports = { clientSignUp, clientSignIn, isClientAuth, clientSignOut };

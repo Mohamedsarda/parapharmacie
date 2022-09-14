@@ -15,6 +15,7 @@ const {
   clientSignUp,
   clientSignIn,
   isClientAuth,
+  clientSignOut,
 } = require("../Controllers/clientAuthentication.js");
 const {
   isClientNotAuthenticated,
@@ -27,6 +28,7 @@ ClientActionsRoute.post(
   isClientNotAuthenticated,
   clientSignIn
 );
+ClientActionsRoute.post("/clientSignOut", clientSignOut);
 
 ClientActionsRoute.get("/isClientAuthenticated", isClientAuth);
 ClientActionsRoute.get("/getCities", selectCities);
