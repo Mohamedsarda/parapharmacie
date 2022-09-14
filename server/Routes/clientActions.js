@@ -30,7 +30,7 @@ ClientActionsRoute.post(
 );
 ClientActionsRoute.post("/clientSignOut", clientSignOut);
 
-ClientActionsRoute.get("/isClientAuthenticated", isClientAuth);
+ClientActionsRoute.post("/isClientAuthenticated", isClientAuth);
 ClientActionsRoute.get("/getCities", selectCities);
 ClientActionsRoute.get("/getMarks", getMarks);
 ClientActionsRoute.get("/getCategories", getCategories);
