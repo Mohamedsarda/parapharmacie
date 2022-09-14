@@ -10,6 +10,7 @@ const {
   removeProductFromCart,
   openLandingPage,
   editProductInCart,
+  getProductsInTheCard,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -29,8 +30,9 @@ ClientActionsRoute.post(
   clientSignIn
 );
 ClientActionsRoute.post("/clientSignOut", clientSignOut);
-
 ClientActionsRoute.post("/isClientAuthenticated", isClientAuth);
+ClientActionsRoute.post("/getProductInCart", getProductsInTheCard);
+
 ClientActionsRoute.get("/getCities", selectCities);
 ClientActionsRoute.get("/getMarks", getMarks);
 ClientActionsRoute.get("/getCategories", getCategories);
