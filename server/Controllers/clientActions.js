@@ -239,7 +239,7 @@ const getCategoriesForLandingPage = () => {
 const getProductsInTheCard = (clientId) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM orders WHERE orderClient = ? AND orderState = 'cart'`,
+      `SELECT COUNT(*) FROM orders WHERE orderClient = ? AND orderState = 'cart'`,
       [clientId],
       (err, result) => {
         if (err)
