@@ -15,6 +15,7 @@ const Home = () => {
   const [singleProduct, setSingleProduct] = useState(false);
   const [firstSlider, setFirstSlider] = useState([]);
   const [secondSlider, setSecondSlider] = useState([]);
+  const [categoriesData, setCategoriesData] = useState([]);
   const [singleProductData, setSingleProductData] = useState({
     id: "",
     img: "",
@@ -30,11 +31,6 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
-  //////////////
-  // const handleAddToCart = (id, quantity, productCurrentPrice) => {
-  //   dispatch(addCounter());
-  //   addProductToCart(id, quantity, productCurrentPrice);
-  // };
   const closeSingleProductContainer = () => {
     setSingleProduct(false);
   };
@@ -83,6 +79,7 @@ const Home = () => {
         }
       });
   };
+
   const getLandingPageData = () => {
     axios
       .post("http://localhost:8080/clientActions/v1/openLandingPage", {
@@ -94,21 +91,20 @@ const Home = () => {
         sixthCategroie: "NATURE ET BIO",
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
-          dispatch(setCounter(res.data.cart.length));
+          // dispatch(setCounter(res.data.cart));
+          setCategoriesData(res.data.categories);
         }
       });
   };
-
   useEffect(() => {
     getLandingPageData();
   }, []);
   return (
     <div>
-      <Navbar />
+      <Navbar categoriesData={categoriesData} />
       <div className="_3-col-imgs">
         <img
           src="https://i.pinimg.com/736x/35/bd/a7/35bda78db14230d78d72165bc968fbf1.jpg"

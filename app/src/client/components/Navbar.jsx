@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Navbar = () => {
+const Navbar = ({ categoriesData }) => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -67,6 +67,13 @@ const Navbar = () => {
           <li>À PROPOS</li>
         </Link>
       </ul>
+      {/* <div className="nav-categorie">
+        <ul>
+          {categoriesData.map((categorie) => {
+            return <li>{categorie.categorieName}</li>;
+          })}
+        </ul>
+      </div> */}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import "./scss/BagItem.scss";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const BagItem = ({
   removeProductsFromCart,
@@ -15,11 +17,12 @@ const BagItem = ({
   updateTotalPrice,
 }) => {
   const [quantity, setQuantity] = useState(orderQuantity);
-  const addToQuantity = () => {
+  const addToQuantity = (orderId, orderQuantity) => {
     if (quantity === 5) {
       setQuantity(1);
     } else {
       setQuantity(quantity + 1);
+      updatePorductQuantity();
       updateTotalPrice(productCurrentPrice, "+");
     }
   };
@@ -28,8 +31,24 @@ const BagItem = ({
       console.log("no");
     } else {
       setQuantity(quantity - 1);
+      updatePorductQuantity();
       updateTotalPrice(productCurrentPrice, "-");
     }
+  };
+
+  const updatePorductQuantity = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/editProductInCart", {
+        orderId,
+        orderQuantity,
+      })
+      .then((res) => {
+        if (res.data.actionState) {
+          toast.success(res.data.desc);
+        } else {
+          toast.error(res.data.desc);
+        }
+      });
   };
   return (
     <div className="BagItem">
@@ -52,7 +71,7 @@ const BagItem = ({
             <div className="quantityCount">
               <span onClick={removeFromQuantity}>-</span>
               <span>{quantity}</span>
-              <span onClick={addToQuantity}>+</span>
+              <span onClick={() => addToQuantity()}>+</span>
             </div>
           </div>
         </div>

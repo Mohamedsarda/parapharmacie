@@ -74,7 +74,7 @@ const Bag = () => {
         <div className="bagTotal">
           <h2>TOTAL PANIER</h2>
           <div className="info">
-            <h4>Sous-total : 200 DH</h4>
+            <h4>Sous-total : {totalPrice} DH</h4>
             <h4>Expédition</h4>
             <p>Shipping costs are calculated during checkout.</p>
             <h3>TOTAL : {totalPrice} DH</h3>

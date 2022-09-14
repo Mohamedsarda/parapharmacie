@@ -147,10 +147,12 @@ img {
 
 .bagContainer {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  position: relative;
+  grid-template-columns: 2.7fr 1fr;
 
   .bagTotal {
+    position: fixed;
+    background-color: white;
+    right: 0px;
     border-radius: 10px;
     margin: 10px;
     border: 1px solid #666;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2022 at 04:38 PM
+-- Generation Time: Sep 13, 2022 at 05:15 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -20,6 +20,134 @@ SET time_zone = "+00:00";
 --
 -- Database: `parapharmacie`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addCategorie` (IN `categorieName_proc` VARCHAR(50))   BEGIN
+	
+    SET @categorieCount = (SELECT COUNT(*) FROM products_categories WHERE categorieName = categorieName_proc);
+    
+    IF @categorieCount > 0 THEN 
+    	
+        BEGIN 
+        	SELECT 0 AS 'Response';
+        END ;
+        
+    ELSEIF  @categorieCount = 0 THEN
+    	BEGIN
+        	INSERT INTO products_categories(categorieName) VALUES(categorieName_proc);
+            SELECT 1 AS 'Response' , (SELECT LAST_INSERT_ID()) AS 'insertedId';
+        END ;
+    
+    END IF ;
+    
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addClient` (IN `clientName_proc` VARCHAR(50), IN `clientLastName_proc` VARCHAR(50), IN `clientEmail_proc` VARCHAR(60), IN `clientPhone_proc` VARCHAR(12), IN `clientAdress_proc` VARCHAR(100), IN `clientPassword_proc` TEXT, IN `clientCity_proc` VARCHAR(50))   BEGIN 
+	SET @emailCount = (SELECT COUNT(*) FROM clients WHERE clientEmail = clientEmail_proc);
+    SET @phoneCount = (SELECT COUNT(*) FROM clients WHERE clientPhone = clientPhone_proc);
+    
+    IF @emailCount > 0 THEN
+    BEGIN 
+    	SELECT 'Email exists' AS 'Result';
+    END;
+    ELSEIF @phoneCount > 0 THEN
+    BEGIN
+    	SELECT 'Phone exists' AS 'Result';
+    END;
+    ELSE 
+    BEGIN
+    	INSERT INTO clients (
+        	clientName,
+            clientLastName,
+            clientPhone,
+            clientEmail,
+            clientAdress,
+            clientPassword,
+            clientCity
+        ) VALUES (
+        	clientName_proc,
+            clientLastName_proc,
+            clientPhone_proc,
+            clientEmail_proc,
+            clientAdress_proc,
+            clientPassword_proc,
+            (SELECT cityId FROM cities WHERE cityName = clientCity_proc)
+        );
+        SELECT 'Client added' AS 'Result';
+    END;
+    END IF;
+    
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addMark` (IN `markName_proc` VARCHAR(50))   BEGIN
+	SET @markCount = (SELECT COUNT(*) FROM marks WHERE markName = markName_proc);
+    
+    IF @markCount > 0 THEN
+    BEGIN
+    	SELECT 0 AS 'Response';
+    END;
+    ELSE 
+    BEGIN
+    	INSERT INTO marks(markName) VALUES(markName_proc);
+        SELECT 1 AS 'Response' , (SELECT LAST_INSERT_ID()) AS 'insertedId';
+    END;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteClient` (IN `clientId_proc` INT)   BEGIN
+	SET @orderCount = (SELECT COUNT(*) FROM orders WHERE orderClient = clientId_proc AND orderState = 'pending');
+    IF @orderCount > 0 THEN
+    	SELECT 'This client still have some pending orders' AS 'Result';
+    ELSEIF @orderCount = 0 THEN
+    BEGIN
+    	DELETE FROM clients WHERE id = clientId_proc;
+        SELECT 'Client has been deleted successfully' AS 'Result';
+    END;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteMark` (IN `markName_proc` VARCHAR(50))   BEGIN
+	SET @linkedProds = (SELECT COUNT(*) FROM products WHERE productMark = markName_proc);
+    IF @linkedProds > 0 THEN
+    	SELECT 'This mark is linked to some products' AS 'Response';
+    ELSEIF @linkedProds = 0 THEN
+    BEGIN
+    	DELETE FROM marks WHERE markName = markName_proc;
+        SELECT 'Mark has been deleted successfully' AS 'Response';
+    END ;
+    END IF ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOrder` (IN `orderId_proc` INT)   BEGIN
+	SET @orderState = (SELECT orderState FROM orders WHERE orderId = orderId_proc);
+    IF @orderState = 'pending' THEN
+    	SELECT 'This order is still pending' AS 'Response';
+    ELSE 
+    	DELETE FROM orders WHERE orderId = orderId_proc;
+        SELECT 'This order has been deleted' AS 'Response';
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteProduct` (IN `productId_proc` INT)   BEGIN
+
+	SET @ordersCount = (SELECT COUNT(*) FROM orders WHERE orderProduct = productId_proc AND orderState = 'pending');
+    IF @ordersCount > 0 THEN
+    BEGIN
+    	SELECT 'This product is linked to some pending orders' AS 'Response';
+    END;
+    ELSEIF @ordersCount = 0 THEN
+    BEGIN
+    	DELETE FROM products WHERE productId = productId_proc;
+        SELECT 'Product has been deleted successfully' AS 'Response';
+    END;
+    END IF;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -476,7 +604,7 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `clientName`, `clientLastName`, `clientEmail`, `clientPhone`, `clientCity`, `clientAdress`, `clientPhoto`, `clientPassword`) VALUES
-(15, 'Salah eddine', 'Last', 'salah@gmail.com', '0652897416', 13, 'Address', NULL, '$2b$10$HkMfOXjDscu6doEOSa3g1.W1pRyt/ShcZv5SIDaZq8oa.UwHrClMW'),
+(15, 'Salah eddine', 'Last name', 'salah@gmail.com', '0652897416', 13, 'Address', NULL, '$2b$10$HkMfOXjDscu6doEOSa3g1.W1pRyt/ShcZv5SIDaZq8oa.UwHrClMW'),
 (16, 'Aymane', 'aymane', 'aymane@gmail.com', '0157678554', 13, 'Address', NULL, '$2b$10$RGO8RtyTLU0U2fQhihHQr.x0ofVL.D3SZjJnsiHX9zEMlUf/BGdUy'),
 (17, 'Simo', 'simo', 'simo@gmail.com', '0654782169', 16, 'Quartier ezouhari', NULL, '$2b$10$DLkESegbRyQSvnLJYo.igu6PmYgH20UzTqhFQvejmlhzQHcg1q2Hm'),
 (18, 'Nissrine', 'nissrine', 'nissrine@gmail.com', '0651479258', 12, 'Quariter el woroud', NULL, '$2b$10$nG9TAnw6GjmCpOhMUEUVleRU0FHsvEEti6ziPbdFPzxb59q8vTX3G'),
@@ -560,7 +688,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`productId`, `productName`, `productDescription`, `productOldPrice`, `productCurrentPrice`, `productMark`, `productCategorie`, `productImages`, `productQuantities`, `productAddedTime`) VALUES
 (23, 'LES 3 CHÊNES SÉBACTASE CRÈME 50ML', 'Les problèmes de peau touchent un grand nombre d’adolescents et d’adultes. On les considère comme un mauvais moment à passer, mais cela peut avoir des conséquences non négligeables sur la qualité de vie et le bien-être psychologique des individus atteints. Le stress, la pollution, les déséquilibres hormonaux et certains cosmétiques peuvent modifier la sécrétion de sébum en le rendant plus abondant et plus irritant. Des bactéries se développent favorisant l’apparition des boutons, la peau grasse et les comédons\r\n\r\nGrâce à la combinaison optimale des ingrédients actifs, la crème :\r\n\r\nmatifie et empêche efficacement la peau de briller\r\nprévient les excès de sébum\r\ndiminue les symptômes de l’acné\r\ndiminue les rougeurs et irritations\r\naméliore le teint\r\nprotège contre les rayons UV (SPF 15)\r\nhydrate et tonifie la peau.', 0.000, 135.000, '3 CHÊNES', 'Soins visage', '1662905725963.jpg', 5, '2022-09-12'),
 (24, 'ACM SÉBIONEX GEL NETTOYANT (200 ML)', 'Le gel moussant Sebionex a été conçu pour nettoyer les peaux grasses ou à tendance acnéique sans les dessécher ni les agresser. Le gel moussant Sébionex respecte le pH de la peau. Ne contient pas de savon.', 0.000, 121.000, 'ACM', 'Soins visage', '1662905833797.jpg', 15, '2022-09-12'),
-(25, 'ACM NOVIDERM BORÉADE R SOIN RÉPARATEUR APAISANT 40', 'Le soin réparateur apaisant Boréade R des laboratoires Noviderm, est un soin du visage utilisé pour nourrir intensément la peau suite au dessèchement provoqué par des traitements dermatologiques contre l’acné. Avec sa texture onctueuse et non grasse, il fond très rapidement sur la peau afin d’apporter un réconfort immédiat tout en la laissant souple et parfaitement hydratée.\r\n\r\nLa formulation de ce soin réparateur apaisant Boréade R se compose de plusieurs actifs au fort pouvoir hydratant, comme la glycérine, l’oléodistillat de tournesol et des céramides 3. Grâce à eux, la peau est parfaitement hydratée toute la journée, ce qui permet de compenser le dessèchement lié aux traitements dermatologiques anti acnéiques, comme l’isotrétinoïne par exemple.\r\nL’association de beurre de karité, d’extrait de maca et de vitamine E, avec leurs formidables propriétés réparatrices et anti-oxydantes, va apaiser la peau, la rendre plus souple et la réparer en même temps.\r\nAfin d’amplifier ces actions bienfaisantes pour la peau, des peptides de quinoa, actifs que l’on retrouve dans la totalité des soins des laboratoires Noviderm, sont également présents dans cette formulation. Ils ont également des propriétés apaisantes et réparatrices permettant de limiter l’inflammation cutanée liée au dessèchement de la peau. Ils possèdent également des vertus protectrices puisqu’ils vont aider à la restauration de la fonction barrière naturelle de la peau. Enfin, leur action stimulante sur la production d’acide hyaluronique va aider à améliorer l’hydratation de l’épiderme, puisque cette molécule à un fort pouvoir de rétention d’eau, bien utile pour contrer le dessèchement cutané.\r\nEn utilisant ce soin, les sensations d’inconfort sont diminuées directement après son application sur la peau, cette dernière étant intensément nourrie et réparée.\r\n\r\nAppliquez matin et soir sur le visage propre et sec.\r\nConstitue une excellente base de maquillage', 0.000, 126.000, 'ACM', 'Soins visage', '1662905896638.jpg', 30, '2022-09-12'),
+(25, 'ACM NOVIDERM BORÉADE R SOIN RÉPARATEUR APAISANT 40', 'Le soin réparateur apaisant Boréade R des laboratoires Noviderm, est un soin du visage utilisé pour nourrir intensément la peau suite au dessèchement provoqué par des traitements dermatologiques contre l’acné. Avec sa texture onctueuse et non grasse, il fond très rapidement sur la peau afin d’apporter un réconfort immédiat tout en la laissant souple et parfaitement hydratée.\r\n\r\nLa formulation de ce soin réparateur apaisant Boréade R se compose de plusieurs actifs au fort pouvoir hydratant, comme la glycérine, l’oléodistillat de tournesol et des céramides 3. Grâce à eux, la peau est parfaitement hydratée toute la journée, ce qui permet de compenser le dessèchement lié aux traitements dermatologiques anti acnéiques, comme l’isotrétinoïne par exemple.\r\nL’association de beurre de karité, d’extrait de maca et de vitamine E, avec leurs formidables propriétés réparatrices et anti-oxydantes, va apaiser la peau, la rendre plus souple et la réparer en même temps.\r\nAfin d’amplifier ces actions bienfaisantes pour la peau, des peptides de quinoa, actifs que l’on retrouve dans la totalité des soins des laboratoires Noviderm, sont également présents dans cette formulation. Ils ont également des propriétés apaisantes et réparatrices permettant de limiter l’inflammation cutanée liée au dessèchement de la peau. Ils possèdent également des vertus protectrices puisqu’ils vont aider à la restauration de la fonction barrière naturelle de la peau. Enfin, leur action stimulante sur la production d’acide hyaluronique va aider à améliorer l’hydratation de l’épiderme, puisque cette molécule à un fort pouvoir de rétention d’eau, bien utile pour contrer le dessèchement cutané.\r\nEn utilisant ce soin, les sensations d’inconfort sont diminuées directement après son application sur la peau, cette dernière étant intensément nourrie et réparée.\r\n\r\nAppliquez matin et soir sur le visage propre et sec.\r\nConstitue une excellente base de maquillage', 200.000, 126.000, 'ACM', 'Soins visage', '1662905896638.jpg', 30, '2022-09-12'),
 (26, 'ALGOTHERM ALGOPURE CORRECTEUR INTENSIF IMPERFECTIO', 'Le soin ciblé anti-imperfections diminue visiblement les imperfections et les rougeurs. Localement et en douceur, il assèche les boutons. La peau retrouve sa netteté. Ses plus : efficace en 24H. TESTÉ SOUS CONTRÔLE DERMATOLOGIQUE - SANS PARABÈNE - SANS PHÉNOXYÉTHANOL\r\n\r\n\r\nCONSEIL D\'UTILISATION :\r\n\r\nAppliquer localement sur les imperfections.', 0.000, 135.000, 'BIODERMINY', 'Soins visage', '1662906006419.jpg', 3, '2022-09-12'),
 (27, 'B COM BIO ORGANIC DÈODORANT SANS SEL ALUMINIUM ET ', 'B-COM-BIO Déodorant longue durée certifié Bio, sans Sels d’Aluminium, sans Alcool, qui régule les odeurs sans perturber l’équilibre de la peau. Les odeurs sont neutralisées efficacement et durablement. La peau est fraîche et délicatement parfumée. Sans paraben.\r\n\r\n \r\n\r\nAppliquer sous les aisselles sur une peau propre et sèche.\r\n\r\nEau florale de Sauge BIO, Mélanges d’huiles essentielles, Acides aminés, actifs déodorants naturels.', 0.000, 90.000, '3 CHÊNES', 'Corps', '1662906076685.jpg', 66, '2022-09-12'),
 (28, 'FILORGA MOUSSE DÉMAQUILLANTE', 'Descriptif :\r\nLA 1ere MOUSSE anti-âge démaquillante\r\nDébarrasser la peau de tout ce qui la pollue et l’asphyxie, tout en lui apportant les éléments qui lui manquent…\r\nC’est le pari physiologique et technologique de la Mousse Démaquillante Filorga, enrichie en Acide Hyaluronique et Lys Blanc.\r\n\r\nAu-delà de sa texture unique, la Mousse Démaquillante Filorga apporte autant qu’elle enlève. Et c’est là toute sa force…\r\nPremier démaquillant du marché fortement concentré en Acide Hyaluronique et en Lys Blanc, il combine 4 voies d’action originales :\r\n- Une première hydratation : Grâce à sa capacité à retenir 1000 fois son poids en eau, l’Acide Hyaluronique véhiculé par la Mousse Démaquillante Filorga vient se déposer à la surface de la peau pour former un film protecteur isolant, comme ouaté. Ce film limite les pertes hydriques trans-épidermiques et empêche la déshydratation souvent consécutive au rinçage à l’eau, quel qu’il soit.\r\n/ Aucune rougeur, aucun tiraillement, la peau, toute veloutée, semble parfaitement sereine et réhydratée.\r\n- Un repulping immédiat des traits : Grâce à son haut poids moléculaire (1,8 millions de daltons), l’acide hyaluronique de la formule se glisse aussi entre les cellules de la couche cornée pour repulper l’épiderme et lisser les ridules de déshydratation.\r\n/ La peau semble toute fraîche, bien lisse et reposée.\r\n- Une réparation épidermique : Bien connu pour ses propriétés apaisantes, adoucissantes et réparatrices, le Lys Blanc calme les irritations dans l’instant, atténue sérieusement l’inflammation et favorise une cicatrisation accélérée des microlésions apparues dans la journée.\r\n/ La peau, parfaitement régénérée, apparaît plus homogène, plus saine, plus résistante.\r\n- Une protection anti-radicalaire : Le Lys Blanc, puissant anti-oxydant, est également capable de désactiver les radicaux libres déjà présents dans la peau, pour limiter tous les processus d’oxydation.\r\n/ Avec son système de défense intact, la peau peut ensuite mieux affronter les agresseurs quotidiens.\r\n\r\nIndications :\r\nNettoie - Démaquille - Hydrate\r\nVisage et Yeux\r\n\r\nLa Mousse Démaquillante Filorga s’adresse à toutes les peaux, mêmes les plus sensibles. Egalement conseillée aux peaux matures, sujettes au tiraillement, qui ont tendance à produire moins de lipides avec l’âge.\r\n\r\n \r\n\r\nConseils d\'utilisation :\r\nUtilisée matin et soir, toute l’année, la Mousse Démaquillante Filorga purifie la peau et remet ses compteurs à zéro, pour démultiplier l’effet du soin suivant.\r\n/ C’est l’étape clé d’un rituel anti-âge idéal…\r\n1/ Appliquer 2 ou 3 noix de cette mousse fraîche, limpide et légèrement parfumée, dans le creux de la main.\r\n2/ Déposer les noix sur visage humide et émulsionner doucement du bout des doigts en gestes circulaires, y compris sur le contour de l’oeil.\r\n3/ Rincer abondamment à l’eau tiède et recommencer l’opération si nécessaire.\r\nEffet Flash. La peau, purifiée, peut à nouveau parfaitement respirer. Le teint, dégrisé, s’éclaire. Le grain de peau se veloute. Le visage tout entier se transforme en une trame parfaite pour mieux assimiler les actifs des soins de jour ou de nuit.', 200.000, 170.000, 'AVENE', 'NATURE ET BIO', '1662906155760.jpg', 2, '2022-09-12');
@@ -600,6 +728,13 @@ CREATE TABLE `sessions` (
   `expires` int(11) UNSIGNED NOT NULL,
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
+('-x2043hlTIlCXQ6Y7Wy0vURx4zyBERer', 1663168509, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"admin\":1}');
 
 --
 -- Indexes for dumped tables
