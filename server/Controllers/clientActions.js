@@ -226,25 +226,23 @@ const getCategoriesForLandingPage = () => {
   });
 };
 const getProductsInTheCard = (req, res) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
-      [req.session.client],
-      (err, result) => {
-        if (err)
-          return reject({
-            fetchState: false,
-            desc: `Database error 3`,
-            cartProducts: [],
-          });
-        return resolve({
-          fetchState: true,
-          desc: `Cart fetched successfully`,
-          cartProducts: result,
+  db.query(
+    `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
+    [req.session.client],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          cart: [],
         });
-      }
-    );
-  });
+      return res.status(200).send({
+        actionState: false,
+        desc: `Cart fetched successfully`,
+        cart: result,
+      });
+    }
+  );
 };
 const splitLandingPageProducts = (products) => {
   let productsObj = { firstSlider: [], secondSlider: [] };
