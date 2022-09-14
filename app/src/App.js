@@ -20,6 +20,7 @@ import axios from "axios";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+  const [clientIsAuth, setClientIsAuth] = useState(false);
   const signOut = () => {
     axios
       .post("http://localhost:8080/adminAuthentication/v1/signOut")
@@ -30,12 +31,41 @@ function App() {
   const signIn = () => {
     setIsAuth(true);
   };
-  useEffect(() => {
+  const adminAuth = () => {
     axios
       .post("http://localhost:8080/adminAuthentication/v1/isAdminAuth")
       .then((res) => {
         if (res.data.actionState === true) setIsAuth(true);
       });
+  };
+
+  /////////////////////////////////////
+
+  const clientIsSignIn = () => {
+    setClientIsAuth(true);
+    console.log("i");
+  };
+
+  const clientSignOut = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/clientSignOut")
+      .then((res) => {
+        if (res.data.actionState === true) setClientIsAuth(false);
+      });
+  };
+  const clientAuth = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/isClientAuthenticated")
+      .then((res) => {
+        if (res.data.actionState === true) setClientIsAuth(true);
+      });
+  };
+
+  /////////////////////////////////////
+
+  useEffect(() => {
+    adminAuth();
+    clientAuth();
   }, []);
   axios.defaults.withCredentials = true;
   return (

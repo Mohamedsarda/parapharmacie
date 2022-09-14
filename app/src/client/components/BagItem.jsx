@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import "./scss/BagItem.scss";
 import axios from "axios";
@@ -17,30 +17,31 @@ const BagItem = ({
   updateTotalPrice,
 }) => {
   const [quantity, setQuantity] = useState(orderQuantity);
-  const addToQuantity = (orderId, orderQuantity) => {
+
+  const addToQuantity = () => {
     if (quantity === 5) {
       setQuantity(1);
     } else {
       setQuantity(quantity + 1);
-      updatePorductQuantity();
       updateTotalPrice(productCurrentPrice, "+");
+      updatePorductQuantity(quantity + 1);
     }
   };
   const removeFromQuantity = () => {
     if (quantity === 1) {
-      console.log("no");
+      console.log("");
     } else {
       setQuantity(quantity - 1);
-      updatePorductQuantity();
+      updatePorductQuantity(quantity - 1);
       updateTotalPrice(productCurrentPrice, "-");
     }
   };
 
-  const updatePorductQuantity = () => {
+  const updatePorductQuantity = (qnt) => {
     axios
       .post("http://localhost:8080/clientActions/v1/editProductInCart", {
         orderId,
-        orderQuantity,
+        orderQuantity: qnt,
       })
       .then((res) => {
         if (res.data.actionState) {
@@ -71,14 +72,11 @@ const BagItem = ({
             <div className="quantityCount">
               <span onClick={removeFromQuantity}>-</span>
               <span>{quantity}</span>
-              <span onClick={() => addToQuantity()}>+</span>
+              <span onClick={addToQuantity}>+</span>
             </div>
           </div>
         </div>
-        <CloseIcon
-          onClick={() => removeProductsFromCart(orderId)}
-          className="icon"
-        />
+        <CloseIcon onClick={removeProductsFromCart} className="icon" />
       </div>
     </div>
   );

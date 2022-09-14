@@ -79,6 +79,7 @@ const Bag = () => {
             <p>Shipping costs are calculated during checkout.</p>
             <h3>TOTAL : {totalPrice} DH</h3>
           </div>
+          <button>Check Out</button>
         </div>
       </div>
     </div>

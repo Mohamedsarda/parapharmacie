@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Home = () => {
+const Home = ({ clientIsSignIn }) => {
   const [singleProduct, setSingleProduct] = useState(false);
   const [firstSlider, setFirstSlider] = useState([]);
   const [secondSlider, setSecondSlider] = useState([]);
@@ -94,8 +94,7 @@ const Home = () => {
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
-          console.log(res.data.cart[0].ordersCount);
-          // dispatch(setCounter(res.data.cart));
+          dispatch(setCounter(res.data.cart[0].ordersCount));
           setCategoriesData(res.data.categories);
         }
       });
