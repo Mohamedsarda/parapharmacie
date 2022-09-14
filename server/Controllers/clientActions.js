@@ -182,7 +182,6 @@ UNION
           desc: `Something went wrong. Database error. 1`,
           products: {},
           categories: [],
-          cart: [],
         });
       const categories = await getCategoriesForLandingPage();
       if (!categories.fetchState)
@@ -191,7 +190,6 @@ UNION
           desc: "Something went wrong. Database error 2",
           products: {},
           categories: [],
-          cart: [],
         });
       if (!req.session.client)
         return res.status(200).send({
@@ -199,23 +197,13 @@ UNION
           desc: `Products and categories fetched successfully`,
           categories: categories.categories,
           products: splitLandingPageProducts(result),
-          cart: [],
         });
-      const cart = await getProductsInTheCard(req.session.client);
-      if (!cart.fetchState)
-        return res.status(200).send({
-          actionState: false,
-          desc: "Something went wrong. Database error 3",
-          products: {},
-          categories: [],
-          cart: [],
-        });
+
       return res.status(200).send({
         actionState: true,
         desc: `Products and categories fetched successfully`,
         categories: categories.categories,
         products: splitLandingPageProducts(result),
-        cart: cart.cartProducts,
       });
     }
   );
@@ -237,11 +225,11 @@ const getCategoriesForLandingPage = () => {
     });
   });
 };
-const getProductsInTheCard = (clientId) => {
+const getProductsInTheCard = (req, res) => {
   return new Promise((resolve, reject) => {
     db.query(
       `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
-      [clientId],
+      [req.session.client],
       (err, result) => {
         if (err)
           return reject({
@@ -280,4 +268,5 @@ module.exports = {
   getProductsFromCart,
   removeProductFromCart,
   editProductInCart,
+  getProductsInTheCard,
 };
