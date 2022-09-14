@@ -128,6 +128,7 @@ const removeProductFromCart = (req, res) => {
 };
 const editProductInCart = (req, res) => {
   const { orderId, orderQuantity } = req.body;
+  console.log(orderId, orderQuantity);
   db.query(
     `UPDATE orders SET orderQuantity = ? WHERE orderId = ?`,
     [orderQuantity, orderId],
@@ -239,7 +240,7 @@ const getCategoriesForLandingPage = () => {
 const getProductsInTheCard = (clientId) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT COUNT(*) FROM orders WHERE orderClient = ? AND orderState = 'cart'`,
+      `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
       [clientId],
       (err, result) => {
         if (err)

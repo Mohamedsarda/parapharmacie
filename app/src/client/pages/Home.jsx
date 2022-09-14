@@ -94,6 +94,7 @@ const Home = () => {
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
+          console.log(res.data.cart[0].ordersCount);
           // dispatch(setCounter(res.data.cart));
           setCategoriesData(res.data.categories);
         }
