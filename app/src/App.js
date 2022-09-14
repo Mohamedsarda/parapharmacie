@@ -72,7 +72,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <ToastContainer />
-        {!isAuth ? (
+        {!isAuth && !clientIsAuth ? (
           <Routes>
             <Route path="admin">
               <Route path="login" element={<Login signIn={signIn} />} />
@@ -82,11 +82,16 @@ function App() {
               <Route path="ContactUs" element={<ContactUs />} />
               <Route path="About" element={<About />} />
               <Route path="Parapharmacie" element={<Parapharmacie />} />
-              <Route path="bag" element={<Bag />} />
             </Route>
           </Routes>
-        ) : (
+        ) : isAuth && !clientIsAuth ? (
           <Routes>
+            <Route path="/">
+              <Route index element={<ClientHome />} />
+              <Route path="ContactUs" element={<ContactUs />} />
+              <Route path="About" element={<About />} />
+              <Route path="Parapharmacie" element={<Parapharmacie />} />
+            </Route>
             <Route path="admin">
               <Route index element={<Home signOut={signOut} />} />
               <Route path="login" element={<Home signOut={signOut} />} />
@@ -102,6 +107,31 @@ function App() {
               <Route path="products">
                 <Route index element={<Products />} />
               </Route>
+            </Route>
+          </Routes>
+        ) : !isAuth && clientIsAuth ? (
+          <Routes>
+            <Route path="admin">
+              <Route path="login" element={<Login signIn={signIn} />} />
+            </Route>
+            <Route path="/">
+              <Route index element={<ClientHome />} />
+              <Route path="ContactUs" element={<ContactUs />} />
+              <Route path="About" element={<About />} />
+              <Route path="Parapharmacie" element={<Parapharmacie />} />
+              <Route path="bag" element={<Bag />} />
+            </Route>
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="admin">
+              <Route path="login" element={<Login signIn={signIn} />} />
+            </Route>
+            <Route path="/">
+              <Route index element={<ClientHome />} />
+              <Route path="ContactUs" element={<ContactUs />} />
+              <Route path="About" element={<About />} />
+              <Route path="Parapharmacie" element={<Parapharmacie />} />
             </Route>
           </Routes>
         )}
