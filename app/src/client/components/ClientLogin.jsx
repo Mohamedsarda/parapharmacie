@@ -55,7 +55,6 @@ const ClientLogin = ({ closeLoginContainer }) => {
         <div className="row">
           <label htmlFor="">Mot de pass</label>
           <input
-            type="clientPassword"
             type="password"
             value={clientPassword}
             onChange={(e) => setClientPassword(e.target.value)}
