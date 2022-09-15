@@ -15,6 +15,7 @@ const Bag = () => {
         orderId,
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.actionState) {
           toast.success(res.data.desc);
           setBagProducts(bagProducts.filter((e) => e.orderId !== orderId));

@@ -1,10 +1,10 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-const About = () => {
+const About = ({ signClientIn }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar signClientIn={signClientIn} />
       About
     </div>
   );

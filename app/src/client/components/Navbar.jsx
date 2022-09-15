@@ -8,17 +8,33 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { setCounter } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
-const Navbar = ({ categoriesData }) => {
+const Navbar = ({ categoriesData, signClientIn }) => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const getCartCounter = () => {
+    axios
+      .post("http://localhost:8080/clientActions/v1/getProductInCart")
+      .then((res) => {
+        if (res.data.actionState) {
+          dispatch(setCounter(res.data.cart[0].ordersCount));
+        }
+      });
+  };
 
   const closeLoginContainer = () => {
     setClientLoginContainer(false);
   };
 
   useEffect(() => {
+    getCartCounter();
     const onScroll = () => setOffset(window.pageYOffset);
     // clean up code
     window.removeEventListener("scroll", onScroll);
@@ -50,7 +66,10 @@ const Navbar = ({ categoriesData }) => {
           </Link>
         </div>
         {ClientLoginContainer && (
-          <ClientLogin closeLoginContainer={closeLoginContainer} />
+          <ClientLogin
+            signClientIn={signClientIn}
+            closeLoginContainer={closeLoginContainer}
+          />
         )}
       </div>
       <ul className="nav-links">

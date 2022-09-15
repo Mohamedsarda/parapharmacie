@@ -43,7 +43,6 @@ function App() {
 
   const clientIsSignIn = () => {
     setClientIsAuth(true);
-    console.log("i");
   };
 
   const clientSignOut = () => {
@@ -78,19 +77,43 @@ function App() {
               <Route path="login" element={<Login signIn={signIn} />} />
             </Route>
             <Route path="/">
-              <Route index element={<ClientHome />} />
-              <Route path="ContactUs" element={<ContactUs />} />
-              <Route path="About" element={<About />} />
-              <Route path="Parapharmacie" element={<Parapharmacie />} />
+              <Route
+                index
+                element={<ClientHome signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="ContactUs"
+                element={<ContactUs signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="About"
+                element={<About signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="Parapharmacie"
+                element={<Parapharmacie signClientIn={clientIsSignIn} />}
+              />
             </Route>
           </Routes>
         ) : isAuth && !clientIsAuth ? (
           <Routes>
             <Route path="/">
-              <Route index element={<ClientHome />} />
-              <Route path="ContactUs" element={<ContactUs />} />
-              <Route path="About" element={<About />} />
-              <Route path="Parapharmacie" element={<Parapharmacie />} />
+              <Route
+                index
+                element={<ClientHome signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="ContactUs"
+                element={<ContactUs signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="About"
+                element={<About signClientIn={clientIsSignIn} />}
+              />
+              <Route
+                path="Parapharmacie"
+                element={<Parapharmacie signClientIn={clientIsSignIn} />}
+              />
             </Route>
             <Route path="admin">
               <Route index element={<Home signOut={signOut} />} />

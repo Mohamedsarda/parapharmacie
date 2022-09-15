@@ -6,12 +6,12 @@ import "../components/scss/navBar.scss";
 import ViewProduct from "../components/ViewProduct";
 import { motion } from "framer-motion";
 import { Splide } from "@splidejs/react-splide";
-import { addCounter, setCounter } from "../redux/cartRedux";
+import { addCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Home = ({ clientIsSignIn }) => {
+const Home = ({ signClientIn }) => {
   const [singleProduct, setSingleProduct] = useState(false);
   const [firstSlider, setFirstSlider] = useState([]);
   const [secondSlider, setSecondSlider] = useState([]);
@@ -91,6 +91,7 @@ const Home = ({ clientIsSignIn }) => {
         sixthCategroie: "NATURE ET BIO",
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
@@ -104,7 +105,7 @@ const Home = ({ clientIsSignIn }) => {
   }, []);
   return (
     <div>
-      <Navbar categoriesData={categoriesData} />
+      <Navbar categoriesData={categoriesData} signClientIn={signClientIn} />
       <div className="_3-col-imgs">
         <img
           src="https://i.pinimg.com/736x/35/bd/a7/35bda78db14230d78d72165bc968fbf1.jpg"

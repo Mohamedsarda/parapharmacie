@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 
-const ClientLogin = ({ closeLoginContainer }) => {
+const ClientLogin = ({ closeLoginContainer, signClientIn }) => {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
   const dispatch = useDispatch();
@@ -14,7 +14,9 @@ const ClientLogin = ({ closeLoginContainer }) => {
     axios
       .post("http://localhost:8080/clientActions/v1/getProductInCart")
       .then((res) => {
-        console.log(res.data);
+        if (res.data.actionState) {
+          dispatch(setCounter(res.data.cart[0].ordersCount));
+        }
       });
   };
 
@@ -28,9 +30,13 @@ const ClientLogin = ({ closeLoginContainer }) => {
         })
         .then((res) => {
           if (res.data.actionState) {
+            signClientIn();
+            getCartCounter();
             closeLoginContainer();
             toast.success(res.data.desc);
-            getCartCounter();
+            // setTimeout(() => {
+            //   window.location.href = "http://localhost:3000";
+            // }, 2000);
           } else {
             toast.error(res.data.desc);
           }
