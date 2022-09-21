@@ -68,13 +68,14 @@ const getMarks = (req, res) => {
   });
 };
 // Start Editing
-const addProductToCart = (req, res) => {
-  const { productId, productPrice, orderQuantity } = req.body;
+const addProductToOrders = (req, res) => {
+  const { productId, productPrice, orderQuantity, state } = req.body;
   db.query(
     `INSERT INTO orders(orderClient,orderState,orderProduct, orderQuantity, orderPrice)
-  VALUES(?, 'cart', ?, ?, ?)`,
+  VALUES(?, ?, ?, ?, ?)`,
     [
       req.session.client,
+      state,
       productId,
       orderQuantity,
       productPrice * orderQuantity,
@@ -92,6 +93,7 @@ const addProductToCart = (req, res) => {
     }
   );
 };
+
 const getProductsFromCart = (req, res) => {
   db.query(
     `SELECT orders.orderId,orders.orderQuantity,orders.orderPrice, products.productImages, products.productName, products.productDescription, products.productCurrentPrice, products.productOldPrice FROM orders 
@@ -262,7 +264,7 @@ module.exports = {
   getProducts,
   getCategories,
   getMarks,
-  addProductToCart,
+  addProductToOrders,
   openLandingPage,
   getProductsFromCart,
   removeProductFromCart,
