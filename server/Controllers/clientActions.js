@@ -145,6 +145,25 @@ const editProductInCart = (req, res) => {
     }
   );
 };
+const getProductsInTheCard = (req, res) => {
+  db.query(
+    `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
+    [req.session.client],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          cart: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Cart fetched successfully`,
+        cart: result,
+      });
+    }
+  );
+};
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -225,25 +244,7 @@ const getCategoriesForLandingPage = () => {
     });
   });
 };
-const getProductsInTheCard = (req, res) => {
-  db.query(
-    `SELECT COUNT(*) AS 'ordersCount' FROM orders  WHERE orderClient = ? AND orderState = 'cart'`,
-    [req.session.client],
-    (err, result) => {
-      if (err)
-        return res.status(200).send({
-          actionState: false,
-          desc: `Something went wrong. Database error`,
-          cart: [],
-        });
-      return res.status(200).send({
-        actionState: true,
-        desc: `Cart fetched successfully`,
-        cart: result,
-      });
-    }
-  );
-};
+
 const splitLandingPageProducts = (products) => {
   let productsObj = { firstSlider: [], secondSlider: [] };
   for (let i = 0; i < products.length / 2; i++) {
