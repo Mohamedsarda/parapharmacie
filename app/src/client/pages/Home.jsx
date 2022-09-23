@@ -67,6 +67,7 @@ const Home = ({ signClientIn }) => {
         productId: id,
         productPrice: productCurrentPrice,
         orderQuantity: quantity,
+        state: "cart",
       })
       .then((res) => {
         if (res.data.actionState) {

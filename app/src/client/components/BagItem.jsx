@@ -20,7 +20,7 @@ const BagItem = ({
 
   const addToQuantity = () => {
     if (quantity === 5) {
-      setQuantity(1);
+      setQuantity(5);
     } else {
       setQuantity(quantity + 1);
       updateTotalPrice(productCurrentPrice, "+");
@@ -76,7 +76,10 @@ const BagItem = ({
             </div>
           </div>
         </div>
-        <CloseIcon onClick={removeProductsFromCart} className="icon" />
+        <CloseIcon
+          onClick={() => removeProductsFromCart(orderId)}
+          className="icon"
+        />
       </div>
     </div>
   );

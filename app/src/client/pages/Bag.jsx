@@ -26,7 +26,9 @@ const Bag = () => {
   };
   const getProductsInCart = () => {
     axios
-      .post("http://localhost:8080/clientActions/v1/getProductsInCart")
+      .post("http://localhost:8080/clientActions/v1/getProductsInCart", {
+        state: "cart",
+      })
       .then((res) => {
         console.log(res.data);
         if (res.data.actionState) {
