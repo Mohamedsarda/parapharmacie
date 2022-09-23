@@ -1,10 +1,14 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-const ContactUs = ({ signClientIn }) => {
+const ContactUs = ({ signClientIn, clientIsAuth, clientSignOut }) => {
   return (
     <div>
-      <Navbar signClientIn={signClientIn} />
+      <Navbar
+        clientIsAuth={clientIsAuth}
+        clientSignOut={clientSignOut}
+        signClientIn={signClientIn}
+      />
       ContactUs
     </div>
   );

@@ -1,10 +1,14 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-const CoreCode = () => {
+const CoreCode = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar
+        clientIsAuth={clientIsAuth}
+        clientSignOut={clientSignOut}
+        signClientIn={signClientIn}
+      />
       CoreCode
     </div>
   );

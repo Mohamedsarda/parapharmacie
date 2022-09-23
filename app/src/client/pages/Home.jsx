@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Home = ({ signClientIn }) => {
+const Home = ({ signClientIn, clientSignOut, clientIsAuth }) => {
   const [singleProduct, setSingleProduct] = useState(false);
   const [firstSlider, setFirstSlider] = useState([]);
   const [secondSlider, setSecondSlider] = useState([]);
@@ -106,7 +106,12 @@ const Home = ({ signClientIn }) => {
   }, []);
   return (
     <div>
-      <Navbar categoriesData={categoriesData} signClientIn={signClientIn} />
+      <Navbar
+        categoriesData={categoriesData}
+        clientSignOut={clientSignOut}
+        signClientIn={signClientIn}
+        clientIsAuth={clientIsAuth}
+      />
       <div className="_3-col-imgs">
         <img
           src="https://i.pinimg.com/736x/35/bd/a7/35bda78db14230d78d72165bc968fbf1.jpg"

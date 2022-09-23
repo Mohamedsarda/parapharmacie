@@ -12,7 +12,13 @@ import { setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
-const Navbar = ({ categoriesData, signClientIn, rernderNavBarWithId }) => {
+const Navbar = ({
+  categoriesData,
+  signClientIn,
+  rernderNavBarWithId,
+  clientSignOut,
+  clientIsAuth,
+}) => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -69,6 +75,8 @@ const Navbar = ({ categoriesData, signClientIn, rernderNavBarWithId }) => {
           <ClientLogin
             signClientIn={signClientIn}
             closeLoginContainer={closeLoginContainer}
+            clientSignOut={clientSignOut}
+            clientIsAuth={clientIsAuth}
           />
         )}
       </div>

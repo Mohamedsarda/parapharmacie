@@ -4,7 +4,7 @@ import BagItem from "../components/BagItem";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Bag = () => {
+const Bag = ({ clientIsAuth, clientSignOut }) => {
   const [bagProducts, setBagProducts] = useState([]);
   const [currentOrderPrice, setCurrentOrderPrice] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
@@ -54,7 +54,11 @@ const Bag = () => {
   };
   return (
     <div>
-      <Navbar rernderNavBarWithId={rernderNavBarWithId.current} />
+      <Navbar
+        clientIsAuth={clientIsAuth}
+        clientSignOut={clientSignOut}
+        rernderNavBarWithId={rernderNavBarWithId.current}
+      />
       <div className="bagContainer">
         <div className="productsBag">
           {bagProducts.map((product) => {
