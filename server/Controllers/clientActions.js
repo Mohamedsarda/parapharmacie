@@ -94,12 +94,13 @@ const addProductToOrders = (req, res) => {
   );
 };
 
-const getProductsFromCart = (req, res) => {
+const getProductsFromOrders = (req, res) => {
+  const { state } = req.body;
   db.query(
     `SELECT orders.orderId,orders.orderQuantity,orders.orderPrice, products.productImages, products.productName, products.productDescription, products.productCurrentPrice, products.productOldPrice FROM orders 
       INNER JOIN products ON orders.orderProduct = products.productId
-      WHERE orderState = 'cart' AND orderClient = ?`,
-    [req.session.client],
+      WHERE orderState = ? AND orderClient = ?`,
+    [state, req.session.client],
     (err, result) => {
       if (err)
         return res.status(200).send({
@@ -115,7 +116,7 @@ const getProductsFromCart = (req, res) => {
     }
   );
 };
-const removeProductFromCart = (req, res) => {
+const removeProductFromOrders = (req, res) => {
   const { orderId } = req.body;
   db.query(`DELETE FROM orders WHERE orderId = ?`, [orderId], (err, result) => {
     if (err)
@@ -266,8 +267,8 @@ module.exports = {
   getMarks,
   addProductToOrders,
   openLandingPage,
-  getProductsFromCart,
-  removeProductFromCart,
+  getProductsFromOrders,
+  removeProductFromOrders,
   editProductInCart,
   getProductsInTheCard,
 };

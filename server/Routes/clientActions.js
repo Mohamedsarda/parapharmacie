@@ -6,8 +6,8 @@ const {
   getCategories,
   getMarks,
   addProductToOrders,
-  getProductsFromCart,
-  removeProductFromCart,
+  getProductsFromOrders,
+  removeProductFromOrders,
   openLandingPage,
   editProductInCart,
   getProductsInTheCard,
@@ -45,12 +45,12 @@ ClientActionsRoute.post(
 ClientActionsRoute.post(
   "/getProductsInCart",
   isClientAuthenticated,
-  getProductsFromCart
+  getProductsFromOrders
 );
 ClientActionsRoute.post(
   "/removeProductsFromCart",
   isClientAuthenticated,
-  removeProductFromCart
+  removeProductFromOrders
 );
 ClientActionsRoute.post(
   "/editProductInCart",
