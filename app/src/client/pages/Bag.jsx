@@ -15,7 +15,6 @@ const Bag = () => {
         orderId,
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.actionState) {
           toast.success(res.data.desc);
           setBagProducts(bagProducts.filter((e) => e.orderId !== orderId));
@@ -30,13 +29,13 @@ const Bag = () => {
         state: "cart",
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.actionState) {
           setBagProducts(res.data.cart);
           let totalPriceCalc = 0;
+          console.log(res.data.cart);
           res.data.cart.forEach((cart, idx) => {
             // console.log(cart.productCurrentPrice, idx);
-            totalPriceCalc += cart.productCurrentPrice;
+            totalPriceCalc += cart.productCurrentPrice * cart.orderQuantity;
           });
           setTotalPrice(totalPriceCalc);
         }
