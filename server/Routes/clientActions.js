@@ -5,9 +5,9 @@ const {
   getProducts,
   getCategories,
   getMarks,
-  addProductToCart,
-  getProductsFromCart,
-  removeProductFromCart,
+  addProductToOrders,
+  getProductsFromOrders,
+  removeProductFromOrders,
   openLandingPage,
   editProductInCart,
   getProductsInTheCard,
@@ -40,17 +40,17 @@ ClientActionsRoute.post("/getProducts", getProducts);
 ClientActionsRoute.post(
   "/addProductToCart",
   isClientAuthenticated,
-  addProductToCart
+  addProductToOrders
 );
 ClientActionsRoute.post(
   "/getProductsInCart",
   isClientAuthenticated,
-  getProductsFromCart
+  getProductsFromOrders
 );
 ClientActionsRoute.post(
   "/removeProductsFromCart",
   isClientAuthenticated,
-  removeProductFromCart
+  removeProductFromOrders
 );
 ClientActionsRoute.post(
   "/editProductInCart",
