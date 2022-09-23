@@ -12,7 +12,7 @@ import { setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
-const Navbar = ({ categoriesData, signClientIn }) => {
+const Navbar = ({ categoriesData, signClientIn, rernderNavBarWithId }) => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -40,7 +40,7 @@ const Navbar = ({ categoriesData, signClientIn }) => {
     window.removeEventListener("scroll", onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [rernderNavBarWithId]);
 
   return (
     <div className="Navbar">

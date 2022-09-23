@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import BagItem from "../components/BagItem";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ const Bag = () => {
   const [bagProducts, setBagProducts] = useState([]);
   const [currentOrderPrice, setCurrentOrderPrice] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  let rernderNavBarWithId = useRef("");
 
   const removeProductsFromCart = (orderId) => {
     axios
@@ -16,6 +17,7 @@ const Bag = () => {
       })
       .then((res) => {
         if (res.data.actionState) {
+          rernderNavBarWithId.current = orderId;
           toast.success(res.data.desc);
           setBagProducts(bagProducts.filter((e) => e.orderId !== orderId));
         } else {
@@ -52,7 +54,7 @@ const Bag = () => {
   };
   return (
     <div>
-      <Navbar />
+      <Navbar rernderNavBarWithId={rernderNavBarWithId.current} />
       <div className="bagContainer">
         <div className="productsBag">
           {bagProducts.map((product) => {
