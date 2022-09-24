@@ -3,8 +3,6 @@ import "../../admin/components/scss/userform.scss";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { setCounter } from "../redux/cartRedux";
-import { useDispatch } from "react-redux";
 
 const SignInUp = ({ signClientIn }) => {
   const [signInForm, setSignInFrom] = useState(false);
@@ -21,16 +19,6 @@ const SignInUp = ({ signClientIn }) => {
     clientAdress: "",
     clientPhone: "",
   });
-  const dispatch = useDispatch();
-  const getCartCounter = () => {
-    axios
-      .post("http://localhost:8080/clientActions/v1/getProductInCart")
-      .then((res) => {
-        if (res.data.actionState) {
-          dispatch(setCounter(res.data.cart[0].ordersCount));
-        }
-      });
-  };
 
   //////////////////////////
 
@@ -47,7 +35,6 @@ const SignInUp = ({ signClientIn }) => {
         })
         .then((res) => {
           if (res.data.actionState) {
-            getCartCounter();
             signClientIn();
             toast.success(res.data.desc);
             window.location.href = "/";

@@ -38,6 +38,7 @@ const ClientLogin = ({
         })
         .then((res) => {
           if (res.data.actionState) {
+            closeLoginContainer();
             signClientIn();
             getCartCounter();
             toast.success(res.data.desc);
@@ -84,7 +85,10 @@ const ClientLogin = ({
           </form>
           <p>si vous n'avez pas de compte cliquez ici pour vous inscrire</p>
           <button>
-            <Link style={{ textDecoration: "none" , color:'white'}} to="/signInUp">
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to="/signInUp"
+            >
               Inscrire
             </Link>
           </button>

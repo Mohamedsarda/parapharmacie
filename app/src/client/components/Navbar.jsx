@@ -65,11 +65,17 @@ const Navbar = ({
             className="icon"
             onClick={() => setClientLoginContainer(!ClientLoginContainer)}
           />
-          <Link to="/bag">
-            <Badge badgeContent={cartCounter} className="badge" color="success">
-              <ShoppingCartOutlinedIcon className="icon" />
-            </Badge>
-          </Link>
+          {clientIsAuth && (
+            <Link to="/bag">
+              <Badge
+                badgeContent={cartCounter}
+                className="badge"
+                color="success"
+              >
+                <ShoppingCartOutlinedIcon className="icon" />
+              </Badge>
+            </Link>
+          )}
         </div>
         {ClientLoginContainer && (
           <ClientLogin
