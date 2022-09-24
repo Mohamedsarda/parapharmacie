@@ -4,6 +4,7 @@ import "./scss/clientLogin.scss";
 import { toast } from "react-toastify";
 import { setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ClientLogin = ({
   closeLoginContainer,
@@ -25,7 +26,7 @@ const ClientLogin = ({
   };
   const logOut = () => {
     clientSignOut();
-    getCartCounter();
+    dispatch(setCounter(0));
   };
   const handleLogin = (e) => {
     e.preventDefault();
@@ -52,10 +53,11 @@ const ClientLogin = ({
     <>
       {clientIsAuth ? (
         <div className="ClientLogin">
-          <li>dashd sd</li>
-          <li>dashd sd</li>
-          <li>dashd sd</li>
-          <button onClick={() => logOut()}>Log Out</button>
+          <div className="container">
+            <li>Votre Compte</li>
+            <li>Vos Commandes</li>
+            <button onClick={() => logOut()}>Log Out</button>
+          </div>
         </div>
       ) : (
         <div className="ClientLogin">
@@ -81,7 +83,11 @@ const ClientLogin = ({
             <button onClick={(e) => handleLogin(e)}>Connexion</button>
           </form>
           <p>si vous n'avez pas de compte cliquez ici pour vous inscrire</p>
-          <button>Inscrire</button>
+          <button>
+            <Link style={{ textDecoration: "none" , color:'white'}} to="/signInUp">
+              Inscrire
+            </Link>
+          </button>
         </div>
       )}
     </>

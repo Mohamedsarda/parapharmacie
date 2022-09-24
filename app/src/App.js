@@ -4,6 +4,7 @@ import ContactUs from "./client/pages/ContactUs";
 import About from "./client/pages/About";
 import Parapharmacie from "./client/pages/Parapharmacie";
 import Bag from "./client/pages/Bag";
+import SignInUp from "./client/pages/SignInUp";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -117,6 +118,16 @@ function App() {
                   />
                 }
               />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
             </Route>
           </Routes>
         ) : isAuth && !clientIsAuth ? (
@@ -156,6 +167,16 @@ function App() {
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
                     signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
@@ -223,6 +244,16 @@ function App() {
                 }
               />
               <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="bag"
                 element={
                   <Bag
@@ -270,6 +301,16 @@ function App() {
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
                   />
