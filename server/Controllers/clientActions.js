@@ -53,6 +53,7 @@ const searchForProduct = (req, res) => {
     }
   );
 };
+// function that search for a product with price filter
 
 const getCategories = (req, res) => {
   db.query(
