@@ -242,6 +242,7 @@ function App() {
         ) : !isAuth && clientIsAuth ? (
           <Routes>
             <Route path="admin">
+              <Route index element={<Login signIn={signIn} />} />
               <Route path="login" element={<Login signIn={signIn} />} />
             </Route>
             <Route path="/">
