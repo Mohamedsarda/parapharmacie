@@ -5,6 +5,7 @@ import About from "./client/pages/About";
 import Parapharmacie from "./client/pages/Parapharmacie";
 import Bag from "./client/pages/Bag";
 import SignInUp from "./client/pages/SignInUp";
+import NotFound from "./client/pages/404";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -128,6 +129,16 @@ function App() {
                   />
                 }
               />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
             </Route>
           </Routes>
         ) : isAuth && !clientIsAuth ? (
@@ -177,6 +188,16 @@ function App() {
                 path="SignInUp"
                 element={
                   <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
                     signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
@@ -262,6 +283,16 @@ function App() {
                   />
                 }
               />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
             </Route>
           </Routes>
         ) : (
@@ -301,6 +332,16 @@ function App() {
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
                   />

@@ -22,6 +22,7 @@ const Navbar = ({
   const cartCounter = useSelector((state) => state.cart.cartCounter);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
+  const [activeTab, setActiveTab] = useState();
 
   const dispatch = useDispatch();
 
@@ -41,6 +42,9 @@ const Navbar = ({
 
   useEffect(() => {
     getCartCounter();
+    //
+    setActiveTab(window.location.href.split("/")[3]);
+    //
     const onScroll = () => setOffset(window.pageYOffset);
     // clean up code
     window.removeEventListener("scroll", onScroll);
@@ -52,7 +56,9 @@ const Navbar = ({
     <div className="Navbar">
       <TopNavBar />
       <div className={offset > 50 ? "navbarContent active" : "navbarContent"}>
-        <div className="logo">LOGO</div>
+        <Link style={{ textDecoration: "none" }} className="logo" to="/">
+          LOGO
+        </Link>
         <div className="searchBar">
           <input
             type="text"
@@ -88,16 +94,20 @@ const Navbar = ({
       </div>
       <ul className="nav-links">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <li className="active">ACCUEIL</li>
+          <li className={activeTab === "" ? "active" : ""}>ACCUEIL</li>
         </Link>
         <Link to="/parapharmacie" style={{ textDecoration: "none" }}>
-          <li>PARAPHARMACIE</li>
+          <li className={activeTab === "parapharmacie" ? "active" : ""}>
+            PARAPHARMACIE
+          </li>
         </Link>
         <Link to="/contactus" style={{ textDecoration: "none" }}>
-          <li>CONTACTEZ-NOUS</li>
+          <li className={activeTab === "contactus" ? "active" : ""}>
+            CONTACTEZ-NOUS
+          </li>
         </Link>
         <Link to="/about" style={{ textDecoration: "none" }}>
-          <li>À PROPOS</li>
+          <li className={activeTab === "about" ? "active" : ""}>À PROPOS</li>
         </Link>
       </ul>
       {/* <div className="nav-categorie">

@@ -1,5 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import ContactUsForm from "../components/ContactUsForm";
+import Footer from "../components/Footer";
 
 const ContactUs = ({ signClientIn, clientIsAuth, clientSignOut }) => {
   return (
@@ -9,7 +11,8 @@ const ContactUs = ({ signClientIn, clientIsAuth, clientSignOut }) => {
         clientSignOut={clientSignOut}
         signClientIn={signClientIn}
       />
-      ContactUs
+      <ContactUsForm />
+      <Footer />
     </div>
   );
 };

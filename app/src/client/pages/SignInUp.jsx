@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const SignInUp = ({ signClientIn }) => {
+const SignInUp = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   const [signInForm, setSignInFrom] = useState(false);
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
@@ -77,7 +77,11 @@ const SignInUp = ({ signClientIn }) => {
   }, []);
   return (
     <div>
-      <Navbar />
+      <Navbar
+        clientIsAuth={clientIsAuth}
+        clientSignOut={clientSignOut}
+        signClientIn={signClientIn}
+      />
       {!signInForm ? (
         <>
           <div className="userForm client">
