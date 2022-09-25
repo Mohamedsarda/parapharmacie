@@ -76,6 +76,7 @@ function App() {
         {!isAuth && !clientIsAuth ? (
           <Routes>
             <Route path="admin">
+              <Route index element={<Login signIn={signIn} />} />
               <Route path="login" element={<Login signIn={signIn} />} />
             </Route>
             <Route path="/">
@@ -143,6 +144,22 @@ function App() {
           </Routes>
         ) : isAuth && !clientIsAuth ? (
           <Routes>
+            <Route path="admin">
+              <Route index element={<Home signOut={signOut} />} />
+              <Route path="login" element={<Home signOut={signOut} />} />
+              <Route
+                path="categories"
+                element={<Categories signOut={signOut} />}
+              />
+              <Route path="marques" element={<Marques signOut={signOut} />} />
+              <Route path="orders" element={<Orders signOut={signOut} />} />
+              <Route path="users">
+                <Route index element={<Users signOut={signOut} />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Products />} />
+              </Route>
+            </Route>
             <Route path="/">
               <Route
                 index
@@ -298,7 +315,20 @@ function App() {
         ) : (
           <Routes>
             <Route path="admin">
-              <Route path="login" element={<Login signIn={signIn} />} />
+              <Route index element={<Home signOut={signOut} />} />
+              <Route path="login" element={<Home signOut={signOut} />} />
+              <Route
+                path="categories"
+                element={<Categories signOut={signOut} />}
+              />
+              <Route path="marques" element={<Marques signOut={signOut} />} />
+              <Route path="orders" element={<Orders signOut={signOut} />} />
+              <Route path="users">
+                <Route index element={<Users signOut={signOut} />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Products />} />
+              </Route>
             </Route>
             <Route path="/">
               <Route
@@ -338,9 +368,19 @@ function App() {
                 }
               />
               <Route
-                path="*"
+                path="bag"
                 element={
-                  <NotFound
+                  <Bag
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
                     signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
@@ -348,9 +388,9 @@ function App() {
                 }
               />
               <Route
-                path="SignInUp"
+                path="*"
                 element={
-                  <SignInUp
+                  <NotFound
                     signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
