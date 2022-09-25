@@ -4,6 +4,8 @@ import ContactUs from "./client/pages/ContactUs";
 import About from "./client/pages/About";
 import Parapharmacie from "./client/pages/Parapharmacie";
 import Bag from "./client/pages/Bag";
+import SignInUp from "./client/pages/SignInUp";
+import NotFound from "./client/pages/404";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -74,45 +76,150 @@ function App() {
         {!isAuth && !clientIsAuth ? (
           <Routes>
             <Route path="admin">
+              <Route index element={<Login signIn={signIn} />} />
               <Route path="login" element={<Login signIn={signIn} />} />
             </Route>
             <Route path="/">
               <Route
                 index
-                element={<ClientHome signClientIn={clientIsSignIn} />}
+                element={
+                  <ClientHome
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="ContactUs"
-                element={<ContactUs signClientIn={clientIsSignIn} />}
+                element={
+                  <ContactUs
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="About"
-                element={<About signClientIn={clientIsSignIn} />}
+                element={
+                  <About
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="Parapharmacie"
-                element={<Parapharmacie signClientIn={clientIsSignIn} />}
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
             </Route>
           </Routes>
         ) : isAuth && !clientIsAuth ? (
           <Routes>
+            <Route path="admin">
+              <Route index element={<Home signOut={signOut} />} />
+              <Route path="login" element={<Home signOut={signOut} />} />
+              <Route
+                path="categories"
+                element={<Categories signOut={signOut} />}
+              />
+              <Route path="marques" element={<Marques signOut={signOut} />} />
+              <Route path="orders" element={<Orders signOut={signOut} />} />
+              <Route path="users">
+                <Route index element={<Users signOut={signOut} />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Products />} />
+              </Route>
+            </Route>
             <Route path="/">
               <Route
                 index
-                element={<ClientHome signClientIn={clientIsSignIn} />}
+                element={
+                  <ClientHome
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="ContactUs"
-                element={<ContactUs signClientIn={clientIsSignIn} />}
+                element={
+                  <ContactUs
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="About"
-                element={<About signClientIn={clientIsSignIn} />}
+                element={
+                  <About
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
               <Route
                 path="Parapharmacie"
-                element={<Parapharmacie signClientIn={clientIsSignIn} />}
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
               />
             </Route>
             <Route path="admin">
@@ -135,26 +242,162 @@ function App() {
         ) : !isAuth && clientIsAuth ? (
           <Routes>
             <Route path="admin">
+              <Route index element={<Login signIn={signIn} />} />
               <Route path="login" element={<Login signIn={signIn} />} />
             </Route>
             <Route path="/">
-              <Route index element={<ClientHome />} />
-              <Route path="ContactUs" element={<ContactUs />} />
-              <Route path="About" element={<About />} />
-              <Route path="Parapharmacie" element={<Parapharmacie />} />
-              <Route path="bag" element={<Bag />} />
+              <Route
+                index
+                element={
+                  <ClientHome
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="ContactUs"
+                element={
+                  <ContactUs
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="About"
+                element={
+                  <About
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="Parapharmacie"
+                element={
+                  <Parapharmacie
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="bag"
+                element={
+                  <Bag
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
             </Route>
           </Routes>
         ) : (
           <Routes>
             <Route path="admin">
-              <Route path="login" element={<Login signIn={signIn} />} />
+              <Route index element={<Home signOut={signOut} />} />
+              <Route path="login" element={<Home signOut={signOut} />} />
+              <Route
+                path="categories"
+                element={<Categories signOut={signOut} />}
+              />
+              <Route path="marques" element={<Marques signOut={signOut} />} />
+              <Route path="orders" element={<Orders signOut={signOut} />} />
+              <Route path="users">
+                <Route index element={<Users signOut={signOut} />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Products />} />
+              </Route>
             </Route>
             <Route path="/">
-              <Route index element={<ClientHome />} />
-              <Route path="ContactUs" element={<ContactUs />} />
-              <Route path="About" element={<About />} />
-              <Route path="Parapharmacie" element={<Parapharmacie />} />
+              <Route
+                index
+                element={
+                  <ClientHome
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="ContactUs"
+                element={
+                  <ContactUs
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="About"
+                element={
+                  <About
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="Parapharmacie"
+                element={
+                  <Parapharmacie
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="bag"
+                element={
+                  <Bag
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+
+              <Route
+                path="SignInUp"
+                element={
+                  <SignInUp
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <NotFound
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
             </Route>
           </Routes>
         )}

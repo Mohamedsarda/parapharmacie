@@ -1,10 +1,14 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-const Parapharmacie = ({ signClientIn }) => {
+const Parapharmacie = ({ signClientIn, clientSignOut, clientIsAuth }) => {
   return (
     <div>
-      <Navbar signClientIn={signClientIn} />
+      <Navbar
+        signClientIn={signClientIn}
+        clientSignOut={clientSignOut}
+        clientIsAuth={clientIsAuth}
+      />
       Parapharmacie
     </div>
   );

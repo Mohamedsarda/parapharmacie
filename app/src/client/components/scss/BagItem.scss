@@ -55,3 +55,56 @@
     }
   }
 }
+
+.ContactUsForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 10px 0px;
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 40px;
+    .row {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 10px 0px;
+      label {
+        color: #333;
+        margin-bottom: 5px;
+      }
+      input {
+        padding: 10px;
+        outline: none;
+        border-radius: 10px;
+        border: 1px solid #666;
+      }
+      textarea {
+        padding: 10px;
+        outline: none;
+        border-radius: 10px;
+        border: 1px solid #666;
+        resize: none;
+        font-size: 15px;
+      }
+    }
+    button {
+      margin: 10px 100px;
+      padding: 10px;
+      color: white;
+      background-color: #95a595;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+  .iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}

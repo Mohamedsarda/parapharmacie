@@ -14,6 +14,25 @@
   -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   z-index: 2;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    li {
+      text-align: center;
+      padding: 5px 10px;
+      margin: 10px 0px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      list-style: none;
+      cursor: pointer;
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
   form {
     display: flex;
     flex-direction: column;

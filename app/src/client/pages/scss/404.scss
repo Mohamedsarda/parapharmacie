@@ -1,0 +1,22 @@
+.notFound {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px 0px;
+  img {
+    margin: 0px;
+    height: 50vh;
+  }
+  .linkToHome {
+    background-color: #95a595;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 10px;
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

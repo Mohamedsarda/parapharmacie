@@ -10,7 +10,7 @@ const ViewProduct = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const addToQuantity = () => {
-    if (quantity === singleProductData.productQuantities) {
+    if (quantity === 5) {
       setQuantity(1);
     } else {
       setQuantity(quantity + 1);
