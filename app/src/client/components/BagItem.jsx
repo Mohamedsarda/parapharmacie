@@ -51,6 +51,11 @@ const BagItem = ({
         }
       });
   };
+
+  const handleDelete = (id, price) => {
+    removeProductsFromCart(id);
+    updateTotalPrice(price, "-");
+  };
   return (
     <div className="BagItem">
       <img src={`http://localhost:8080/${productImages}`} alt="" />
@@ -77,7 +82,7 @@ const BagItem = ({
           </div>
         </div>
         <CloseIcon
-          onClick={() => removeProductsFromCart(orderId)}
+          onClick={() => handleDelete(orderId, productCurrentPrice)}
           className="icon"
         />
       </div>
