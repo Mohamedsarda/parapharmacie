@@ -11,6 +11,7 @@ const {
   openLandingPage,
   editProductInCart,
   getProductsInTheCard,
+  searchForProduct,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -57,6 +58,7 @@ ClientActionsRoute.post(
   isClientAuthenticated,
   editProductInCart
 );
+ClientActionsRoute.post("/searchForProduct", searchForProduct);
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
 module.exports = ClientActionsRoute;
