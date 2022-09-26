@@ -1,0 +1,7 @@
+POST http://localhost:8080/clientActions/v1/searchForProduct
+Content-Type: application/json
+
+{
+    "keyword":"%Soins visage%",
+    "state": false
+}

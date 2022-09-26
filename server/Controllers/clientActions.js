@@ -30,6 +30,29 @@ const getProducts = (req, res) => {
     return res.status(200).send({ actionState: true, products: result });
   });
 };
+const searchForProduct = (req, res) => {
+  const { keyword, state } = req.body;
+  console.log(state);
+  db.query(
+    !state
+      ? `SELECT * FROM products WHERE (productName LIKE ? OR productMark LIKE ? OR productCategorie LIKE ?) AND productQuantities > 0`
+      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ?`,
+    [keyword, keyword, keyword],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          products: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Product list fetched successfully`,
+        products: result,
+      });
+    }
+  );
+};
 
 const getCategories = (req, res) => {
   db.query(
@@ -67,7 +90,7 @@ const getMarks = (req, res) => {
     });
   });
 };
-// Start Editing
+
 const addProductToOrders = (req, res) => {
   const { productId, productPrice, orderQuantity, state } = req.body;
   db.query(
@@ -93,7 +116,6 @@ const addProductToOrders = (req, res) => {
     }
   );
 };
-
 const getProductsFromOrders = (req, res) => {
   const { state } = req.body;
   db.query(
@@ -148,6 +170,7 @@ const editProductInCart = (req, res) => {
     }
   );
 };
+
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -270,4 +293,5 @@ module.exports = {
   removeProductFromOrders,
   editProductInCart,
   getProductsInTheCard,
+  searchForProduct,
 };
