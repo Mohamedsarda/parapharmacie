@@ -31,13 +31,13 @@ const getProducts = (req, res) => {
   });
 };
 const searchForProduct = (req, res) => {
-  const { keyword, state } = req.body;
+  const { keyword, state, from, to } = req.body;
   console.log(state);
   db.query(
     !state
       ? `SELECT * FROM products WHERE (productName LIKE ? OR productMark LIKE ? OR productCategorie LIKE ?) AND productQuantities > 0`
-      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ?`,
-    [keyword, keyword, keyword],
+      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ? LIMIT ?,? `,
+    [keyword, keyword, keyword, from, to],
     (err, result) => {
       if (err)
         return res.status(200).send({
