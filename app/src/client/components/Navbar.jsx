@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import ClientLogin from "./ClientLogin";
 import TopNavBar from "./TopNavBar";
+import SerachSuggestion from "./SerachSuggestion";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -23,9 +24,40 @@ const Navbar = ({
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
   const [activeTab, setActiveTab] = useState();
-
+  const [searchedProducts, setSearchedProducts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const dispatch = useDispatch();
-
+  //
+  const searchForProducts = (inputValue) => {
+    if (inputValue) {
+      axios
+        .post("http://localhost:8080/clientActions/v1/searchForProduct", {
+          keyword: "%" + inputValue + "%",
+          state: true,
+          from: 0,
+          to: 3,
+        })
+        .then((res) => {
+          if (res.data.actionState) {
+            setIsSearching(true);
+            if (res.data.products.length > 0) {
+              setSearchedProducts(res.data.products);
+              console.log(res.data.products);
+              console.log(res.data.products + "saikdjgasd");
+            } else {
+              setIsSearching(false);
+              console.log("hi");
+            }
+          } else {
+            setIsSearching(false);
+          }
+        });
+    } else {
+      setSearchedProducts([]);
+      setIsSearching(false);
+    }
+  };
+  //
   const getCartCounter = () => {
     axios
       .post("http://localhost:8080/clientActions/v1/getProductInCart")
@@ -63,8 +95,35 @@ const Navbar = ({
           <input
             type="text"
             placeholder="Rechercher un produit, une marque......"
+            onChange={(e) => searchForProducts(e.target.value)}
           />
           <SearchIcon />
+          {isSearching && (
+            <div className="searchSuggestionContainer">
+              {searchedProducts.map((product) => {
+                return (
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`product/${product.productId}`}
+                  >
+                    <SerachSuggestion
+                      key={product.productId}
+                      id={product.productId}
+                      productName={product.productName}
+                      productMark={product.productMark}
+                      productCategorie={product.productCategorie}
+                      productCurrentPrice={product.productCurrentPrice}
+                      productOldPrice={product.productOldPrice}
+                      productQuantities={product.productQuantities}
+                      productDescription={product.productDescription}
+                      productImages={product.productImages}
+                    />
+                  </Link>
+                );
+              })}
+              <button>voir tout</button>
+            </div>
+          )}
         </div>
         <div className="right">
           <PersonOutlineIcon

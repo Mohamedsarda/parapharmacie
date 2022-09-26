@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./scss/singleProduct.scss";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { Link } from "react-router-dom";
 
 const ViewProduct = ({
   closeSingleProductContainer,
@@ -30,15 +31,22 @@ const ViewProduct = ({
         className="icon"
       />
       <div className="productSingle">
-        <img src={`http://localhost:8080/${singleProductData.img}`} alt="" />
+        <Link to={`product/${singleProductData.id}`}>
+          <img src={`http://localhost:8080/${singleProductData.img}`} alt="" />
+        </Link>
         <div className="content">
           <h2>{singleProductData.productName}</h2>
           <div className="_2-col">
-            <h5 className="line-through">
-              {singleProductData.productOldPrice}
-            </h5>
-            <h5>{singleProductData.productCurrentPrice}</h5>
+            {singleProductData.productOldPrice !== 0 ? (
+              <h5 className="line-through">
+                Old Price : {singleProductData.productOldPrice}
+              </h5>
+            ) : (
+              ""
+            )}
+            <h5> New Price : {singleProductData.productCurrentPrice}</h5>
           </div>
+          <h4>Description</h4>
           <p>{singleProductData.productDescription}</p>
           <div className="_2-col btns">
             <div className="quantityCount">

@@ -9,7 +9,6 @@ const SignInUp = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
   const [cities, setCities] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [client, setClient] = useState({
     clientName: "",
     clientLastName: "",
@@ -49,7 +48,6 @@ const SignInUp = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   const clientSignIn = (e) => {
     e.preventDefault();
     if (client && !isNaN(client.clientPhone)) {
-      setIsLoading(false);
       axios
         .post("http://localhost:8080/clientActions/v1/clientSignUp", client)
         .then((res) => {

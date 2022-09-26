@@ -6,6 +6,7 @@ import Parapharmacie from "./client/pages/Parapharmacie";
 import Bag from "./client/pages/Bag";
 import SignInUp from "./client/pages/SignInUp";
 import NotFound from "./client/pages/404";
+import SingleProductPage from "./client/pages/SingleProductPage";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -111,6 +112,16 @@ function App() {
                 }
               />
               <Route
+                path="product/:id"
+                element={
+                  <SingleProductPage
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
@@ -185,6 +196,16 @@ function App() {
                 path="About"
                 element={
                   <About
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="product/:id"
+                element={
+                  <SingleProductPage
                     signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
@@ -274,6 +295,16 @@ function App() {
                 }
               />
               <Route
+                path="product/:id"
+                element={
+                  <SingleProductPage
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
@@ -354,6 +385,16 @@ function App() {
                 path="About"
                 element={
                   <About
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="product/:id"
+                element={
+                  <SingleProductPage
+                    signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
                   />

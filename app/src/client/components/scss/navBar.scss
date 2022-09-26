@@ -59,6 +59,12 @@ img {
       .ClientLogin {
         top: 11vh;
       }
+      .searchSuggestionContainer {
+        top: 35px;
+        .SerachSuggestion {
+          padding: 5px;
+        }
+      }
     }
 
     .logo {
@@ -67,6 +73,7 @@ img {
       cursor: pointer;
     }
     .searchBar {
+      position: relative;
       border: 1px solid #999;
       display: flex;
       align-items: center;
@@ -162,16 +169,17 @@ img {
 
 .bagContainer {
   display: grid;
-  grid-template-columns: 2.7fr 1fr;
+  grid-template-columns: 75% 25%;
+  position: relative;
 
   .bagTotal {
     position: fixed;
     background-color: white;
     right: 0px;
+    margin: 10px 0px;
     border-radius: 10px;
-    margin: 10px;
     border: 1px solid #666;
-    padding: 10px;
+    width: 25%;
     height: 250px;
     display: flex;
     align-items: center;

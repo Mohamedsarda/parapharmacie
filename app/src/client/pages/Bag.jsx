@@ -6,7 +6,6 @@ import axios from "axios";
 
 const Bag = ({ clientIsAuth, clientSignOut }) => {
   const [bagProducts, setBagProducts] = useState([]);
-  const [currentOrderPrice, setCurrentOrderPrice] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   let rernderNavBarWithId = useRef("");
 
