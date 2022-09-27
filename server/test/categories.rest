@@ -5,3 +5,17 @@ Content-Type: application/json
     "keyword":"%Soins visage%",
     "state": false
 }
+
+#########################################
+
+POST http://localhost:8080/clientActions/v1/searchForProductWithFilter
+Content-Type: application/json
+
+{
+    "keyword":"%Soins visage%",
+    "state": false,
+    "fromRow": 0,
+    "toRow":10,
+    "fromPrice": 100,
+    "toPrice": 900
+}
