@@ -16,6 +16,6 @@ Content-Type: application/json
     "state": false,
     "fromRow": 0,
     "toRow":10,
-    "fromPrice": 700,
+    "fromPrice": 100,
     "toPrice": 900
 }
