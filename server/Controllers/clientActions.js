@@ -235,45 +235,37 @@ UNION
           products: {},
           categories: [],
         });
-      const categories = await getCategoriesForLandingPage();
-      if (!categories.fetchState)
-        return res.status(200).send({
-          actionState: false,
-          desc: "Something went wrong. Database error 2",
-          products: {},
-          categories: [],
-        });
+
       if (!req.session.client)
         return res.status(200).send({
           actionState: true,
           desc: `Products and categories fetched successfully`,
-          categories: categories.categories,
+
           products: splitLandingPageProducts(result),
         });
 
       return res.status(200).send({
         actionState: true,
         desc: `Products and categories fetched successfully`,
-        categories: categories.categories,
+
         products: splitLandingPageProducts(result),
       });
     }
   );
 };
-const getCategoriesForLandingPage = () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM products_categories LIMIT 0, 20", (err, result) => {
-      if (err)
-        return reject({
-          fetchState: false,
-          desc: `Database error`,
-          categories: [],
-        });
-      return resolve({
-        fetchState: true,
-        desc: `Categories fetched successfully`,
+// updating
+const getCategoriesForLandingPage = (req, res) => {
+  db.query("SELECT * FROM products_categories LIMIT 0, 20", (err, result) => {
+    if (err)
+      return res.status(200).send({
+        actionState: false,
+        desc: `Something went wrong. Dabase error`,
         categories: result,
       });
+    return res.status(200).send({
+      actionState: true,
+      desc: `Categories fetched successfully`,
+      categories: result,
     });
   });
 };
@@ -321,4 +313,5 @@ module.exports = {
   getProductsInTheCard,
   searchForProduct,
   searchForProductWithFiler,
+  getCategoriesForLandingPage,
 };
