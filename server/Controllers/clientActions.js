@@ -260,6 +260,7 @@ UNION
     }
   );
 };
+// updating
 const getCategoriesForLandingPage = () => {
   return new Promise((resolve, reject) => {
     db.query("SELECT * FROM products_categories LIMIT 0, 20", (err, result) => {
