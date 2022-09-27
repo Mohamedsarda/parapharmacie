@@ -53,6 +53,32 @@ const searchForProduct = (req, res) => {
     }
   );
 };
+// function that search for a product with price filter
+const searchForProductWithFiler = (req, res) => {
+  const { keyword, state, fromRow, toRow, fromPrice, toPrice } = req.body;
+  console.log(keyword, state, fromRow, toRow, fromPrice, toPrice);
+  db.query(
+    !state
+      ? `SELECT * FROM products WHERE (productName LIKE ? OR productMark LIKE ? OR productCategorie LIKE ?) AND productQuantities > 0 AND productCurrentPrice BETWEEN ? AND ? LIMIT ?,?`
+      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ?`,
+    [keyword, keyword, keyword, fromPrice, toPrice, fromRow, toRow],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          products: [],
+        });
+      }
+      return res.status(200).send({
+        actionState: true,
+        desc: `Products fetched successfully`,
+        products: result,
+      });
+    }
+  );
+};
 
 const getCategories = (req, res) => {
   db.query(
@@ -294,4 +320,5 @@ module.exports = {
   editProductInCart,
   getProductsInTheCard,
   searchForProduct,
+  searchForProductWithFiler,
 };

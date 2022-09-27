@@ -12,6 +12,7 @@ const {
   editProductInCart,
   getProductsInTheCard,
   searchForProduct,
+  searchForProductWithFiler,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -59,6 +60,10 @@ ClientActionsRoute.post(
   editProductInCart
 );
 ClientActionsRoute.post("/searchForProduct", searchForProduct);
+ClientActionsRoute.post(
+  "/searchForProductWithFilter",
+  searchForProductWithFiler
+);
 ClientActionsRoute.post("/openLandingPage", openLandingPage);
 
 module.exports = ClientActionsRoute;
