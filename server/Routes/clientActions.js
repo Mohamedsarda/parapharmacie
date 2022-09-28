@@ -15,6 +15,7 @@ const {
   searchForProductWithFiler,
   getCategoriesForLandingPage,
   getClientOrders,
+  getClientInfo,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -76,5 +77,6 @@ ClientActionsRoute.post(
   isClientAuthenticated,
   getClientOrders
 );
+ClientActionsRoute.post("/getClientInfo", isClientAuthenticated, getClientInfo);
 
 module.exports = ClientActionsRoute;
