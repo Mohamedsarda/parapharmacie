@@ -12,7 +12,7 @@ import { addCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
+const SearchedProducts = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   const { searchValue } = useParams();
   const [products, setProducts] = useState([]);
   //
@@ -38,12 +38,12 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
       });
   };
   //
-  const searchForProductsPage = () => {
+  const searchForProducts = () => {
     if (searchValue) {
       axios
         .post("http://localhost:8080/clientActions/v1/searchForProduct", {
           keyword: "%" + searchValue.trim() + "%",
-          state: false,
+          state: true,
           from: 0,
           to: 20,
         })
@@ -55,28 +55,9 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
     }
   };
   //
-  const getParaData = () => {
-    axios
-      .post("http://localhost:8080/clientActions/v1/searchForProduct", {
-        keyword: "%s%",
-        state: false,
-        from: 0,
-        to: 20,
-      })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.actionState) {
-          setProducts(res.data.products);
-        }
-      });
-  };
   useEffect(() => {
-    if (window.location.href.split("/")[4] === "search") {
-      searchForProductsPage();
-    } else if (window.location.href.split("/")[3] === "parapharmacie") {
-      getParaData();
-    }
-  }, [window.location.href.split("/")[4]]);
+    searchForProducts();
+  }, []);
   return (
     <div>
       <Navbar
@@ -111,4 +92,4 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   );
 };
 
-export default Parapharmacie;
+export default SearchedProducts;

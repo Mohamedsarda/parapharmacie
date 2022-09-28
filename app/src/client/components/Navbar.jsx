@@ -3,37 +3,52 @@ import React, { useEffect, useState } from "react";
 import ClientLogin from "./ClientLogin";
 import TopNavBar from "./TopNavBar";
 import SerachSuggestion from "./SerachSuggestion";
+//
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
+//
 import { Link } from "react-router-dom";
+//
 import { useSelector } from "react-redux";
 import { setCounter } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+//
 
 const Navbar = ({
-  categoriesData,
   signClientIn,
   rernderNavBarWithId,
   clientSignOut,
   clientIsAuth,
 }) => {
   const cartCounter = useSelector((state) => state.cart.cartCounter);
+  const [isCategorie, setIsCategorie] = useState(false);
   const [ClientLoginContainer, setClientLoginContainer] = useState(false);
   const [offset, setOffset] = useState(0);
   const [activeTab, setActiveTab] = useState();
   const [searchedProducts, setSearchedProducts] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = useState("");
+  const [categoriesData, setCategoriesData] = useState([]);
+
+  //
+  const searchPage = (e) => {
+    if (e.keyCode === 13) {
+      window.location.href = `/Parapharmacie/search/${searchValue}`;
+    }
+  };
   //
   const searchForProducts = (inputValue) => {
-    if (inputValue) {
+    if (inputValue.trim()) {
+      setSearchValue(inputValue.trim());
       axios
         .post("http://localhost:8080/clientActions/v1/searchForProduct", {
-          keyword: "%" + inputValue + "%",
-          state: true,
+          keyword: "%" + inputValue.trim() + "%",
+          state: false,
           from: 0,
           to: 3,
         })
@@ -42,20 +57,31 @@ const Navbar = ({
             setIsSearching(true);
             if (res.data.products.length > 0) {
               setSearchedProducts(res.data.products);
-              console.log(res.data.products);
-              console.log(res.data.products + "saikdjgasd");
             } else {
               setIsSearching(false);
-              console.log("hi");
+              setSearchedProducts([]);
             }
           } else {
             setIsSearching(false);
+            setSearchedProducts([]);
           }
         });
     } else {
       setSearchedProducts([]);
       setIsSearching(false);
     }
+  };
+  //
+  const getCategorie = () => {
+    axios
+      .post(
+        "http://localhost:8080/clientActions/v1/getCategoriesForLandingPage"
+      )
+      .then((res) => {
+        if (res.data.actionState) {
+          setCategoriesData(res.data.categories);
+        }
+      });
   };
   //
   const getCartCounter = () => {
@@ -74,6 +100,7 @@ const Navbar = ({
 
   useEffect(() => {
     getCartCounter();
+    getCategorie();
     //
     setActiveTab(window.location.href.split("/")[3]);
     //
@@ -96,10 +123,15 @@ const Navbar = ({
             type="text"
             placeholder="Rechercher un produit, une marque......"
             onChange={(e) => searchForProducts(e.target.value)}
+            onKeyDown={searchPage}
           />
           <SearchIcon />
           {isSearching && (
             <div className="searchSuggestionContainer">
+              <CloseOutlinedIcon
+                className="icon"
+                onClick={() => setIsSearching(false)}
+              />
               {searchedProducts.map((product) => {
                 return (
                   <Link
@@ -155,7 +187,12 @@ const Navbar = ({
         <Link to="/" style={{ textDecoration: "none" }}>
           <li className={activeTab === "" ? "active" : ""}>ACCUEIL</li>
         </Link>
-        <Link to="/parapharmacie" style={{ textDecoration: "none" }}>
+        <Link
+          onMouseEnter={() => setIsCategorie(true)}
+          onMouseLeave={() => setIsCategorie(false)}
+          to="/parapharmacie"
+          style={{ textDecoration: "none" }}
+        >
           <li className={activeTab === "parapharmacie" ? "active" : ""}>
             PARAPHARMACIE
           </li>
@@ -169,13 +206,20 @@ const Navbar = ({
           <li className={activeTab === "about" ? "active" : ""}>À PROPOS</li>
         </Link>
       </ul>
-      {/* <div className="nav-categorie">
-        <ul>
-          {categoriesData.map((categorie) => {
-            return <li>{categorie.categorieName}</li>;
-          })}
-        </ul>
-      </div> */}
+      {isCategorie && (
+        <div
+          onMouseEnter={() => setIsCategorie(true)}
+          onMouseLeave={() => setIsCategorie(false)}
+          className="nav-categorie"
+        >
+          <h2>Catégorie</h2>
+          <ul>
+            {categoriesData.map((categorie) => {
+              return <li>{categorie.categorieName}</li>;
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
