@@ -226,7 +226,7 @@ const getClientOrders = (req, res) => {
     }
   );
 };
-
+// get client info fun
 const getClientInfo = (req, res) => {
   db.query(
     `SELECT id, clientName, clientLastName, clientEmail, clientPhone, clientCity, clientAdress FROM clients WHERE id = ?`,
