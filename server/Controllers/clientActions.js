@@ -227,6 +227,26 @@ const getClientOrders = (req, res) => {
   );
 };
 
+const getClientInfo = (req, res) => {
+  db.query(
+    `SELECT id, clientName, clientLastName, clientEmail, clientPhone, clientCity, clientAdress FROM clients WHERE id = ?`,
+    [req.session.client],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          clientInfo: {},
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Client info fetched successfully`,
+        clientInfo: result[0],
+      });
+    }
+  );
+};
+
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -283,7 +303,6 @@ UNION
     }
   );
 };
-// updating
 const getCategoriesForLandingPage = (req, res) => {
   db.query(
     "SELECT * FROM products_categories ORDER BY categorieName ASC LIMIT 0, 20",
@@ -348,4 +367,5 @@ module.exports = {
   searchForProductWithFiler,
   getCategoriesForLandingPage,
   getClientOrders,
+  getClientInfo,
 };

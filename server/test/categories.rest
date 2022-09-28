@@ -27,3 +27,7 @@ Content-Type:  application/json
 {
     "state": "approved"
 }
+
+##############################################
+POST http://localhost:8080/clientActions/v1/getClientInfo
+Content-Type:  application/json
