@@ -19,3 +19,11 @@ Content-Type: application/json
     "fromPrice": 100,
     "toPrice": 900
 }
+
+##############################################
+POST http://localhost:8080/clientActions/v1/getClientOrders
+Content-Type:  application/json
+
+{
+    "state": "approved"
+}

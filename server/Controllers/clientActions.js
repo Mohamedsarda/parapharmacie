@@ -57,7 +57,7 @@ const searchForProduct = (req, res) => {
     }
   );
 };
-// function that search for a product with price filter
+
 const searchForProductWithFiler = (req, res) => {
   const { keyword, state, fromRow, toRow, fromPrice, toPrice } = req.body;
   console.log(keyword, state, fromRow, toRow, fromPrice, toPrice);
@@ -201,6 +201,27 @@ const editProductInCart = (req, res) => {
   );
 };
 
+const getClientOrders = (req, res) => {
+  const { state } = req.body;
+  db.query(
+    `SELECT * FROM orders WHERE orderState = ? AND orderClient = ? ORDER BY orderTime DESC`,
+    [state, req.session.client],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          orders: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Orders fetched successfully`,
+        orders: result,
+      });
+    }
+  );
+};
+
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -321,4 +342,5 @@ module.exports = {
   searchForProduct,
   searchForProductWithFiler,
   getCategoriesForLandingPage,
+  getClientOrders,
 };
