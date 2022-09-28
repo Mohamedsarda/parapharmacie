@@ -204,7 +204,12 @@ const editProductInCart = (req, res) => {
 const getClientOrders = (req, res) => {
   const { state } = req.body;
   db.query(
-    `SELECT * FROM orders WHERE orderState = ? AND orderClient = ? ORDER BY orderTime DESC`,
+    `SELECT orders.orderId, orders.orderClient,orders.orderState,orders.orderTime, clients.clientName, clients.clientLastName ,
+  products.productName, products.productCurrentPrice, products.productImages
+  FROM orders 
+  INNER JOIN clients ON orders.orderClient = clients.id
+  INNER JOIN products ON orders.orderProduct = products.productId
+  WHERE orders.orderState = ? AND orders.orderClient = ?`,
     [state, req.session.client],
     (err, result) => {
       if (err)
