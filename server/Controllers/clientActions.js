@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const db = require("../Database/db.js");
 
 const selectCities = (req, res) => {
-  db.query("SELECT * FROM cities", (err, result) => {
+  db.query("SELECT * FROM cities ORDER BY cityName ASC", (err, result) => {
     if (err)
       return res.status(500).send({
         actionState: false,
@@ -19,16 +19,20 @@ const selectCities = (req, res) => {
 
 const getProducts = (req, res) => {
   const { from, to } = req.body;
-  db.query(`SELECT * FROM products LIMIT ?, ?`, [from, to], (err, result) => {
-    if (err)
-      return res.status(200).send({
-        actionState: false,
-        desc: `Something went wrong. Database error`,
-        products: [],
-      });
-    console.log(result);
-    return res.status(200).send({ actionState: true, products: result });
-  });
+  db.query(
+    `SELECT * FROM products ORDER BY productAddedTime DESC LIMIT ?, ?`,
+    [from, to],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          products: [],
+        });
+      console.log(result);
+      return res.status(200).send({ actionState: true, products: result });
+    }
+  );
 };
 const searchForProduct = (req, res) => {
   const { keyword, state, from, to } = req.body;
@@ -103,7 +107,7 @@ const getCategories = (req, res) => {
   );
 };
 const getMarks = (req, res) => {
-  db.query(`SELECT * FROM marks`, (err, result) => {
+  db.query(`SELECT * FROM marks ORDER BY markName ASC`, (err, result) => {
     if (err)
       return res.status(200).send({
         actionState: false,
@@ -255,19 +259,22 @@ UNION
 };
 // updating
 const getCategoriesForLandingPage = (req, res) => {
-  db.query("SELECT * FROM products_categories LIMIT 0, 20", (err, result) => {
-    if (err)
+  db.query(
+    "SELECT * FROM products_categories ORDER BY categorieName ASC LIMIT 0, 20",
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Dabase error`,
+          categories: result,
+        });
       return res.status(200).send({
-        actionState: false,
-        desc: `Something went wrong. Dabase error`,
+        actionState: true,
+        desc: `Categories fetched successfully`,
         categories: result,
       });
-    return res.status(200).send({
-      actionState: true,
-      desc: `Categories fetched successfully`,
-      categories: result,
-    });
-  });
+    }
+  );
 };
 const getProductsInTheCard = (req, res) => {
   db.query(
