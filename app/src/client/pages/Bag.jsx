@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import BagItem from "../components/BagItem";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Bag = ({ clientIsAuth, clientSignOut }) => {
@@ -58,37 +59,54 @@ const Bag = ({ clientIsAuth, clientSignOut }) => {
         clientSignOut={clientSignOut}
         rernderNavBarWithId={rernderNavBarWithId.current}
       />
-      <div className="bagContainer">
-        <div className="productsBag">
-          {bagProducts.map((product) => {
-            return (
-              <BagItem
-                removeProductsFromCart={removeProductsFromCart}
-                key={product.orderId}
-                orderId={product.orderId}
-                orderPrice={product.orderPrice}
-                orderQuantity={product.orderQuantity}
-                productCurrentPrice={product.productCurrentPrice}
-                productDescription={product.productDescription}
-                productImages={product.productImages}
-                productName={product.productName}
-                productOldPrice={product.productOldPrice}
-                updateTotalPrice={updateTotalPrice}
-              />
-            );
-          })}
-        </div>
-        <div className="bagTotal">
-          <h2>TOTAL PANIER</h2>
-          <div className="info">
-            <h4>Sous-total : {totalPrice} DH</h4>
-            <h4>Expédition</h4>
-            <p>Shipping costs are calculated during checkout.</p>
-            <h3>TOTAL : {totalPrice} DH</h3>
+      {totalPrice !== 0 ? (
+        <div className="bagContainer">
+          <div className="productsBag">
+            {bagProducts.map((product) => {
+              return (
+                <BagItem
+                  removeProductsFromCart={removeProductsFromCart}
+                  key={product.orderId}
+                  orderId={product.orderId}
+                  orderPrice={product.orderPrice}
+                  orderQuantity={product.orderQuantity}
+                  productCurrentPrice={product.productCurrentPrice}
+                  productDescription={product.productDescription}
+                  productImages={product.productImages}
+                  productName={product.productName}
+                  productOldPrice={product.productOldPrice}
+                  updateTotalPrice={updateTotalPrice}
+                />
+              );
+            })}
           </div>
-          <button>Check Out</button>
+          <div className="bagTotal">
+            <h2>TOTAL PANIER</h2>
+            <div className="info">
+              <h4>Sous-total : {totalPrice} DH</h4>
+              <h4>Expédition</h4>
+              <p>Shipping costs are calculated during checkout.</p>
+              <h3>TOTAL : {totalPrice} DH</h3>
+            </div>
+            <button>Check Out</button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="emptyBag">
+          <p>
+            Il semble que vous ayez 0 produits dans votre panier recherchez un
+            produits
+          </p>
+          <button>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to="/parapharmacie"
+            >
+              Parcourir les produits
+            </Link>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

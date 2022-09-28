@@ -7,6 +7,7 @@ import Bag from "./client/pages/Bag";
 import SignInUp from "./client/pages/SignInUp";
 import NotFound from "./client/pages/404";
 import SingleProductPage from "./client/pages/SingleProductPage";
+// import Parapharmacie from "./client/pages/Parapharmacie";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -132,6 +133,16 @@ function App() {
                 }
               />
               <Route
+                path="/Parapharmacie/search/:searchValue"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="SignInUp"
                 element={
                   <SignInUp
@@ -214,6 +225,16 @@ function App() {
               />
               <Route
                 path="Parapharmacie"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="/Parapharmacie/search/:searchValue"
                 element={
                   <Parapharmacie
                     signClientIn={clientIsSignIn}
@@ -314,6 +335,16 @@ function App() {
                 }
               />
               <Route
+                path="/Parapharmacie/search/:searchValue"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="SignInUp"
                 element={
                   <SignInUp
@@ -404,6 +435,16 @@ function App() {
                 path="Parapharmacie"
                 element={
                   <Parapharmacie
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="/Parapharmacie/search/:searchValue"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
                     clientSignOut={clientSignOut}
                     clientIsAuth={clientIsAuth}
                   />

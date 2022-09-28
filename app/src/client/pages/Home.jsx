@@ -15,7 +15,7 @@ const Home = ({ signClientIn, clientSignOut, clientIsAuth }) => {
   const [singleProduct, setSingleProduct] = useState(false);
   const [firstSlider, setFirstSlider] = useState([]);
   const [secondSlider, setSecondSlider] = useState([]);
-  const [categoriesData, setCategoriesData] = useState([]);
+
   const [singleProductData, setSingleProductData] = useState({
     id: "",
     img: "",
@@ -96,8 +96,6 @@ const Home = ({ signClientIn, clientSignOut, clientIsAuth }) => {
         if (res.data.actionState) {
           setFirstSlider(res.data.products.firstSlider);
           setSecondSlider(res.data.products.secondSlider);
-          // dispatch(setCounter(res.data.cart[0].ordersCount));
-          setCategoriesData(res.data.categories);
         }
       });
   };
@@ -107,7 +105,6 @@ const Home = ({ signClientIn, clientSignOut, clientIsAuth }) => {
   return (
     <div>
       <Navbar
-        categoriesData={categoriesData}
         clientSignOut={clientSignOut}
         signClientIn={signClientIn}
         clientIsAuth={clientIsAuth}
