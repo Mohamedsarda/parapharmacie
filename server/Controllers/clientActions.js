@@ -39,8 +39,8 @@ const searchForProduct = (req, res) => {
   console.log(state);
   db.query(
     !state
-      ? `SELECT * FROM products WHERE (productName LIKE ? OR productMark LIKE ? OR productCategorie LIKE ?) AND productQuantities > 0`
-      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ? LIMIT ?,? `,
+      ? `SELECT * FROM products WHERE (productName LIKE ? OR productMark LIKE ? OR productCategorie LIKE ?) AND productQuantities > 0 LIMIT ?,?`
+      : `SELECT * FROM products WHERE productName LIKE ? OR productMark = ? OR productCategorie = ?`,
     [keyword, keyword, keyword, from, to],
     (err, result) => {
       if (err)
