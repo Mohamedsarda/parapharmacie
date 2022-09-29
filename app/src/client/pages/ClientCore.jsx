@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const CoreCode = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   return (
@@ -10,6 +11,7 @@ const CoreCode = ({ clientIsAuth, signClientIn, clientSignOut }) => {
         signClientIn={signClientIn}
       />
       CoreCode
+      <Footer />
     </div>
   );
 };

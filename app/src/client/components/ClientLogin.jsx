@@ -53,10 +53,16 @@ const ClientLogin = ({
   return (
     <>
       {clientIsAuth ? (
-        <div className="ClientLogin">
+        <div className="ClientLogin isLogin">
           <div className="container">
-            <li>Votre Compte</li>
-            <li>Vos Commandes</li>
+            <li>
+              <Link
+                style={{ textDecoration: "none", color: "#333" }}
+                to="/user"
+              >
+                Votre Compte
+              </Link>
+            </li>
             <button onClick={() => logOut()}>Log Out</button>
           </div>
         </div>

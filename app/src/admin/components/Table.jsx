@@ -99,7 +99,9 @@ const List = () => {
                   <TableCell className="tableCell">
                     {row.clientName} {row.clientLastName}
                   </TableCell>
-                  <TableCell className="tableCell">{row.orderTime}</TableCell>
+                  <TableCell className="tableCell">
+                    {row.orderTime.slice(0, 10)}
+                  </TableCell>
                   <TableCell className="tableCell">
                     {row.productCurrentPrice} DH
                   </TableCell>

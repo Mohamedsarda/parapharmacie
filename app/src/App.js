@@ -7,7 +7,7 @@ import Bag from "./client/pages/Bag";
 import SignInUp from "./client/pages/SignInUp";
 import NotFound from "./client/pages/404";
 import SingleProductPage from "./client/pages/SingleProductPage";
-// import Parapharmacie from "./client/pages/Parapharmacie";
+import ClientPage from "./client/pages/Client";
 
 /////////////admin pages///////////////
 import Home from "./admin/pages/Home";
@@ -364,6 +364,16 @@ function App() {
                 }
               />
               <Route
+                path="/user"
+                element={
+                  <ClientPage
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="*"
                 element={
                   <NotFound
@@ -459,7 +469,16 @@ function App() {
                   />
                 }
               />
-
+              <Route
+                path="/user"
+                element={
+                  <ClientPage
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
               <Route
                 path="SignInUp"
                 element={

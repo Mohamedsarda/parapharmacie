@@ -17,7 +17,11 @@
     border-radius: 10px;
     cursor: pointer;
     margin-left: 10px;
+    &:active {
+      transform: scale(0.98);
+    }
   }
+
   .Canceled {
     color: crimson;
     background-color: rgba(220, 20, 60, 0.267);
@@ -33,5 +37,9 @@
   .Delivered {
     color: blue;
     background-color: rgba(0, 0, 255, 0.253);
+  }
+  .inCart {
+    color: gray;
+    background-color: rgba(128, 128, 128, 0.226);
   }
 }

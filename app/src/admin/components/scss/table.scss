@@ -35,6 +35,10 @@
       color: blue;
       background-color: rgba(0, 0, 255, 0.253);
     }
+    &.cart {
+      color: gray;
+      background-color: rgba(128, 128, 128, 0.226);
+    }
   }
   .cellWrapper {
     display: flex;
