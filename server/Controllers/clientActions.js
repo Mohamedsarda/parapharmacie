@@ -246,6 +246,109 @@ const getClientInfo = (req, res) => {
     }
   );
 };
+// edit client info fun
+const editClientInfo = async (req, res) => {
+  const { clientPassword } = req.body;
+  var editInfo;
+  if (clientPassword === "") {
+    editInfo = await editClientInfoWithoutPass(req.body, req.session.client);
+    console.log(editInfo);
+  } else if (clientPassword !== "") {
+    const hashedPass = await bcrypt.hash(
+      clientPassword,
+      await bcrypt.genSalt()
+    );
+    editInfo = await editClientInfoWithPass(
+      req.body,
+      hashedPass,
+      req.session.client
+    );
+    console.log(editInfo);
+  }
+  return res
+    .status(200)
+    .send({ actionState: editInfo.state, desc: editInfo.desc });
+};
+const editClientInfoWithoutPass = (info, id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `UPDATE clients SET
+  clientName = ?,
+  clientLastName = ?,
+  clientEmail = ?,
+  clientPhone = ?,
+  clientCity = ?,
+  clientAdress = ?
+  WHERE id = ?
+  `,
+      [
+        info.clientName,
+        info.clientLastName,
+        info.clientEmail,
+        info.clientPhone,
+        info.clientCity,
+        info.clientAdress,
+        id,
+      ],
+      (err, result) => {
+        // console.log(result);
+        if (err)
+          return reject({
+            state: false,
+            desc: `Something went wrong database error`,
+          });
+        return resolve({
+          state: result.affectedRows === 0 ? false : true,
+          desc:
+            result.affectedRows === 0
+              ? "No row affected"
+              : "Client updated successfully",
+        });
+      }
+    );
+  });
+};
+const editClientInfoWithPass = (info, password, id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `UPDATE clients SET
+  clientName = ?,
+  clientLastName = ?,
+  clientEmail = ?,
+  clientPhone = ?,
+  clientCity = ?,
+  clientAdress = ?,
+  clientPassword = ?
+  WHERE id = ?
+  `,
+      [
+        info.clientName,
+        info.clientLastName,
+        info.clientEmail,
+        info.clientPhone,
+        info.clientCity,
+        info.clientAdress,
+        password,
+        id,
+      ],
+      (err, result) => {
+        // console.log(result);
+        if (err)
+          return reject({
+            state: false,
+            desc: `Something went wrong database error`,
+          });
+        return resolve({
+          state: result.affectedRows === 0 ? false : true,
+          desc:
+            result.affectedRows === 0
+              ? "No row affected"
+              : "Client updated successfully",
+        });
+      }
+    );
+  });
+};
 
 // landing page action
 const openLandingPage = (req, res) => {
@@ -368,4 +471,5 @@ module.exports = {
   getCategoriesForLandingPage,
   getClientOrders,
   getClientInfo,
+  editClientInfo,
 };
