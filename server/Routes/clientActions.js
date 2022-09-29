@@ -16,6 +16,7 @@ const {
   getCategoriesForLandingPage,
   getClientOrders,
   getClientInfo,
+  editClientInfo,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -78,5 +79,10 @@ ClientActionsRoute.post(
   getClientOrders
 );
 ClientActionsRoute.post("/getClientInfo", isClientAuthenticated, getClientInfo);
+ClientActionsRoute.post(
+  "/editClientInfo",
+  isClientAuthenticated,
+  editClientInfo
+);
 
 module.exports = ClientActionsRoute;

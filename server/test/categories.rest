@@ -31,3 +31,18 @@ Content-Type:  application/json
 ##############################################
 POST http://localhost:8080/clientActions/v1/getClientInfo
 Content-Type:  application/json
+
+
+##############################################
+POST http://localhost:8080/clientActions/v1/editClientInfo
+Content-Type:  application/json
+
+{
+    "clientName": "New Salah 2",
+    "clientLastName": "New bahadi",
+    "clientEmail": "new@gmail.com",
+    "clientPhone": "new06",
+    "clientAdress": "New Address",
+    "clientPassword": "",
+    "clientCity": 13
+}
