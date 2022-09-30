@@ -143,6 +143,16 @@ function App() {
                 }
               />
               <Route
+                path="/Parapharmacie/categorie/:categorie"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="SignInUp"
                 element={
                   <SignInUp

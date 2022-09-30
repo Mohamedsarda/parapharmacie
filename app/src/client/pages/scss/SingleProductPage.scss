@@ -8,6 +8,7 @@
     object-fit: cover;
   }
   .content {
+    overflow: scroll;
     h2 {
       color: #333;
       margin-bottom: 20px;
@@ -35,7 +36,9 @@
           cursor: pointer;
         }
       }
-
+      span {
+        color: #666;
+      }
       h4 {
         font-size: 13px;
         color: #222;

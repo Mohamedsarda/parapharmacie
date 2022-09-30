@@ -17,7 +17,7 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 
 const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
-  const { searchValue } = useParams();
+  const { searchValue, categorie } = useParams();
   const [products, setProducts] = useState([]);
   const [range, setRange] = useState(10);
   //
@@ -68,7 +68,6 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   };
   //
   const getParaData = () => {
-    console.log(range, value);
     axios
       .post(
         "http://localhost:8080/clientActions/v1/searchForProductWithFilter",
@@ -87,14 +86,35 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
         }
       });
   };
+  const getProductsCategorie = () => {
+    axios
+      .post(
+        "http://localhost:8080/clientActions/v1/searchForProductsBasedOnCategorie",
+        {
+          categorieName: categorie,
+          from: 0,
+          to: range,
+        }
+      )
+      .then((res) => {
+        if (res.data.actionState) {
+          setProducts(res.data.products);
+        }
+      });
+  };
 
   useEffect(() => {
+    console.log(window.location.href.split("/")[4]);
     if (window.location.href.split("/")[4] === "search") {
       searchForProductsPage();
-    } else if (window.location.href.split("/")[3] === "parapharmacie") {
+    }
+    if (window.location.href.split("/")[4] === undefined) {
       getParaData();
     }
-  }, [window.location.href.split("/")[4], value, range]);
+    if (window.location.href.split("/")[4] === "categorie") {
+      getProductsCategorie();
+    }
+  }, [window.location.href.split("/")[4], value, range, categorie]);
   return (
     <div>
       <Navbar
@@ -114,19 +134,23 @@ const Parapharmacie = ({ clientIsAuth, signClientIn, clientSignOut }) => {
                 <option value="30">30</option>
                 <option value="1000">All</option>
               </select>
-              <Box sx={{ width: 250 }}>
-                <h3>Price Range</h3>
-                <Slider
-                  getAriaLabel={() => "Price range"}
-                  value={value}
-                  onChange={handleChange}
-                  valueLabelDisplay="auto"
-                  min={10}
-                  step={20}
-                  max={1000}
-                  disableSwap
-                />
-              </Box>
+              {window.location.href.split("/")[4] !== "categorie" ? (
+                <Box sx={{ width: 250 }}>
+                  <h3>Price Range</h3>
+                  <Slider
+                    getAriaLabel={() => "Price range"}
+                    value={value}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    min={10}
+                    step={20}
+                    max={1000}
+                    disableSwap
+                  />
+                </Box>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             ""

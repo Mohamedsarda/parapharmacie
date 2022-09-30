@@ -10,7 +10,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 //
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //
 import { useSelector } from "react-redux";
 import { setCounter } from "../redux/cartRedux";
@@ -34,6 +34,8 @@ const Navbar = ({
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [categoriesData, setCategoriesData] = useState([]);
+  //
+  const navigate = useNavigate();
 
   //
   const searchPage = (e) => {
@@ -93,9 +95,13 @@ const Navbar = ({
         }
       });
   };
-
+  //
   const closeLoginContainer = () => {
     setClientLoginContainer(false);
+  };
+  //
+  const searchForProductsBasedOnCategorie = (categorieName) => {
+    navigate(`/parapharmacie/categorie/${categorieName}`);
   };
 
   useEffect(() => {
@@ -215,7 +221,16 @@ const Navbar = ({
           <h2>Catégorie</h2>
           <ul>
             {categoriesData.map((categorie) => {
-              return <li>{categorie.categorieName}</li>;
+              return (
+                <li
+                  key={categorie.categorieName}
+                  onClick={() => {
+                    searchForProductsBasedOnCategorie(categorie.categorieName);
+                  }}
+                >
+                  {categorie.categorieName}
+                </li>
+              );
             })}
           </ul>
         </div>
