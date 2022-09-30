@@ -370,6 +370,31 @@ const editClientInfoWithPass = (info, password, id) => {
   });
 };
 
+const selectProduct = (req, res) => {
+  const { productId } = req.body;
+  db.query(
+    `SELECT * FROM products WHERE productId = ?`,
+    [productId],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Something went wrong. Database error`,
+          product: {},
+        });
+
+      return res.status(200).send({
+        actionState: true,
+        desc:
+          result.length == 0
+            ? `No product found with the given id`
+            : `Product fetched succefully`,
+        product: result.length == 0 ? {} : result[0],
+      });
+    }
+  );
+};
+
 // landing page action
 const openLandingPage = (req, res) => {
   const {
@@ -493,4 +518,5 @@ module.exports = {
   getClientInfo,
   editClientInfo,
   searchForProductsBasedOnCategorie,
+  selectProduct,
 };
