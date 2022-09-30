@@ -70,7 +70,7 @@ const SingleProductPage = ({ clientIsAuth, signClientIn, clientSignOut }) => {
   };
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [id]);
   return (
     <div>
       <Navbar
