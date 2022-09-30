@@ -18,6 +18,7 @@ const {
   getClientInfo,
   editClientInfo,
   searchForProductsBasedOnCategorie,
+  selectProduct,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -87,8 +88,8 @@ ClientActionsRoute.post(
 );
 ClientActionsRoute.post(
   "/searchForProductsBasedOnCategorie",
-
   searchForProductsBasedOnCategorie
 );
+ClientActionsRoute.post("/selectProduct", selectProduct);
 
 module.exports = ClientActionsRoute;

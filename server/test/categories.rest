@@ -56,3 +56,11 @@ Content-Type:  application/json
     "from": 0,
     "to": 10
 }
+##############################################
+
+POST http://localhost:8080/clientActions/v1/selectProduct
+Content-Type:  application/json
+
+{
+    "productId": 26
+}
