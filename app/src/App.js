@@ -254,6 +254,16 @@ function App() {
                 }
               />
               <Route
+                path="/Parapharmacie/categorie/:categorie"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
                 path="SignInUp"
                 element={
                   <SignInUp
@@ -346,6 +356,16 @@ function App() {
               />
               <Route
                 path="/Parapharmacie/search/:searchValue"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="/Parapharmacie/categorie/:categorie"
                 element={
                   <Parapharmacie
                     signClientIn={clientIsSignIn}
@@ -462,6 +482,16 @@ function App() {
               />
               <Route
                 path="/Parapharmacie/search/:searchValue"
+                element={
+                  <Parapharmacie
+                    signClientIn={clientIsSignIn}
+                    clientSignOut={clientSignOut}
+                    clientIsAuth={clientIsAuth}
+                  />
+                }
+              />
+              <Route
+                path="/Parapharmacie/categorie/:categorie"
                 element={
                   <Parapharmacie
                     signClientIn={clientIsSignIn}
