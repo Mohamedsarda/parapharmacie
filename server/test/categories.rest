@@ -46,3 +46,13 @@ Content-Type:  application/json
     "clientPassword": "",
     "clientCity": 13
 }
+##############################################
+
+POST http://localhost:8080/clientActions/v1/searchForProductsBasedOnCategorie
+Content-Type:  application/json
+
+{
+    "categorieName": "corps",
+    "from": 0,
+    "to": 10
+}
