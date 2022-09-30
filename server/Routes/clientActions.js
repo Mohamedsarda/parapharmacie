@@ -17,6 +17,7 @@ const {
   getClientOrders,
   getClientInfo,
   editClientInfo,
+  searchForProductsBasedOnCategorie,
 } = require("../Controllers/clientActions.js");
 const {
   clientSignUp,
@@ -83,6 +84,11 @@ ClientActionsRoute.post(
   "/editClientInfo",
   isClientAuthenticated,
   editClientInfo
+);
+ClientActionsRoute.post(
+  "/searchForProductsBasedOnCategorie",
+
+  searchForProductsBasedOnCategorie
 );
 
 module.exports = ClientActionsRoute;

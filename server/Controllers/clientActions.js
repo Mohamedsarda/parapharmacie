@@ -83,6 +83,26 @@ const searchForProductWithFiler = (req, res) => {
     }
   );
 };
+const searchForProductsBasedOnCategorie = (req, res) => {
+  const { categorieName, from, to } = req.body;
+  db.query(
+    `SELECT * FROM products WHERE productCategorie = ? ORDER BY productAddedTime DESC LIMIT ?, ?`,
+    [categorieName, from, to],
+    (err, result) => {
+      if (err)
+        return res.status(200).send({
+          actionState: false,
+          desc: `Someting went wrong. Database error`,
+          products: [],
+        });
+      return res.status(200).send({
+        actionState: true,
+        desc: `Products fetched successfully`,
+        products: result,
+      });
+    }
+  );
+};
 
 const getCategories = (req, res) => {
   db.query(
@@ -472,4 +492,5 @@ module.exports = {
   getClientOrders,
   getClientInfo,
   editClientInfo,
+  searchForProductsBasedOnCategorie,
 };
