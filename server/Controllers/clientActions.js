@@ -229,7 +229,7 @@ const getClientOrders = (req, res) => {
   FROM orders 
   INNER JOIN clients ON orders.orderClient = clients.id
   INNER JOIN products ON orders.orderProduct = products.productId
-  WHERE orders.orderState = ? AND orders.orderClient = ?`,
+  WHERE orders.orderState = ? AND orders.orderClient = ? ORDER BY orders.orderTime DESC`,
     [state, req.session.client],
     (err, result) => {
       if (err)
